@@ -1,0 +1,165 @@
+/* PirateBox app for YunoHost
+ * Copyright (C) 2015 Julien Vaubourg <julien@vaubourg.com>
+ * Contribute at https://github.com/jvaubourg/piratebox_ynh
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+body {
+  background-color: #2a2a2a;
+  color: #ccc;
+}
+
+dt {
+  float: left;
+  margin-right: 10px;
+}
+
+h1 {
+  font-size: 3em;
+  text-align: center;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+
+div#files, div#upload {
+  background-color: #222;
+  border-radius: 3px 3px 0px 0px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3) inset, 0px -3px 2px rgba(0, 0, 0, 0.1);
+  padding: 3%;
+  text-align: center;
+}
+
+div#infiles {
+  display: inline-block;
+}
+
+div.file {
+  display: inline-block;
+  min-width: 13em;
+  margin: .5em .4em;
+  text-align: center;
+  padding: .6em .4em;
+}
+
+span.shortname {
+  display: block;
+  padding: .8em;
+  margin: .6em 0;
+  font-size: 1em;
+  font-weight: normal;
+  text-shadow: .1em .1em #333;
+}
+
+span.downloadfile {
+  margin: .6em 0;
+  background-color: #007f00;
+  display: block;
+  margin: .6em 0;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+div.download {
+  background-color: #444;
+  display: none;
+  border-radius: 0 0 10px 10px;
+  padding: 1em;
+  margin: 0;
+  position: fixed;
+  width: 100%;
+  opacity: .95;
+  top: 0;
+  left: 0;
+}
+
+span.filename {
+  font-size: 2em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+span.downloadfile:active {
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, .3) inset, 0px -3px 2px rgba(0, 0, 0, .1);
+}
+
+div.activefile {
+  background-color: #777;
+  border-radius: .3em;
+  padding-top: 1.4em;
+}
+
+div.activefile span.shortname {
+  padding-top: 0;
+}
+
+div.activefile div.download {
+  display: block;
+}
+
+div#footer {
+  clear: left;
+  width: 100%;
+}
+
+div#github {
+  margin: -10px 0 20px 20px;
+  background: url(../img/github.png) no-repeat 0 4px;
+}
+
+div#github a {
+  margin-left: 17px;
+}
+
+div#dragndrop {
+  border: 3px dotted #ccc;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+span#dndtxt {
+  margin-top: .7em;
+  display: block;
+}
+
+span#ortxt {
+  margin: 1em 0;
+  font-weight: bold;
+  display: block;
+  font-size: .5em;
+}
+
+span#uploadfile {
+  margin-bottom: 1.7em;
+}
+
+div.progress {
+  margin: .5em;
+}
+
+div.barwrap {
+  background-image: linear-gradient(to bottom, #555 0px, #444 100%);
+  border-radius: .3em;
+  padding: .3em;
+  margin-top: 1em;
+  color: #fff;
+}
+
+span#gotoupload {
+  margin-left: 1em;
+}
