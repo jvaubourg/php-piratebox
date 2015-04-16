@@ -33,6 +33,8 @@
 <h2><?= T_("Share your own files") ?></h2>
 
 <div id="upload">
+  <span id="createfolder"><?= T_('Create a folder') ?></span>
+
   <div id="dragndrop">
     <span id="dndtxt"><?= T_("Drag &amp; drop here") ?></span>
     <span id="ortxt">-<?= T_("or") ?>-</span>

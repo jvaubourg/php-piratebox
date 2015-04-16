@@ -97,7 +97,8 @@ function getShortname($filename) {
   $name = getName($filename);
   list($shortname, $extension) = explode('.', $name, 2);
 
-  $shortname = substr($shortname, 0, 17);
+  $shortname = substr($shortname, 0, 15);
+  $extension = substr($extension, -7);
   $shortname = ("$shortname.$extension" == $name) ? $name : "$shortname...$extension";
 
   return $shortname;
@@ -162,6 +163,7 @@ dispatch('/', function() {
 
   foreach(glob('/var/www/pirateboxperso/public/uploads/*') as $filename) {
     $infos = array(
+      'filename'  => '/public/uploads/'.rawurlencode(getName($filename)),
       'name'      => getName($filename),
       'shortname' => getShortname($filename),
       'img'       => getExtensionImage($filename),
@@ -172,7 +174,7 @@ dispatch('/', function() {
     $files[] = $infos;
   }
 
-  set('hidden', false);
+  set('newfile', false);
   set('files', $files);
 
   return render('home.html.php');
@@ -183,11 +185,11 @@ dispatch_post('/upload', function() {
   $callback = &$_REQUEST['fd-callback'];
   
   if(!empty($_FILES['fd-file']) && is_uploaded_file($_FILES['fd-file']['tmp_name'])) {
-    $name = $_FILES['fd-file']['name'];
+    $name = stripslashes($_FILES['fd-file']['name']);
     move_uploaded_file($name, '/var/www/pirateboxperso/public/uploads/');
 
   } else {
-    $name = urldecode(@$_SERVER['HTTP_X_FILE_NAME']);
+    $name = stripslashes(urldecode(@$_SERVER['HTTP_X_FILE_NAME']));
 
     $src = fopen('php://input', 'r');
     $dst = fopen("/var/www/pirateboxperso/public/uploads/$name", 'w');
@@ -198,6 +200,7 @@ dispatch_post('/upload', function() {
   $filename = "/var/www/pirateboxperso/public/uploads/$name";
 
   $infos = array(
+    'filename'  => '/public/uploads/'.rawurlencode(getName($filename)),
     'name'      => getName($filename),
     'shortname' => getShortname($filename),
     'img'       => getExtensionImage($name),
@@ -206,7 +209,7 @@ dispatch_post('/upload', function() {
   );
 
   set('file', $infos);
-  set('hidden', true);
+  set('newfile', true);
   $output = partial('_file.html.php');
 
   if($callback) {
@@ -227,4 +230,8 @@ dispatch_post('/upload', function() {
     header('Content-Type: text/plain; charset=utf-8');
     echo $output;
   }
+});
+
+dispatch_post('/createfolder', function() {
+  echo $_POST['toto'];
 });

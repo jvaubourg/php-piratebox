@@ -50,8 +50,11 @@ $(document).ready(function() {
   
       file.event('done', function (xhr) {
         $('#infiles').append(xhr.responseText);
-        $('.file').click(clickFile);
-        $('.file').slideDown();
+
+        var newfiles = $('.newfile');
+        newfiles.click(clickFile);
+        newfiles.slideDown()
+        newfiles.removeClass('newfile');
 
         setTimeout(function() {
           file.bar.parent().parent().fadeOut();
@@ -68,8 +71,22 @@ $(document).ready(function() {
 
   $('.file').click(clickFile);
 
+  $('.file').dblclick(function() {
+    window.location = $(this).find('a').attr('href');
+  }),
+
   $('#gotoupload').click(function() {
     $('html,body').animate({ scrollTop: $(document).height() }, 1000);
+  });
+
+  $('#createfolder').click(function() {
+    $.ajax({
+      url: "?/createfolder",
+      data: { toto: "test" },
+      method: "POST",
+    }).done(function(data) {
+      alert('created: ' + data);
+    });
   });
 });
 
