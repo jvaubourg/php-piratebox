@@ -1,8 +1,8 @@
 <?php
 
-/* PirateBox app for YunoHost
+/* php-piratebox
  * Copyright (C) 2015 Julien Vaubourg <julien@vaubourg.com>
- * Contribute at https://github.com/jvaubourg/piratebox_ynh
+ * Contribute at https://github.com/jvaubourg/php-piratebox
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -179,20 +179,14 @@ dispatch('/', function() {
 });
 
 dispatch_post('/upload', function() {
-  // If an error causes output to be generated before headers are sent - catch it.
   ob_start();
-  
-  // Callback name is passed if upload happens via iframe, not AJAX (FileAPI).
   $callback = &$_REQUEST['fd-callback'];
   
-  // Upload data can be POST'ed as raw form data or uploaded via <iframe> and <form>
-  // using regular multipart/form-data enctype (which is handled by PHP $_FILES).
-  if (!empty($_FILES['fd-file']) and is_uploaded_file($_FILES['fd-file']['tmp_name'])) {
-    // Regular multipart/form-data upload.
+  if(!empty($_FILES['fd-file']) && is_uploaded_file($_FILES['fd-file']['tmp_name'])) {
     $name = $_FILES['fd-file']['name'];
     move_uploaded_file($name, '/var/www/pirateboxperso/public/uploads/');
+
   } else {
-    // Raw POST data.
     $name = urldecode(@$_SERVER['HTTP_X_FILE_NAME']);
 
     $src = fopen('php://input', 'r');

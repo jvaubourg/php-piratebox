@@ -1,6 +1,6 @@
-/* Wifi Hotspot app for YunoHost 
+/* php-piratebox
  * Copyright (C) 2015 Julien Vaubourg <julien@vaubourg.com>
- * Contribute at https://github.com/jvaubourg/hotspot_ynh
+ * Contribute at https://github.com/jvaubourg/php-piratebox
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -35,14 +35,14 @@ $(document).ready(function() {
   
   zone.event('send', function (files) {
     files.each(function (file) {
-      // Reset the progress when a new upload starts:
+
       file.event('sendXHR', function () {
         $('#bars').append('<div class="barwrap"><span>' + file.name + '</span><div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped active"></div></div></div>');
         file.bar = $('#bars .progress').last().children().first();
         file.bar.css('width', 0);
+        $('html,body').animate({ scrollTop: $(document).height() }, 1000);
       });
   
-      // Update progress when browser reports it:
       file.event('progress', function (current, total) {
         var width = current / total * 100 + '%';
         file.bar.css('width', width);
@@ -51,7 +51,7 @@ $(document).ready(function() {
       file.event('done', function (xhr) {
         $('#infiles').append(xhr.responseText);
         $('.file').click(clickFile);
-        $('.file').fadeIn('slow');
+        $('.file').slideDown();
 
         setTimeout(function() {
           file.bar.parent().parent().fadeOut();
@@ -61,7 +61,7 @@ $(document).ready(function() {
       file.sendTo('?/upload');
     });
   
-    zone.event('iframeDone', function (xhr) {
+    zone.event('iframeDone', function(xhr) {
       alert(xhr.responseText);
     });
   });

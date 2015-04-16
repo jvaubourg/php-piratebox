@@ -1,9 +1,9 @@
 <!doctype html>
 
 <!--
-  PirateBox app for YunoHost
+  php-piratebox
   Copyright (C) 2015 Julien Vaubourg <julien@vaubourg.com>
-  Contribute at https://github.com/jvaubourg/piratebox_ynh
+  Contribute at https://github.com/jvaubourg/php-piratebox
   
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU Affero General Public License as published by
@@ -65,7 +65,7 @@
 
     <div id="footer">
       <hr />
-      <div id="github"><a href="https://github.com/jvaubourg/piratebox_ynh"><?= T_('Any problem? Contribute!') ?></a> - AGPL 3.0</div>
+      <div id="github"><a href="https://github.com/jvaubourg/php-piratebox"><?= T_('Any problem? Contribute!') ?></a> - AGPL 3.0</div>
     </div>
   </div>
 </body>
