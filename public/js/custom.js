@@ -28,9 +28,16 @@ function clickFile() {
 
 function clickFolder() {
   $(this).addClass('activefile');
+  var folder = $(this)
 
-  var path = $(this).attr('data-path');
-  
+  setTimeout(function() {
+    doClickFolder(folder);
+  }, 100);
+}
+
+function doClickFolder(folder) {
+  var path = folder.attr('data-path');
+
   $.ajax({
     url: "?/get",
     data: { path: path },
@@ -40,8 +47,9 @@ function clickFolder() {
     $('#infiles').empty();
     $('#infiles').append(data);
 
-    $('.file').slideDown();
-    $('.folder').slideDown();
+    $('#infiles').scrollTop();
+    $('.file').click(clickFile).slideDown();
+    $('.folder').click(clickFolder).slideDown();
   });
 }
 
@@ -59,7 +67,7 @@ $(document).ready(function() {
         $('#bars').append('<div class="barwrap"><span>' + file.name + '</span><div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped active"></div></div></div>');
         file.bar = $('#bars .progress').last().children().first();
         file.bar.css('width', 0);
-        $('html,body').animate({ scrollTop: $(document).height() }, 1000);
+        $('html,body').scrollTop($(document).height());
       });
   
       file.event('progress', function (current, total) {
@@ -100,23 +108,31 @@ $(document).ready(function() {
   });
 
   $('#createfolderbtn').click(function() {
+    var input = $(this).next().find('input');
+
     $(this).hide();
+    input.val('');
     $(this).next().show();
-    $(this).next().find('input').focus();
+    input.focus();
   });
 
   $('#createfolder input').keypress(function(e) {
     if(e.keyCode == 13) {
       $(this).next().find('button').click();
     }
+
+    if(e.keyCode == 27) {
+      $(this).parent().parent().hide();
+      $('#createfolderbtn').show();
+    }
   });
 
   $('#createfolder button').click(function() {
-    var input = $(this).parent().parent().find('input');
+    var name = $(this).parent().parent().find('input').val();
 
     $.ajax({
       url: "?/createfolder",
-      data: { name: input.val() },
+      data: { name: name },
       method: "POST",
 
     }).done(function(data) {
@@ -128,8 +144,6 @@ $(document).ready(function() {
       newfolder.click(clickFolder);
       newfolder.slideDown()
       newfolder.removeClass('newfolder');
-
-      input.val('');
     });
   });
 });

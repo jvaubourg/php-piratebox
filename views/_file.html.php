@@ -8,6 +8,7 @@
   <?php endif; ?>
 
   <div class="download">
+    <span id="closedownload" class="glyphicon glyphicon-remove-circle"></span>
     <span class="filename"><?= htmlentities($file['name']) ?></span>
     <a href="<?= $file['filename'] ?>" class="downloadfile btn btn-success"><?= T_("Download") ?></a>
     <span class="filesize"><strong><?= T_("Size:") ?></strong> <?= $file['size'] ?></span> -

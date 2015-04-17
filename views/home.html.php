@@ -49,13 +49,11 @@
     <a id="createfolderbtn" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <?= T_('Create a folder') ?></a>
 
     <div id="createfolderinput" class="row">
-      <div class="col-lg-3">
-        <div class="input-group">
-          <input type="text" class="form-control" maxlength="20" placeholder="<?= T_("Folder name") ?>" />
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button"><?= T_("OK") ?></button>
-          </span>
-        </div>
+      <div class="input-group">
+        <input type="text" class="form-control" maxlength="20" placeholder="<?= T_("Folder name") ?>" />
+        <span class="input-group-btn">
+          <button class="btn btn-success" type="button"><?= T_("OK") ?></button>
+        </span>
       </div>
     </div>
   </div>

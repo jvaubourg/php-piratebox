@@ -95,17 +95,20 @@ function getName($filename) {
 
 function getShortname($filename) {
   $name = getName($filename);
-  list($shortname, $extension) = explode('.', $name, 2);
+  $namecut = explode('.', $name);
+  $shortname = array_shift($namecut);
+  $extension = array_pop($namecut);
 
-  $shortname = substr($shortname, 0, 15);
-  $extension = substr($extension, -7);
+  $shortname = substr($shortname, 0, 17);
+  $extension = substr($extension, -4);
   $shortname = ("$shortname.$extension" == $name) ? $name : "$shortname...$extension";
 
   return $shortname;
 }
 
 function getExtensionImage($filename) {
-  $extension = explode('.', $filename, 2)[1];
+  $extension = explode('.', $filename);
+  $extension = array_pop($extension);
 
   if(isset($GLOBALS['extensionsImages'][$extension])) {
     return $GLOBALS['extensionsImages'][$extension];

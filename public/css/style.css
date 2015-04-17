@@ -87,6 +87,14 @@ div.download {
   left: 0;
 }
 
+span#closedownload {
+  position: absolute;
+  top: .4em;
+  right: .4em;
+  font-size: 2em;
+  color: #ccc;
+}
+
 span.filename {
   font-size: 2em;
   white-space: pre-wrap;
@@ -166,7 +174,7 @@ span#gotoupload {
 
 div#createfolder {
   background-color: #333;
-  padding: 8px 15px;
+  padding: 8px 10%;
   margin-top: 2%;
   border-radius: 4px;
 }
@@ -179,4 +187,12 @@ ol#nav {
   background-color: #333;
   margin-bottom: 3%;
   text-align: left;
+}
+
+.form-control {
+  border-color: #419641;
+}
+
+.form-control:focus {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(65, 150, 65, 0.6);
 }
