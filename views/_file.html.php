@@ -1,4 +1,4 @@
-<div class="file <?= $newfile ? 'newfile' : '' ?>" <?= $newfile ? 'style="display: none"' : '' ?> data-url="public/uploads/<?= $file['name'] ?>">
+<div class="file <?= $newfile ? 'newfile' : '' ?>" <?= $newfile ? 'style="display: none"' : '' ?>>
   <img src="public/img/extensions/<?= urlencode($file['img']) ?>" />
 
   <?php if($file['shortname'] != $file['name']): ?>

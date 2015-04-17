@@ -40,7 +40,7 @@ div#files, div#upload {
   background-color: #222;
   border-radius: 3px 3px 0px 0px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3) inset, 0px -3px 2px rgba(0, 0, 0, 0.1);
-  padding: 3%;
+  padding: 2.5% 2.5% 2.5%;
   text-align: center;
 }
 
@@ -48,7 +48,7 @@ div#infiles {
   display: inline-block;
 }
 
-div.file {
+div.file, div.folder {
   display: inline-block;
   min-width: 13em;
   margin: .5em .4em;
@@ -162,4 +162,21 @@ div.barwrap {
 
 span#gotoupload {
   margin-left: 1em;
+}
+
+div#createfolder {
+  background-color: #333;
+  padding: 8px 15px;
+  margin-top: 2%;
+  border-radius: 4px;
+}
+
+div#createfolderinput {
+  display: none;
+}
+
+ol#nav {
+  background-color: #333;
+  margin-bottom: 3%;
+  text-align: left;
 }

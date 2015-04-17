@@ -157,27 +157,52 @@ function dateConvert($timestamp) {
   return date('d/m/y H:i', $timestamp);
 }
 
-dispatch('/', function() {
-  $files = array();
+function getFiles($path, $newfiles = false) {
+  $files = "";
   $finfo = new finfo;
 
-  foreach(glob('/var/www/pirateboxperso/public/uploads/*') as $filename) {
-    $infos = array(
-      'filename'  => '/public/uploads/'.rawurlencode(getName($filename)),
-      'name'      => getName($filename),
-      'shortname' => getShortname($filename),
-      'img'       => getExtensionImage($filename),
-      'size'      => fileSizeConvert(filesize($filename)),
-      'date'      => dateConvert(filemtime($filename)),
-    );
+  foreach(glob("/var/www/pirateboxperso/public/uploads/$path/*") as $filename) {
+    if(is_dir($filename)) {
+      $folder = array(
+        'name' => getName($filename),
+        'path' => getName($filename),
+      );
+    
+      set('newfolder', $newfiles);
+      set('folder', $folder);
 
-    $files[] = $infos;
+      $files .= partial('_folder.html.php');
+
+    } else {
+      $file = array(
+        'filename'  => "/public/uploads/$path/".rawurlencode(getName($filename)),
+        'name'      => getName($filename),
+        'shortname' => getShortname($filename),
+        'img'       => getExtensionImage($filename),
+        'size'      => fileSizeConvert(filesize($filename)),
+        'date'      => dateConvert(filemtime($filename)),
+      );
+
+      set('newfile', $newfiles);
+      set('file', $file);
+
+      $files .= partial('_file.html.php');
+    }
   }
 
-  set('newfile', false);
-  set('files', $files);
+  return $files;
+}
+
+dispatch('/', function() {
+  set('files', getFiles('/'));
 
   return render('home.html.php');
+});
+
+dispatch('/get', function() {
+  $path = $_GET['path'];
+
+  return getFiles($path, true);
 });
 
 dispatch_post('/upload', function() {
@@ -213,25 +238,29 @@ dispatch_post('/upload', function() {
   $output = partial('_file.html.php');
 
   if($callback) {
-    // Callback function given - the caller loads response into a hidden <iframe> so
-    // it expects it to be a valid HTML calling this callback function.
     header('Content-Type: text/html; charset=utf-8');
-  
-    // Escape output so it remains valid when inserted into a JS 'string'.
     $output = addcslashes($output, "\\\"\0..\x1F");
-  
-    // Finally output the HTML with an embedded JavaScript to call the function giving
-    // it our message(in your app it doesn't have to be a string) as the first parameter.
-    echo '<!DOCTYPE html><html><head></head><body><script type="text/javascript">',
-         "try{window.top.$callback(\"$output\")}catch(e){}</script></body></html>";
+    echo '<!DOCTYPE html><html><head></head><body><script type="text/javascript">', "try{window.top.$callback(\"$output\")}catch(e){}</script></body></html>";
+
   } else {
-    // Caller reads data with XMLHttpRequest so we can output it raw. Real apps would
-    // usually pass and read a JSON object instead of plan text.
     header('Content-Type: text/plain; charset=utf-8');
     echo $output;
   }
 });
 
 dispatch_post('/createfolder', function() {
-  echo $_POST['toto'];
+  $name = stripslashes($_POST['name']);
+  //mkdir("/var/www/pirateboxperso/public/uploads/$name");
+
+  $infos = array(
+    'name' => getName($name),
+    'path' => getName($name),
+  );
+
+  set('folder', $infos);
+  set('newfolder', true);
+  $output = partial('_folder.html.php');
+
+  header('Content-Type: text/plain; charset=utf-8');
+  echo $output;
 });

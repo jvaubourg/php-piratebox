@@ -20,12 +20,16 @@
 <h1><?= T_("PirateBox") ?><span id="gotoupload" class="btn btn-success" data-placement="bottom" data-toggle="tooltip" data-title="<?= T_('Go to upload') ?>"><span class="glyphicon glyphicon-hand-down"></span></span></h1>
 
 <h2><?= T_("Download the others' files") ?></h2>
+
 <div id="files">
+
+<ol class="breadcrumb" id="nav">
+  <li class="active"><?= T_("Root") ?></li>
+</ol>
+
 <div id="infiles">
 
-<?php foreach($files as $file): ?>
-  <?php include('_file.html.php'); ?>
-<?php endforeach; ?>
+<?= $files ?>
 
 </div>
 </div>
@@ -33,8 +37,6 @@
 <h2><?= T_("Share your own files") ?></h2>
 
 <div id="upload">
-  <span id="createfolder"><?= T_('Create a folder') ?></span>
-
   <div id="dragndrop">
     <span id="dndtxt"><?= T_("Drag &amp; drop here") ?></span>
     <span id="ortxt">-<?= T_("or") ?>-</span>
@@ -42,4 +44,19 @@
   </div>
 
   <div id="bars"></div>
+
+  <div id="createfolder">
+    <a id="createfolderbtn" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <?= T_('Create a folder') ?></a>
+
+    <div id="createfolderinput" class="row">
+      <div class="col-lg-3">
+        <div class="input-group">
+          <input type="text" class="form-control" maxlength="20" placeholder="<?= T_("Folder name") ?>" />
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button"><?= T_("OK") ?></button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

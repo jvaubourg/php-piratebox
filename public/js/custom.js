@@ -26,6 +26,25 @@ function clickFile() {
   }
 }
 
+function clickFolder() {
+  $(this).addClass('activefile');
+
+  var path = $(this).attr('data-path');
+  
+  $.ajax({
+    url: "?/get",
+    data: { path: path },
+    method: "GET",
+
+  }).done(function(data) {
+    $('#infiles').empty();
+    $('#infiles').append(data);
+
+    $('.file').slideDown();
+    $('.folder').slideDown();
+  });
+}
+
 $(document).ready(function() {
   $('.btn-group').button();
   $('[data-toggle="tooltip"]').tooltip();
@@ -70,6 +89,7 @@ $(document).ready(function() {
   });
 
   $('.file').click(clickFile);
+  $('.folder').click(clickFolder);
 
   $('.file').dblclick(function() {
     window.location = $(this).find('a').attr('href');
@@ -79,13 +99,37 @@ $(document).ready(function() {
     $('html,body').animate({ scrollTop: $(document).height() }, 1000);
   });
 
-  $('#createfolder').click(function() {
+  $('#createfolderbtn').click(function() {
+    $(this).hide();
+    $(this).next().show();
+    $(this).next().find('input').focus();
+  });
+
+  $('#createfolder input').keypress(function(e) {
+    if(e.keyCode == 13) {
+      $(this).next().find('button').click();
+    }
+  });
+
+  $('#createfolder button').click(function() {
+    var input = $(this).parent().parent().find('input');
+
     $.ajax({
       url: "?/createfolder",
-      data: { toto: "test" },
+      data: { name: input.val() },
       method: "POST",
+
     }).done(function(data) {
-      alert('created: ' + data);
+      $('#infiles').append(data);
+      $('#createfolderbtn').next().hide();
+      $('#createfolderbtn').show();
+
+      var newfolder = $('.newfolder');
+      newfolder.click(clickFolder);
+      newfolder.slideDown()
+      newfolder.removeClass('newfolder');
+
+      input.val('');
     });
   });
 });
