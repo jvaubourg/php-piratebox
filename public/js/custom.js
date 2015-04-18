@@ -18,15 +18,16 @@
 
 function clickFile() {
   if($(this).hasClass('activefile')) {
-    $('.file').removeClass('activefile');
+    $('.itemfile').removeClass('activefile');
 
   } else {
-    $('.file').removeClass('activefile');
+    $('.itemfile').removeClass('activefile');
     $(this).addClass('activefile');
   }
 }
 
 function clickFolder() {
+  $('.itemfile').removeClass('activefile');
   $(this).addClass('activefile');
   var dir = $(this).attr('data-dir');
 
@@ -154,11 +155,12 @@ $(document).ready(function() {
   updateNav();
 
   $('.file').dblclick(function() {
-    window.location = $(this).find('a').attr('href');
+    $(window).prop('location', $(this).find('a').attr('href'));
   }),
 
   $('#gotoupload').click(function() {
     $('html,body').animate({ scrollTop: $(document).height() }, 1000);
+    $('#dragndrop input[type=file]').click();
   });
 
   $('#createfolderbtn').click(function() {
@@ -221,7 +223,7 @@ $(document).ready(function() {
 $(document).keydown(function(e) {
   if(e.keyCode == 13) {
     if($('.activefile').length == 1) {
-      $('.activefile').find('.downloadfile').click();
+      $(window).prop('location', $('.activefile').find('a').attr('href'));
     }
   }
 
@@ -229,21 +231,27 @@ $(document).keydown(function(e) {
     $('.activefile').removeClass('activefile');
   }
 
-  if(e.keyCode == 37) {
+  if(e.keyCode == 37 || e.keyCode == 39) {
+    var activefile;
+
     if($('.activefile').length == 1) {
-      $('.activefile').prev().click();
+      if(e.keyCode == 37) {
+        activefile = $('.activefile').prev();
+      } else {
+        activefile = $('.activefile').next();
+      }
+
+      $('.itemfile').removeClass('activefile');
 
     } else {
-      $('.file').last().click();
+      if(e.keyCode == 37) {
+        activefile = $('.file').last();
+      } else {
+        activefile = $('.file').first();
+      }
     }
-  }
 
-  if(e.keyCode == 39) {
-    if($('.activefile').length == 1) {
-      $('.activefile').next().click();
-
-    } else {
-      $('.file').first().click();
-    }
+    $('html,body').scrollTop(activefile.offset().top - 180);
+    activefile.addClass('activefile');
   }
 });

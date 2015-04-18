@@ -27,7 +27,8 @@ function configure() {
     option('base_path', '/var/www/pirateboxperso');
     layout("layout.html.php");
     //define('PUBLIC_DIR', '<TPL:NGINX_LOCATION>/public');
-    define('PUBLIC_DIR', '/public/');
+    define('ROOT_DIR', option('base_uri'));
+    define('PUBLIC_DIR', ROOT_DIR.'public/');
     define('UPLOADS_DIR', PUBLIC_DIR.'uploads/');
     define('UPLOADS_PATH', option('base_path').UPLOADS_DIR);
 }

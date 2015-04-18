@@ -26,21 +26,10 @@ dt {
   margin-right: 10px;
 }
 
-h1 {
-  font-size: 3em;
-  text-align: center;
-  font-weight: bold;
-}
-
-h2 {
-  font-size: 1.6em;
-}
-
 div#files, div#upload {
   background-color: #222;
-  border-radius: 3px 3px 0px 0px;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3) inset, 0px -3px 2px rgba(0, 0, 0, 0.1);
-  padding: 2.5% 2.5% 2.5%;
+  border-radius: 0 0 4px 4px;
+  padding: 2% 2% 2%;
   text-align: center;
 }
 
@@ -50,8 +39,8 @@ div#infiles {
 
 div.file, div.folder {
   display: inline-block;
-  min-width: 13em;
-  margin: .5em .4em;
+  width: 14.7em;
+  margin: .4em .3em;
   text-align: center;
   padding: .6em .4em;
 }
@@ -63,6 +52,8 @@ span.shortname {
   font-size: 1em;
   font-weight: normal;
   text-shadow: .1em .1em #333;
+  cursor: pointer;
+  cursor: hand;
 }
 
 a.downloadfile {
@@ -89,10 +80,12 @@ div.download {
 
 span#closedownload {
   position: absolute;
-  top: .4em;
-  right: .4em;
-  font-size: 2em;
+  top: .6em;
+  right: .6em;
+  font-size: 1.5em;
   color: #ccc;
+  cursor: pointer;
+  cursor: hand;
 }
 
 span.filename {
@@ -185,14 +178,49 @@ div#createfolderinput {
 
 ol#nav {
   background-color: #333;
-  margin-bottom: 3%;
+  margin-bottom: 2%;
   text-align: left;
 }
 
-.form-control {
+input.form-control {
   border-color: #419641;
 }
 
-.form-control:focus {
+input.form-control:focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(65, 150, 65, 0.6);
+}
+
+nav.navbar-default {
+  border-radius: 0 0 4px 4px;
+  border-top-width: 0
+}
+
+div.navbar-collapse ul.navbar-right {
+  text-align: center;
+}
+
+nav.navbar-inverse div.navbar-collapse {
+  border-color: #111;
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover {
+  background-color: #111;
+  background-image: none;
+}
+
+div.panel-default {
+  border-width: 0;
+}
+
+div.panel-body {
+  border: 1px solid #111;
+  border-top-width: 0;
+}
+
+div.panel-default > div.panel-heading {
+  background-image: none;
+  background-color: #111;
+  border-width: 0;
+  color: #eee;
 }

@@ -17,42 +17,72 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<h1><?= T_("PirateBox") ?><span id="gotoupload" class="btn btn-success" data-placement="bottom" data-toggle="tooltip" data-title="<?= T_('Go to upload') ?>"><span class="glyphicon glyphicon-hand-down"></span></span></h1>
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/?/get&dir=<?= ROOT_DIR ?>">PirateBox</a>
+    </div>
 
-<h2><?= T_("Download the others' files") ?></h2>
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#"><?= T_("Files") ?></a></li>
+        <li><a href="#"><?= T_("Chat") ?> <span class="badge">0</span></a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><button type="button" id="gotoupload" class="btn btn-success navbar-btn"><span class="glyphicon glyphicon-file"></span> <?= T_("Upload a new file") ?></button></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
-<div id="files">
-<ol class="breadcrumb" id="nav" data-cdir="<?= $cdir ?>">
-  <li class="active"><?= T_("Root") ?></li>
-</ol>
+  <div class="panel panel-default"> 
+    <div class="panel-heading">
+      <h3 class="panel-title"><?= T_("Download the others' files") ?></h3>
+    </div>
 
-<div id="infiles">
-
-<?= $files ?>
-
-</div>
-</div>
-
-<h2><?= T_("Share your own files") ?></h2>
-
-<div id="upload">
-  <div id="dragndrop">
-    <span id="dndtxt"><?= T_("Drag &amp; drop here") ?></span>
-    <span id="ortxt">-<?= T_("or") ?>-</span>
-    <span id="uploadfile" class="btn btn-success"><?= T_('Click to open the file browser') ?></span>
+    <div id="files" class="panel-body">
+      <ol class="breadcrumb" id="nav" data-cdir="<?= $cdir ?>">
+        <li class="active"><?= T_("Root") ?></li>
+      </ol>
+      
+      <div id="infiles">
+      
+      <?= $files ?>
+      
+      </div>
+    </div>
   </div>
+  
+  <div class="panel panel-default"> 
+    <div class="panel-heading">
+      <h3 class="panel-title"><?= T_("Share your own files") ?></h3>
+    </div>
 
-  <div id="bars"></div>
-
-  <div id="createfolder">
-    <a id="createfolderbtn" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <?= T_('Create a folder') ?></a>
-
-    <div id="createfolderinput" class="row">
-      <div class="input-group">
-        <input type="text" class="form-control" maxlength="20" placeholder="<?= T_("Folder name") ?>" />
-        <span class="input-group-btn">
-          <button class="btn btn-success" type="button"><?= T_("OK") ?></button>
-        </span>
+    <div id="upload" class="panel-body">
+      <div id="dragndrop">
+        <span id="dndtxt"><?= T_("Drag &amp; drop here") ?></span>
+        <span id="ortxt">-<?= T_("or") ?>-</span>
+        <span id="uploadfile" class="btn btn-success"><?= T_('Click to open the file browser') ?></span>
+      </div>
+  
+      <div id="bars"></div>
+  
+      <div id="createfolder">
+        <a id="createfolderbtn" class="btn btn-success"><span class="glyphicon glyphicon-folder-open"></span>&nbsp; <?= T_('Create a folder') ?></a>
+  
+        <div id="createfolderinput" class="row">
+          <div class="input-group">
+            <input type="text" class="form-control" maxlength="20" placeholder="<?= T_("Folder name") ?>" />
+            <span class="input-group-btn">
+              <button class="btn btn-success" type="button"><?= T_("OK") ?></button>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
