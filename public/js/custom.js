@@ -39,12 +39,14 @@ function clickNav() {
   var dir = $(this).attr('data-dir');
 
   changeDirectory(dir);
+
+  return false;
 }
 
-function changeDirectory(newcdir) {
+function changeDirectory(newcdir, updateHistory = true) {
   $.ajax({
     url: '?/get',
-    data: { dir: newcdir },
+    data: { dir: newcdir, ajax: true },
     method: 'GET',
 
   }).done(function(data) {
@@ -52,21 +54,35 @@ function changeDirectory(newcdir) {
     $('#infiles').empty();
     $('#infiles').append(data);
 
-    updateNav();
+    updateNav(updateHistory);
 
-    $('#infiles').scrollTop();
-    $('.file').click(clickFile).slideDown();
-    $('.folder').click(clickFolder).slideDown();
+    $('.file').click(clickFile).fadeIn();
+    $('.folder').click(clickFolder).fadeIn();
+    $('html,body').scrollTop($('#files').prev().offset().top);
   });
 }
 
-function updateNav() {
+function updateNav(updateHistory) {
   var nav = $('#nav');
   var rootTxt = nav.children().first().text();
   var cdir = nav.attr('data-cdir');
+  var title = $(document).prop('title').split(' - ')[0];
 
   cdir = cdir.replace(/^\/*/, '');
   nav.empty();
+
+  var url = '/';
+
+  if(cdir != '') {
+    title += ' - ' + cdir;
+    url =  '/?/get&dir=' + cdir;
+  }
+  
+  if(updateHistory) {
+    history.pushState({}, '', url);
+  }
+
+  $(document).prop('title', title);
 
   if(cdir == '') {
     nav.append('<li class="active">' + rootTxt + '</li>');
@@ -132,7 +148,10 @@ $(document).ready(function() {
   });
 
   $('.file').click(clickFile);
+
   $('.folder').click(clickFolder);
+
+  updateNav();
 
   $('.file').dblclick(function() {
     window.location = $(this).find('a').attr('href');
@@ -181,6 +200,21 @@ $(document).ready(function() {
       newfolder.slideDown()
       newfolder.removeClass('newfolder');
     });
+  });
+
+  $(window).on('popstate', function(e) {
+    if(e.originalEvent.state !== null) {
+      var url = $(location).attr('href');
+      url = url.match(/dir=([^&]*)/);
+
+      if(url != null && url.length > 1) {
+        var dir = url[1];
+        changeDirectory(dir, false);
+
+      } else {
+        changeDirectory('/', false);
+      }
+    }
   });
 });
 

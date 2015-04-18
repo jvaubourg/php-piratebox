@@ -200,14 +200,23 @@ function getFiles($dir, $newfiles = false) {
 
 dispatch('/', function() {
   set('files', getFiles('/'));
+  set('cdir', '/');
 
   return render('home.html.php');
 });
 
 dispatch('/get', function() {
   $dir = $_GET['dir'];
+  $ajax = isset($_GET['ajax']) && $_GET['ajax'];
 
-  return getFiles($dir, true);
+  if($ajax) {
+    return getFiles($dir, true);
+  }
+
+  set('files', getFiles($dir));
+  set('cdir', $dir);
+
+  return render('home.html.php');
 });
 
 dispatch_post('/upload', function() {
