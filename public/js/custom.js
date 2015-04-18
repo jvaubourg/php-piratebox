@@ -28,24 +28,31 @@ function clickFile() {
 
 function clickFolder() {
   $(this).addClass('activefile');
-  var folder = $(this)
+  var dir = $(this).attr('data-dir');
 
   setTimeout(function() {
-    doClickFolder(folder);
+    changeDirectory(dir);
   }, 100);
 }
 
-function doClickFolder(folder) {
-  var path = folder.attr('data-path');
+function clickNav() {
+  var dir = $(this).attr('data-dir');
 
+  changeDirectory(dir);
+}
+
+function changeDirectory(newcdir) {
   $.ajax({
-    url: "?/get",
-    data: { path: path },
-    method: "GET",
+    url: '?/get',
+    data: { dir: newcdir },
+    method: 'GET',
 
   }).done(function(data) {
+    $('#nav').attr('data-cdir', newcdir);
     $('#infiles').empty();
     $('#infiles').append(data);
+
+    updateNav();
 
     $('#infiles').scrollTop();
     $('.file').click(clickFile).slideDown();
@@ -53,15 +60,43 @@ function doClickFolder(folder) {
   });
 }
 
+function updateNav() {
+  var nav = $('#nav');
+  var rootTxt = nav.children().first().text();
+  var cdir = nav.attr('data-cdir');
+
+  cdir = cdir.replace(/^\/*/, '');
+  nav.empty();
+
+  if(cdir == '') {
+    nav.append('<li class="active">' + rootTxt + '</li>');
+
+  } else {
+    cdir = cdir.split('/');
+
+    nav.append('<li><a href="#" data-dir="/">' + rootTxt + '</a></li>');
+    var dir = '/';
+
+    for(var i = 0; i < cdir.length - 1; i++) {
+      dir += '/' + cdir[i];
+      nav.append('<li><a href="#" data-dir="' + dir + '">' + cdir[i]  + '</a></li>');
+    }
+
+    nav.find('a').click(clickNav);
+    nav.append('<li class="active">' + cdir[cdir.length - 1]  + '</li>');
+  }
+}
+
 $(document).ready(function() {
   $('.btn-group').button();
   $('[data-toggle="tooltip"]').tooltip();
 
-  var options = {iframe: {url: '?/upload'}, multiple: true}
+  var options = { iframe: {url: '?/upload'}, multiple: true };
   var zone = new FileDrop('dragndrop', options);
   
   zone.event('send', function (files) {
     files.each(function (file) {
+      var cdir = $('#nav').attr('data-cdir');
 
       file.event('sendXHR', function () {
         $('#bars').append('<div class="barwrap"><span>' + file.name + '</span><div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped active"></div></div></div>');
@@ -88,7 +123,7 @@ $(document).ready(function() {
         }, 2000);
       });
   
-      file.sendTo('?/upload');
+      file.sendTo('?/upload&cdir=' + cdir);
     });
   
     zone.event('iframeDone', function(xhr) {
@@ -129,11 +164,12 @@ $(document).ready(function() {
 
   $('#createfolder button').click(function() {
     var name = $(this).parent().parent().find('input').val();
+    var cdir = $('#nav').attr('data-cdir');
 
     $.ajax({
-      url: "?/createfolder",
-      data: { name: name },
-      method: "POST",
+      url: '?/createfolder',
+      data: { name: name, cdir: cdir },
+      method: 'POST',
 
     }).done(function(data) {
       $('#infiles').append(data);

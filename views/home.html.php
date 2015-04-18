@@ -22,8 +22,7 @@
 <h2><?= T_("Download the others' files") ?></h2>
 
 <div id="files">
-
-<ol class="breadcrumb" id="nav">
+<ol class="breadcrumb" id="nav" data-cdir="<?= $cdir ?>">
   <li class="active"><?= T_("Root") ?></li>
 </ol>
 

@@ -160,15 +160,17 @@ function dateConvert($timestamp) {
   return date('d/m/y H:i', $timestamp);
 }
 
-function getFiles($path, $newfiles = false) {
+function getFiles($dir, $newfiles = false) {
   $files = "";
   $finfo = new finfo;
 
-  foreach(glob("/var/www/pirateboxperso/public/uploads/$path/*") as $filename) {
+  set('cdir', $dir);
+
+  foreach(glob(UPLOADS_PATH."$dir/*") as $filename) {
     if(is_dir($filename)) {
       $folder = array(
         'name' => getName($filename),
-        'path' => getName($filename),
+        'dir' => "$dir/".getName($filename),
       );
     
       set('newfolder', $newfiles);
@@ -178,7 +180,7 @@ function getFiles($path, $newfiles = false) {
 
     } else {
       $file = array(
-        'filename'  => "/public/uploads/$path/".rawurlencode(getName($filename)),
+        'filename'  => UPLOADS_DIR."$dir/".rawurlencode(getName($filename)),
         'name'      => getName($filename),
         'shortname' => getShortname($filename),
         'img'       => getExtensionImage($filename),
@@ -203,32 +205,34 @@ dispatch('/', function() {
 });
 
 dispatch('/get', function() {
-  $path = $_GET['path'];
+  $dir = $_GET['dir'];
 
-  return getFiles($path, true);
+  return getFiles($dir, true);
 });
 
 dispatch_post('/upload', function() {
   ob_start();
   $callback = &$_REQUEST['fd-callback'];
+
+  $cdir = $_GET['cdir'];
   
   if(!empty($_FILES['fd-file']) && is_uploaded_file($_FILES['fd-file']['tmp_name'])) {
     $name = stripslashes($_FILES['fd-file']['name']);
-    move_uploaded_file($name, '/var/www/pirateboxperso/public/uploads/');
+    move_uploaded_file($name, UPLOADS_PATH."/$cdir");
 
   } else {
     $name = stripslashes(urldecode(@$_SERVER['HTTP_X_FILE_NAME']));
 
     $src = fopen('php://input', 'r');
-    $dst = fopen("/var/www/pirateboxperso/public/uploads/$name", 'w');
+    $dst = fopen(UPLOADS_PATH."/$cdir/$name", 'w');
 
     stream_copy_to_stream($src, $dst);
   }
 
-  $filename = "/var/www/pirateboxperso/public/uploads/$name";
+  $filename = UPLOADS_PATH."/$cdir/$name";
 
-  $infos = array(
-    'filename'  => '/public/uploads/'.rawurlencode(getName($filename)),
+  $file = array(
+    'filename'  => UPLOADS_DIR.rawurlencode(getName($filename)),
     'name'      => getName($filename),
     'shortname' => getShortname($filename),
     'img'       => getExtensionImage($name),
@@ -236,7 +240,7 @@ dispatch_post('/upload', function() {
     'date'      => dateConvert(filemtime($filename)),
   );
 
-  set('file', $infos);
+  set('file', $file);
   set('newfile', true);
   $output = partial('_file.html.php');
 
@@ -253,14 +257,16 @@ dispatch_post('/upload', function() {
 
 dispatch_post('/createfolder', function() {
   $name = stripslashes($_POST['name']);
-  //mkdir("/var/www/pirateboxperso/public/uploads/$name");
+  $cdir = stripslashes($_POST['cdir']);
 
-  $infos = array(
-    'name' => getName($name),
-    'path' => getName($name),
+  mkdir(UPLOADS_PATH."$cdir/$name");
+
+  $folder = array(
+    'name' => $name,
+    'dir'  => "$cdir/$name",
   );
 
-  set('folder', $infos);
+  set('folder', $folder);
   set('newfolder', true);
   $output = partial('_folder.html.php');
 

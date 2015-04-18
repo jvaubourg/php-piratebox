@@ -24,9 +24,12 @@ function configure() {
     option('debug', true);
     //option('base_uri', '<TPL:NGINX_LOCATION>/');
     option('base_uri', '/');
+    option('base_path', '/var/www/pirateboxperso');
     layout("layout.html.php");
     //define('PUBLIC_DIR', '<TPL:NGINX_LOCATION>/public');
-    define('PUBLIC_DIR', '/public');
+    define('PUBLIC_DIR', '/public/');
+    define('UPLOADS_DIR', PUBLIC_DIR.'uploads/');
+    define('UPLOADS_PATH', option('base_path').UPLOADS_DIR);
 }
 
 // Not found page
