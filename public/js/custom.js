@@ -143,7 +143,6 @@ function updateNav(updateHistory) {
 
 function switchToChat() {
   history.pushState({}, '', '/?/chat');
-
   updateChat();
 
   $('html,body').scrollTop($(document).height());
@@ -166,10 +165,10 @@ function switchToFiles() {
   $('#gotoupload').show();
 }
 
-function updateChat(force = false) {
+function updateChat(loop = false) {
   var chat = $('#chatlog');
 
-  if(isTabActive('chat') || force) {
+  if(isTabActive('chat') || !loop) {
     $.ajax({
       url: '?/chat',
       data: { action: 'getLog' },
@@ -187,15 +186,17 @@ function updateChat(force = false) {
         $('html,body').scrollTop($(document).height());
       }
 
-      setTimeout(function() {
-        updateChat();
-      }, 5000);
+      if(loop) {
+        setTimeout(function() {
+          updateChat(true);
+        }, 2500);
+      }
     });
 
   } else {
     setTimeout(function() {
-      updateChat();
-    }, 5000);
+      updateChat(true);
+    }, 2500);
   }
 }
 
@@ -293,6 +294,7 @@ $(document).ready(function() {
   $('.folder').click(clickFolder);
 
   updateNav();
+  updateChat();
   updateChat(true);
   updateChatBadge();
 
