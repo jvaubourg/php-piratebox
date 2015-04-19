@@ -25,7 +25,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<?= ROOT_DIR ?>">PirateBox</a>
+      <a class="navbar-brand" href="<?= ROOT_DIR ?>"><?= option('app') ?></a>
     </div>
 
     <div class="collapse navbar-collapse" id="menu">
@@ -53,10 +53,12 @@
       <ol class="breadcrumb" id="nav" data-cdir="<?= $cdir ?>">
         <li class="active"><?= T_("Root") ?></li>
       </ol>
-      
+
       <div id="infiles">
         <?= $files ?>
       </div>
+
+      <em id="nofile" <?= empty($files) ? '' : 'style="display: none"' ?>><?= T_("No file yet.") ?></em>
     </div>
   </div>
 
@@ -79,7 +81,7 @@
 
         <div id="createfolderinput" class="row">
           <div class="input-group">
-            <input type="text" class="form-control" maxlength="20" placeholder="<?= T_("Folder name") ?>" />
+            <input type="text" class="form-control" maxlength="16" placeholder="<?= T_("Folder name") ?>" />
             <span class="input-group-btn">
               <button class="btn btn-success" type="button"><?= T_("OK") ?></button>
             </span>

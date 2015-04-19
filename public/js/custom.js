@@ -16,6 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+/****************/
+/*** FUNCTION ***/
+/****************/
+
 function clickFile() {
   if($(this).hasClass('activefile')) {
     $('.itemfile').removeClass('activefile');
@@ -24,6 +29,10 @@ function clickFile() {
     $('.itemfile').removeClass('activefile');
     $(this).addClass('activefile');
   }
+}
+
+function dblClickFile() {
+  $(window).prop('location', $(this).find('a').attr('href'));
 }
 
 function clickFolder() {
@@ -44,21 +53,48 @@ function clickNav() {
   return false;
 }
 
+function ajaxDataError(data) {
+  if(data.match(/^ERR:/)) {
+    alert(data.replace(/^ERR:/, ''));
+    return false;
+  }
+
+  return true;
+}
+
 function changeDirectory(newcdir, updateHistory = true) {
   $.ajax({
     url: '?/get',
-    data: { dir: newcdir, ajax: true },
+    data: { dir: encodeURIComponent(newcdir), ajax: true },
     method: 'GET',
 
+  }).fail(function(data) {
+    alert('Change directory failed.');
+
   }).done(function(data) {
+    if(!ajaxDataError(data)) {
+      return;
+    }
+
     $('#nav').attr('data-cdir', newcdir);
     $('#infiles').empty();
     $('#infiles').append(data);
 
+    if($('#infiles').children().length == 0) {
+      $('#nofile').show();
+    } else {
+      $('#nofile').hide();
+    }
+
     updateNav(updateHistory);
 
-    $('.file').click(clickFile).fadeIn();
-    $('.folder').click(clickFolder).fadeIn();
+    $('.file').click(clickFile);
+    $('.file').dblclick(dblClickFile)
+    $('.file').fadeIn();
+
+    $('.folder').click(clickFolder);
+    $('.folder').fadeIn();
+
     $('html,body').scrollTop($('#files').prev().offset().top);
   });
 }
@@ -76,7 +112,7 @@ function updateNav(updateHistory) {
 
   if(cdir != '') {
     title += ' - ' + cdir;
-    url =  '/?/get&dir=' + cdir;
+    url =  '/?/get&dir=' + encodeURIComponent(cdir);
   }
   
   if(updateHistory) {
@@ -145,7 +181,6 @@ function updateChat(force = false) {
   
       $('#chatlog p:even').addClass('row');
       $('#chatlog p').tooltip();
-      $('#chatlog p').click(function() { $(this).tooltip(); });
 
       if(isTabActive('chat')) {
         $('html,body').scrollTop($(document).height());
@@ -190,36 +225,53 @@ function isTabActive(tab) {
   return $('#tab' + tab).css('display') != 'none';
 }
 
+
+/**************/
+/*** EVENTS ***/
+/***************/
+
 $(document).ready(function() {
   $('.btn-group').button();
   $('[data-toggle="tooltip"]').tooltip();
 
   var defaultPseudo = 'anonymous' + Math.floor(Math.random() * 100);
-  var options = { iframe: {url: '?/upload'}, multiple: true };
-  var zone = new FileDrop('dragndrop', options);
+  var uploadOptions = { iframe: { url: '?/upload' }, multiple: true };
+  var uploadArea = new FileDrop('dragndrop', uploadOptions);
   
-  zone.event('send', function (files) {
-    files.each(function (file) {
+  uploadArea.event('send', function(files) {
+    files.each(function(file) {
       var cdir = $('#nav').attr('data-cdir');
 
-      file.event('sendXHR', function () {
+      file.event('sendXHR', function() {
         $('#bars').append('<div class="barwrap"><span>' + file.name + '</span><div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped active"></div></div></div>');
         file.bar = $('#bars .progress').last().children().first();
         file.bar.css('width', 0);
         $('html,body').scrollTop($(document).height());
       });
   
-      file.event('progress', function (current, total) {
+      file.event('progress', function(current, total) {
         var width = current / total * 100 + '%';
         file.bar.css('width', width);
       });
   
-      file.event('done', function (xhr) {
+      file.event('error', function(e, xhr) {
+        alert('Upload failed.');
+      });
+  
+      file.event('done', function(xhr) {
+        if(!ajaxDataError(xhr.responseText)) {
+          file.bar.parent().parent().hide();
+          return;
+        }
+
         $('#infiles').append(xhr.responseText);
+        $('#nofile').hide();
 
         var newfiles = $('.newfile');
         newfiles.click(clickFile);
+        newfiles.dblclick(dblClickFile)
         newfiles.slideDown()
+        newfiles.find('[data-toggle="tooltip"]').tooltip();
         newfiles.removeClass('newfile');
 
         setTimeout(function() {
@@ -227,10 +279,10 @@ $(document).ready(function() {
         }, 2000);
       });
   
-      file.sendTo('?/upload&cdir=' + cdir);
+      file.sendTo('?/upload&cdir=' + encodeURIComponent(cdir));
     });
   
-    zone.event('iframeDone', function(xhr) {
+    uploadArea.event('iframeDone', function(xhr) {
       alert(xhr.responseText);
     });
   });
@@ -243,9 +295,7 @@ $(document).ready(function() {
   updateChat(true);
   updateChatBadge();
 
-  $('.file').dblclick(function() {
-    $(window).prop('location', $(this).find('a').attr('href'));
-  }),
+  $('.file').dblclick(dblClickFile);
 
   $('#gotoupload').click(function() {
     $('html,body').animate({ scrollTop: $(document).height() }, 1000);
@@ -262,10 +312,13 @@ $(document).ready(function() {
   });
 
   $('#createfolder input').keypress(function(e) {
+
+    // Enter
     if(e.keyCode == 13) {
       $(this).next().find('button').click();
     }
 
+    // Escape
     if(e.keyCode == 27) {
       $(this).parent().parent().hide();
       $('#createfolderbtn').show();
@@ -281,7 +334,14 @@ $(document).ready(function() {
       data: { name: name, cdir: cdir },
       method: 'POST',
 
+    }).fail(function(data) {
+      alert('Create folder failed.');
+
     }).done(function(data) {
+      if(!ajaxDataError(data)) {
+        return;
+      }
+
       $('#infiles').append(data);
       $('#createfolderbtn').next().hide();
       $('#createfolderbtn').show();
@@ -352,13 +412,22 @@ $(document).ready(function() {
       },
       method: 'POST',
 
+    }).fail(function(data) {
+      alert('Sending failed.');
+
     }).done(function(data) {
+      if(!ajaxDataError(data)) {
+        return;
+      }
+
       $('#commentin').val('');
       updateChat();
     });
   });
 
   $('#commentin').keydown(function(e) {
+
+    // Enter
     if(e.keyCode == 13) {
       $(this).next().find('button').click();
     }
@@ -369,19 +438,28 @@ $(document).ready(function() {
   }
 });
 
+
+/*****************/
+/*** SHORTCURS ***/
+/*****************/
+
 $(document).keydown(function(e) {
+
+  // Enter
   if(e.keyCode == 13) {
     if(isTabActive('files') && $('.activefile').length == 1) {
       $(window).prop('location', $('.activefile').find('a').attr('href'));
     }
   }
 
+  // Escape
   if(e.keyCode == 27) {
     if(isTabActive('files')) {
       $('.activefile').removeClass('activefile');
     }
   }
 
+  // <- and ->
   if(e.keyCode == 37 || e.keyCode == 39) {
     var activefile;
 

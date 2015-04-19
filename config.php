@@ -20,13 +20,14 @@
 
 // Limonade configuration
 function configure() {
+    option('app', 'PirateBox');
     option('env', ENV_PRODUCTION);
-    option('debug', true);
-    //option('base_uri', '<TPL:NGINX_LOCATION>/');
+    option('debug', false);
     option('base_uri', '/');
     option('base_path', '/var/www/pirateboxperso');
+
     layout("layout.html.php");
-    //define('PUBLIC_DIR', '<TPL:NGINX_LOCATION>/public');
+
     define('ROOT_DIR', option('base_uri'));
     define('PUBLIC_DIR', ROOT_DIR.'public/');
     define('UPLOADS_DIR', PUBLIC_DIR.'uploads/');
