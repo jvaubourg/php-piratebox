@@ -50,7 +50,7 @@
     </div>
   
     <div id="files" class="panel-body">
-      <ol class="breadcrumb" id="nav" data-cdir="<?= $cdir ?>">
+      <ol class="breadcrumb" id="nav" data-cdir="<?= rawurlencode($cdir) ?>">
         <li class="active"><?= T_("Root") ?></li>
       </ol>
 

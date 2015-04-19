@@ -38,7 +38,7 @@ function dblClickFile() {
 function clickFolder() {
   $('.itemfile').removeClass('activefile');
   $(this).addClass('activefile');
-  var dir = $(this).attr('data-dir');
+  var dir = decodeURIComponent($(this).attr('data-dir'));
 
   setTimeout(function() {
     changeDirectory(dir);
@@ -46,7 +46,7 @@ function clickFolder() {
 }
 
 function clickNav() {
-  var dir = $(this).attr('data-dir');
+  var dir = decodeURIComponent($(this).attr('data-dir'));
 
   changeDirectory(dir);
 
@@ -76,7 +76,7 @@ function changeDirectory(newcdir, updateHistory = true) {
       return;
     }
 
-    $('#nav').attr('data-cdir', newcdir);
+    $('#nav').attr('data-cdir', encodeURIComponent(newcdir));
     $('#infiles').empty();
     $('#infiles').append(data);
 
@@ -103,7 +103,7 @@ function changeDirectory(newcdir, updateHistory = true) {
 function updateNav(updateHistory) {
   var nav = $('#nav');
   var rootTxt = nav.children().first().text();
-  var cdir = nav.attr('data-cdir');
+  var cdir = decodeURIComponent(nav.attr('data-cdir'));
   var title = $(document).prop('title').split(' - ')[0];
 
   cdir = cdir.replace(/^\/*/, '');
@@ -128,12 +128,12 @@ function updateNav(updateHistory) {
   } else {
     cdir = cdir.split('/');
 
-    nav.append('<li><a href="#" data-dir="/">' + rootTxt + '</a></li>');
+    nav.append('<li><a href="#" data-dir="%2F">' + rootTxt + '</a></li>');
     var dir = '/';
 
     for(var i = 0; i < cdir.length - 1; i++) {
       dir += '/' + cdir[i];
-      nav.append('<li><a href="#" data-dir="' + dir + '">' + cdir[i]  + '</a></li>');
+      nav.append('<li><a href="#" data-dir="' + encodeURIComponent(dir) + '">' + cdir[i]  + '</a></li>');
     }
 
     nav.find('a').click(clickNav);
@@ -241,7 +241,7 @@ $(document).ready(function() {
   
   uploadArea.event('send', function(files) {
     files.each(function(file) {
-      var cdir = $('#nav').attr('data-cdir');
+      var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
 
       file.event('sendXHR', function() {
         $('#bars').append('<div class="barwrap"><span>' + file.name + '</span><div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped active"></div></div></div>');
@@ -328,7 +328,7 @@ $(document).ready(function() {
 
   $('#createfolder button').click(function() {
     var name = $(this).parent().parent().find('input').val();
-    var cdir = $('#nav').attr('data-cdir');
+    var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
 
     $.ajax({
       url: '?/createfolder',

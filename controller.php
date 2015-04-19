@@ -29,8 +29,12 @@ dispatch('/', function() {
 });
 
 dispatch('/get', function() {
-  $dir = str_replace('..', '', urldecode($_GET['dir']));
+  $dir = trim(str_replace('..', '', urldecode($_GET['dir'])));
   $ajax = isset($_GET['ajax']) && $_GET['ajax'];
+
+  if($ajax && !is_dir(UPLOADS_PATH.$dir)) {
+    exit('ERR:'.T_("Invalid destination."));
+  }
 
   if(empty($dir) || !is_dir(UPLOADS_PATH.$dir)) {
     $dir = '/';
@@ -48,16 +52,16 @@ dispatch('/get', function() {
 });
 
 dispatch_post('/upload', function() {
-  $cdir = str_replace('..', '', $_GET['cdir']);
+  $cdir = trim(str_replace('..', '', $_GET['cdir']));
   $dirpath = UPLOADS_PATH."$cdir";
-  $name = preg_replace('/^\.+/', '', str_replace('/', '_', urldecode(@$_SERVER['HTTP_X_FILE_NAME'])));
+  $name = trim(preg_replace('/^\.+/', '', str_replace('/', '_', urldecode(@$_SERVER['HTTP_X_FILE_NAME']))));
   $name = substr($name, 0, 100);
   $filename = "$dirpath/$name";
 
   header('Content-Type: text/plain; charset=utf-8');
 
   if(empty($cdir) || !is_dir($dirpath)) {
-    exit('ERR:'.T_("Invalid directory.".$dirpath));
+    exit('ERR:'.T_("Invalid directory."));
   }
 
   if(empty($name)) {
@@ -93,9 +97,9 @@ dispatch_post('/upload', function() {
 });
 
 dispatch_post('/createfolder', function() {
-  $name = preg_replace('/^\.+/', '', str_replace('/', '', $_POST['name']));
+  $name = trim(preg_replace('/^\.+/', '', str_replace('/', '', $_POST['name'])));
   $name = substr($name, 0, 16);
-  $cdir = str_replace('..', '', $_POST['cdir']);
+  $cdir = trim(str_replace('..', '', $_POST['cdir']));
   $dirpath = UPLOADS_PATH."$cdir";
   $filename = "$dirpath/$name";
 
@@ -148,9 +152,9 @@ dispatch_post('/chat', function() {
     break;
 
     case 'post':
-      $pseudo = substr($pseudo, 0, 12);
+      $pseudo = substr(trim($pseudo), 0, 12);
       $pseudo = htmlentities($_POST['pseudo']);
-      $comment = htmlentities($_POST['comment']);
+      $comment = htmlentities(trim($_POST['comment']));
       $date = date('d/m/y H:i');
 
       if(empty($pseudo) || empty($comment)) {
