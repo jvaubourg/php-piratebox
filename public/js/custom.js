@@ -105,47 +105,96 @@ function updateNav(updateHistory) {
 }
 
 function switchToChat() {
+  history.pushState({}, '', '/?/chat');
+
   updateChat();
 
+  $('html,body').scrollTop($(document).height());
   $('nav').addClass('navbar-fixed-top');
   $('#main').removeClass('container');
   $('#footer').hide();
   $('#gotoupload').hide();
   $('#pseudoin').show();
-  $('#menu .badge').hide();
+  $('#menu .badge').text('0');
 }
 
 function switchToFiles() {
+  history.pushState({}, '', '/');
+
+  $('html,body').scrollTop(0);
   $('nav').removeClass('navbar-fixed-top');
   $('#main').addClass('container');
   $('#footer').show();
   $('#pseudoin').hide();
   $('#gotoupload').show();
-  $('#menu .badge').show();
 }
 
-function updateChat() {
+function updateChat(force = false) {
   var chat = $('#chatlog');
 
-  $.ajax({
-    url: '?/chat',
-    data: { action: 'getlog' },
-    method: 'POST',
+  if(isTabActive('chat') || force) {
+    $.ajax({
+      url: '?/chat',
+      data: { action: 'getLog' },
+      method: 'POST',
+  
+    }).done(function(data) {
+      chat.empty();
+      chat.append(data);
+      chat.attr('data-count', chat.find('p').length);
+  
+      $('#chatlog p:even').addClass('row');
+      $('#chatlog p').tooltip();
+      $('#chatlog p').click(function() { $(this).tooltip(); });
 
-  }).done(function(data) {
-    chat.empty();
-    chat.append(data);
+      if(isTabActive('chat')) {
+        $('html,body').scrollTop($(document).height());
+      }
 
-    $('p:even').addClass('row');
-    $('html,body').scrollTop($(document).height());
-  });
+      setTimeout(function() {
+        updateChat();
+      }, 5000);
+    });
 
+  } else {
+    setTimeout(function() {
+      updateChat();
+    }, 5000);
+  }
+}
+
+function updateChatBadge() {
+  if(!isTabActive('chat')) {
+    $.ajax({
+      url: '?/chat',
+      data: { action: 'getLineCount' },
+      method: 'POST',
+  
+    }).done(function(data) {
+      var count = data - $('#chatlog').attr('data-count');
+      $('#menu .badge').text(count);
+  
+      setTimeout(function() {
+        updateChatBadge();
+      }, 5000);
+    });
+
+  } else {
+    setTimeout(function() {
+      updateChatBadge();
+    }, 5000);
+  }
+}
+
+function isTabActive(tab) {
+  return $('#tab' + tab).css('display') != 'none';
 }
 
 $(document).ready(function() {
   $('.btn-group').button();
   $('[data-toggle="tooltip"]').tooltip();
 
+  var defaultPseudo = 'anonymous' + Math.floor(Math.random() * 100);
   var options = { iframe: {url: '?/upload'}, multiple: true };
   var zone = new FileDrop('dragndrop', options);
   
@@ -191,6 +240,8 @@ $(document).ready(function() {
   $('.folder').click(clickFolder);
 
   updateNav();
+  updateChat(true);
+  updateChatBadge();
 
   $('.file').dblclick(function() {
     $(window).prop('location', $(this).find('a').attr('href'));
@@ -274,7 +325,7 @@ $(document).ready(function() {
         switchToFiles();
       }
 
-      if($('.navbar-toggle').css('display') != 'none') {
+      if($('#menu').css('display') != 'none' && $('.navbar-toggle').css('display') != 'none') {
         $('.navbar-toggle').click();
       }
     }
@@ -283,6 +334,14 @@ $(document).ready(function() {
   $('#chatbtn').click(function() {
     var comment = $('#commentin').val();
     var pseudo = $('#pseudoin').val();
+
+    if(comment == '') {
+      return;
+    }
+
+    if(pseudo == '') {
+      pseudo = defaultPseudo;
+    }
 
     $.ajax({
       url: '?/chat',
@@ -298,40 +357,54 @@ $(document).ready(function() {
       updateChat();
     });
   });
+
+  $('#commentin').keydown(function(e) {
+    if(e.keyCode == 13) {
+      $(this).next().find('button').click();
+    }
+  });
+
+  if($(location).attr('href').match(/\?\/chat$/)) {
+    $('a[data-tab=chat]').click();
+  }
 });
 
 $(document).keydown(function(e) {
   if(e.keyCode == 13) {
-    if($('.activefile').length == 1) {
+    if(isTabActive('files') && $('.activefile').length == 1) {
       $(window).prop('location', $('.activefile').find('a').attr('href'));
     }
   }
 
   if(e.keyCode == 27) {
-    $('.activefile').removeClass('activefile');
+    if(isTabActive('files')) {
+      $('.activefile').removeClass('activefile');
+    }
   }
 
   if(e.keyCode == 37 || e.keyCode == 39) {
     var activefile;
 
-    if($('.activefile').length == 1) {
-      if(e.keyCode == 37) {
-        activefile = $('.activefile').prev();
+    if(isTabActive('files')) {
+      if($('.activefile').length == 1) {
+        if(e.keyCode == 37) {
+          activefile = $('.activefile').prev();
+        } else {
+          activefile = $('.activefile').next();
+        }
+  
+        $('.itemfile').removeClass('activefile');
+  
       } else {
-        activefile = $('.activefile').next();
+        if(e.keyCode == 37) {
+          activefile = $('.file').last();
+        } else {
+          activefile = $('.file').first();
+        }
       }
-
-      $('.itemfile').removeClass('activefile');
-
-    } else {
-      if(e.keyCode == 37) {
-        activefile = $('.file').last();
-      } else {
-        activefile = $('.file').first();
-      }
+  
+      $('html,body').scrollTop(activefile.offset().top - 180);
+      activefile.addClass('activefile');
     }
-
-    $('html,body').scrollTop(activefile.offset().top - 180);
-    activefile.addClass('activefile');
   }
 });

@@ -25,18 +25,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/?/get&dir=<?= ROOT_DIR ?>">PirateBox</a>
+      <a class="navbar-brand" href="<?= ROOT_DIR ?>">PirateBox</a>
     </div>
 
     <div class="collapse navbar-collapse" id="menu">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#" data-tab="files"><?= T_("Files") ?></a></li>
-        <li><a href="#" data-tab="chat"><?= T_("Chat") ?> <span class="badge">0</span></a></li>
+        <li class="active"><a href="javascript:;" data-tab="files"><?= T_("Files") ?></a></li>
+        <li><a href="javascript:;" data-tab="chat"><?= T_("Chat") ?> <span class="badge">0</span></a></li>
       </ul>
       <form class="navbar-form navbar-right">
         <div class="form-group">
           <button type="button" id="gotoupload" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> <?= T_("Upload a new file") ?></button>
-          <input type="text" id="pseudoin" class="form-control" placeholder="<?= T_("Pseudo") ?>" />
+          <input type="text" id="pseudoin" class="form-control" maxlength="12" placeholder="<?= T_("Pseudo") ?>" />
         </div>
       </form>
     </div>
@@ -91,7 +91,7 @@
 </div>
 
 <div id="tabchat" class="tab"> 
-  <div id="chatlog"></div>
+  <div id="chatlog" data-count="-1"></div>
   <div class="row" id="chatline">
       <div class="input-group">
         <input type="text" id="commentin" class="form-control" placeholder="<?= T_("Comment") ?>">

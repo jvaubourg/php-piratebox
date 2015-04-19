@@ -200,6 +200,7 @@ function getFiles($dir, $newfiles = false) {
 
 dispatch('/', function() {
   set('files', getFiles('/'));
+  set('tab', 'files');
   set('cdir', '/');
 
   return render('home.html.php');
@@ -214,6 +215,7 @@ dispatch('/get', function() {
   }
 
   set('files', getFiles($dir));
+  set('tab', 'files');
   set('cdir', $dir);
 
   return render('home.html.php');
@@ -283,12 +285,21 @@ dispatch_post('/createfolder', function() {
   echo $output;
 });
 
+dispatch('/chat', function() {
+  set('files', getFiles('/'));
+  set('tab', 'chat');
+  set('cdir', '/');
+
+  return render('home.html.php');
+});
+
 dispatch_post('/chat', function() {
   $action = $_POST['action'];
+  $logpath = CHAT_PATH.'log.html';
 
   switch($action) {
-    case 'getlog':
-      $output = file_get_contents(CHAT_PATH.'log.html');
+    case 'getLog':
+      $output = file_get_contents($logpath);
   
       header('Content-Type: text/plain; charset=utf-8');
       echo $output;
@@ -297,12 +308,18 @@ dispatch_post('/chat', function() {
     case 'post':
       $pseudo = htmlentities($_POST['pseudo']);
       $comment = htmlentities($_POST['comment']);
+      $date = date('d/m/y H:i');
 
-      $line = "<p><span>$pseudo</span> $comment</p>\n";
+      $line = "<p data-title='$date'><span>$pseudo</span> $comment</p>\n";
 
-      $flog = fopen(CHAT_PATH.'log.html', 'a') or die("Can't open chat log.");
+      $flog = fopen($logpath, 'a') or die("Can't open chat log.");
       fwrite($flog, $line);
       fclose($flog);
+    break;
+
+    case 'getLineCount':
+      $count = intval(exec('wc -l '.escapeshellarg($logpath).' 2>/dev/null'));
+      echo $count;
     break;
   }
 });

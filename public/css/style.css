@@ -272,8 +272,8 @@ div#chatlog p.row {
 
 div#chatlog span {
   display: inline-block;
-  width: 5em;
-  margin-right: 1em;
+  width: 9em;
+  margin-right: .6em;
   padding-right: .7em;
   text-align: right;
   font-weight: bold;
