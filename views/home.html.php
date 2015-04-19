@@ -58,7 +58,7 @@
         <?= $files ?>
       </div>
 
-      <em id="nofile" <?= empty($files) ? '' : 'style="display: none"' ?>><?= T_("No file yet.") ?></em>
+      <em id="nofile" <?= empty($files) ? '' : 'style="display: none"' ?>><?= T_("No files yet.") ?></em>
     </div>
   </div>
 
@@ -93,7 +93,7 @@
 </div>
 
 <div id="tabchat" class="tab"> 
-  <div id="chatlog" data-count="-1"></div>
+  <div id="chatlog" data-count="0"></div>
   <div class="row" id="chatline">
       <div class="input-group">
         <input type="text" id="commentin" class="form-control" placeholder="<?= T_("Comment") ?>">

@@ -284,3 +284,8 @@ div#chatlog span {
   color: #fff;
   font-style: normal;
 }
+
+div#firstmsg {
+  text-align: center;
+  padding: 3em;
+}

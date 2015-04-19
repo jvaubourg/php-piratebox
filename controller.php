@@ -146,9 +146,15 @@ dispatch_post('/chat', function() {
 
   switch($action) {
     case 'getLog':
+      $log = file_get_contents($logpath);
+
+      if(empty($log)) {
+        $log = '<div id="firstmsg">'.T_("No messages. You are the first!").'</div>';
+      }
+
       header('Content-Type: text/plain; charset=utf-8');
 
-      echo file_get_contents($logpath);
+      echo $log;
     break;
 
     case 'post':
@@ -169,7 +175,9 @@ dispatch_post('/chat', function() {
     break;
 
     case 'getLineCount':
-      echo intval(exec('wc -l '.escapeshellarg($logpath).' 2> /dev/null'));
+      $count = intval(exec('wc -l '.escapeshellarg($logpath).' 2> /dev/null'));
+
+      echo ($count >= 0) ? $count : 0;
     break;
   }
 });
