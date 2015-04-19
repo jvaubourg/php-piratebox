@@ -21,9 +21,9 @@ body {
   color: #ccc;
 }
 
-dt {
-  float: left;
-  margin-right: 10px;
+div#menu a {
+  outline: none;
+  line-height: 21px;
 }
 
 div#files, div#upload, div#chat {
@@ -204,7 +204,6 @@ nav.navbar-inverse div.navbar-collapse {
   border-color: #111;
 }
 
-.navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover {
   background-color: #111;
   background-image: none;
