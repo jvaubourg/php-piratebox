@@ -26,11 +26,15 @@ dt {
   margin-right: 10px;
 }
 
-div#files, div#upload {
+div#files, div#upload, div#chat {
   background-color: #222;
   border-radius: 0 0 4px 4px;
   padding: 2% 2% 2%;
   text-align: center;
+}
+
+div#chat {
+  text-align: left;
 }
 
 div#infiles {
@@ -161,10 +165,6 @@ div.barwrap {
   color: #fff;
 }
 
-span#gotoupload {
-  margin-left: 1em;
-}
-
 div#createfolder {
   background-color: #333;
   padding: 8px 10%;
@@ -172,7 +172,7 @@ div#createfolder {
   border-radius: 4px;
 }
 
-div#createfolderinput {
+div#createfolderinput, input#pseudoin {
   display: none;
 }
 
@@ -187,16 +187,13 @@ input.form-control {
 }
 
 input.form-control:focus {
+  border-color: #419641;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(65, 150, 65, 0.6);
 }
 
 nav.navbar-default {
   border-radius: 0 0 4px 4px;
   border-top-width: 0
-}
-
-div.navbar-collapse ul.navbar-right {
-  text-align: center;
 }
 
 nav.navbar-inverse div.navbar-collapse {
@@ -223,4 +220,64 @@ div.panel-default > div.panel-heading {
   background-color: #111;
   border-width: 0;
   color: #eee;
+}
+
+div#tabchat {
+  display: none;
+}
+
+div#tabchat div.panel-body {
+  padding: 0;
+}
+
+div#chat input {
+  padding: .5em;
+  border: 0;
+}
+
+div#chatline {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  width: 100%;
+}
+
+div#chatline input, div#chatline button {
+  border-radius: 0;
+}
+
+div#tabchat button {
+  border-left: 0;
+}
+
+form.navbar-right {
+  text-align: center;
+}
+
+div#chatlog {
+  margin: 3.7em 0 2.4em;
+}
+
+div#chatlog p {
+  background-color: #444;
+  font-style: italic;
+  padding: .5em;
+  margin: 0;
+}
+
+div#chatlog p.row {
+  background-color: #333;
+}
+
+div#chatlog span {
+  display: inline-block;
+  width: 5em;
+  margin-right: 1em;
+  padding-right: .7em;
+  text-align: right;
+  font-weight: bold;
+  border-right: 1px dotted #ccc;
+  color: #fff;
+  font-style: normal;
 }

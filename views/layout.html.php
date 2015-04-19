@@ -43,7 +43,7 @@
 </head>
 
 <body>
-  <div class="container">
+  <div id="main" class="container">
     <?php if(isset($flash['error'])): ?>
       <div class="alert alert-dismissible alert-danger fade in" style="margin-top: 20px" role="alert">
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

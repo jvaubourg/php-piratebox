@@ -30,7 +30,9 @@ function configure() {
     define('ROOT_DIR', option('base_uri'));
     define('PUBLIC_DIR', ROOT_DIR.'public/');
     define('UPLOADS_DIR', PUBLIC_DIR.'uploads/');
+    define('CHAT_DIR', PUBLIC_DIR.'chat/');
     define('UPLOADS_PATH', option('base_path').UPLOADS_DIR);
+    define('CHAT_PATH', option('base_path').CHAT_DIR);
 }
 
 // Not found page

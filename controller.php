@@ -282,3 +282,27 @@ dispatch_post('/createfolder', function() {
   header('Content-Type: text/plain; charset=utf-8');
   echo $output;
 });
+
+dispatch_post('/chat', function() {
+  $action = $_POST['action'];
+
+  switch($action) {
+    case 'getlog':
+      $output = file_get_contents(CHAT_PATH.'log.html');
+  
+      header('Content-Type: text/plain; charset=utf-8');
+      echo $output;
+    break;
+
+    case 'post':
+      $pseudo = htmlentities($_POST['pseudo']);
+      $comment = htmlentities($_POST['comment']);
+
+      $line = "<p><span>$pseudo</span> $comment</p>\n";
+
+      $flog = fopen(CHAT_PATH.'log.html', 'a') or die("Can't open chat log.");
+      fwrite($flog, $line);
+      fclose($flog);
+    break;
+  }
+});

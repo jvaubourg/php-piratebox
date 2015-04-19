@@ -104,6 +104,44 @@ function updateNav(updateHistory) {
   }
 }
 
+function switchToChat() {
+  updateChat();
+
+  $('nav').addClass('navbar-fixed-top');
+  $('#main').removeClass('container');
+  $('#footer').hide();
+  $('#gotoupload').hide();
+  $('#pseudoin').show();
+  $('#menu .badge').hide();
+}
+
+function switchToFiles() {
+  $('nav').removeClass('navbar-fixed-top');
+  $('#main').addClass('container');
+  $('#footer').show();
+  $('#pseudoin').hide();
+  $('#gotoupload').show();
+  $('#menu .badge').show();
+}
+
+function updateChat() {
+  var chat = $('#chatlog');
+
+  $.ajax({
+    url: '?/chat',
+    data: { action: 'getlog' },
+    method: 'POST',
+
+  }).done(function(data) {
+    chat.empty();
+    chat.append(data);
+
+    $('p:even').addClass('row');
+    $('html,body').scrollTop($(document).height());
+  });
+
+}
+
 $(document).ready(function() {
   $('.btn-group').button();
   $('[data-toggle="tooltip"]').tooltip();
@@ -217,6 +255,48 @@ $(document).ready(function() {
         changeDirectory('/', false);
       }
     }
+  });
+
+  $('#menu a').click(function() {
+    var tab = $(this).attr('data-tab');
+
+    if(!$(this).parent().hasClass('active')) {
+      $('#menu li').removeClass('active');
+      $(this).parent().addClass('active');
+
+      $('.tab').hide();
+      $('#tab' + tab).show();
+
+      if(tab == 'chat') {
+        switchToChat();
+
+      } else if(tab == 'files') {
+        switchToFiles();
+      }
+
+      if($('.navbar-toggle').css('display') != 'none') {
+        $('.navbar-toggle').click();
+      }
+    }
+  });
+
+  $('#chatbtn').click(function() {
+    var comment = $('#commentin').val();
+    var pseudo = $('#pseudoin').val();
+
+    $.ajax({
+      url: '?/chat',
+      data: {
+        action: 'post',
+        pseudo: pseudo,
+        comment: comment,
+      },
+      method: 'POST',
+
+    }).done(function(data) {
+      $('#commentin').val('');
+      updateChat();
+    });
   });
 });
 
