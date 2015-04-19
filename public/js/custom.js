@@ -90,6 +90,7 @@ function changeDirectory(newcdir, updateHistory = true) {
 
     $('.file').click(clickFile);
     $('.file').dblclick(dblClickFile)
+    $('.file').find('[data-toggle="tooltip"]').tooltip();
     $('.file').fadeIn();
 
     $('.folder').click(clickFolder);
