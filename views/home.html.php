@@ -93,7 +93,7 @@
 </div>
 
 <div id="tabchat" class="tab"> 
-  <div id="chatlog" data-count="0"></div>
+  <div id="chatlog" data-count="0"><div id="nomsg"><?= T_("No messages. You are the first!") ?></div></div>
   <div class="row" id="chatline">
       <div class="input-group">
         <input type="text" id="commentin" class="form-control" placeholder="<?= T_("Comment") ?>">

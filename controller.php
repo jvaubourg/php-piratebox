@@ -146,20 +146,42 @@ dispatch_post('/chat', function() {
 
   switch($action) {
     case 'getLog':
-      $log = file_get_contents($logpath);
+      if(file_exists($logpath)) {
+        $count = intval($_POST['count']);
 
-      if(empty($log)) {
-        $log = '<div id="firstmsg">'.T_("No messages. You are the first!").'</div>';
+        header('Content-Type: text/plain; charset=utf-8');
+
+        $log = file($logpath);
+        $logSize = count($log);
+
+        if(!$log) {
+          exit('ERR:'.T_("Failed to open chat log."));
+        }
+
+        if($count > $logSize) {
+          exit('ERR:'.T_("Invalid count number."));
+        }
+
+        if(!empty($log) && $count != $logSize) {
+          $logDiff = array();
+
+          if($count < 1) {
+            $logDiff = $log;
+  
+          } else {
+            for($i = $count; $i < $logSize; $i++) {
+              array_push($logDiff, $log[$i]);
+            }
+          }
+
+          echo implode($logDiff);
+        }
       }
-
-      header('Content-Type: text/plain; charset=utf-8');
-
-      echo $log;
     break;
 
     case 'post':
-      $pseudo = substr(trim($pseudo), 0, 12);
-      $pseudo = htmlentities($_POST['pseudo']);
+      $pseudo = substr(trim($_POST['pseudo']), 0, 12);
+      $pseudo = htmlentities($pseudo);
       $comment = htmlentities(trim($_POST['comment']));
       $date = date('d/m/y H:i');
 

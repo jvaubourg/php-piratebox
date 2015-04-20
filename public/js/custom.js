@@ -145,13 +145,13 @@ function switchToChat() {
   history.pushState({}, '', '/?/chat');
   updateChat();
 
-  $('html,body').scrollTop($(document).height());
   $('nav').addClass('navbar-fixed-top');
   $('#main').removeClass('container');
   $('#footer').hide();
   $('#gotoupload').hide();
   $('#pseudoin').show();
-  $('#menu .badge').text('0');
+
+  $('html,body').scrollTop($(document).height());
 }
 
 function switchToFiles() {
@@ -167,23 +167,28 @@ function switchToFiles() {
 
 function updateChat(loop = false) {
   var chat = $('#chatlog');
+  var count = chat.attr('data-count');
 
   if(isTabActive('chat') || !loop) {
     $.ajax({
       url: '?/chat',
-      data: { action: 'getLog' },
+      data: { action: 'getLog', count: count },
       method: 'POST',
   
     }).done(function(data) {
-      chat.empty();
-      chat.append(data);
-      chat.attr('data-count', chat.find('p').length);
-  
-      $('#chatlog p:even').addClass('row');
-      $('#chatlog p').tooltip();
+      if(data != '' && count == chat.attr('data-count')) {
+        $('#nomsg').hide();
 
-      if(isTabActive('chat')) {
-        $('html,body').scrollTop($(document).height());
+        chat.append(data);
+        chat.attr('data-count', chat.find('p').length);
+    
+        $('#chatlog p:even:not(.row)').addClass('row');
+        $('#chatlog p').tooltip();
+        $('#menu .badge').text('0');
+  
+        if(isTabActive('chat')) {
+          $('html,body').scrollTop($(document).height());
+        }
       }
 
       if(loop) {
@@ -423,8 +428,8 @@ $(document).ready(function() {
         return;
       }
 
-      $('#commentin').val('');
       updateChat();
+      $('#commentin').val('');
     });
   });
 

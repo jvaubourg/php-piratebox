@@ -285,7 +285,7 @@ div#chatlog span {
   font-style: normal;
 }
 
-div#firstmsg {
+div#nomsg {
   text-align: center;
   padding: 3em;
 }
