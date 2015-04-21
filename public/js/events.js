@@ -108,12 +108,14 @@ $(document).keydown(function(e) {
   
       $('html,body').scrollTop(activefile.offset().top - 180);
       activefile.addClass('activefile');
+
+      return false;
     }
   }
 
   // 'r'
-  if(e.keyCode == 82) {
-    if(isTabActive('files') && !$('#renamein').length && $('#createfolderbtn').css('display') != 'none') {
+  if(e.keyCode == 113) {
+    if(isTabActive('files')) {
       $('.activefile').find('.shortname').trigger('contextmenu');
 
       return false;

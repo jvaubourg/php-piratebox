@@ -317,15 +317,20 @@ function createFolderInputBlur() {
 // Cancelling the folder creation by pressing Escape and confirming with Enter
 // $('#createfolder input')
 function createFolderInputKeys(e) {
+
   // Enter
   if(e.keyCode == 13) {
     $(this).next().find('button').click();
+
+    return false;
   }
 
   // Escape
   if(e.keyCode == 27) {
     $('#createfolderinput').hide();
     $('#createfolderbtn').show();
+
+    return false;
   }
 }
 
@@ -448,6 +453,8 @@ function postChatMessageKey(e) {
   // Enter
   if(e.keyCode == 13) {
     $(this).next().find('button').click();
+
+    return false;
   }
 }
 

@@ -21,8 +21,11 @@ body {
   color: #ccc;
 }
 
-div#menu a {
+a {
   outline: none;
+}
+
+div#menu a {
   line-height: 21px;
 }
 
