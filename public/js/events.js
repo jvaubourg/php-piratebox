@@ -51,6 +51,7 @@ $(document).ready(function() {
   $('#gotoupload').click(goToUpload);
 
   $('#createfolderbtn').click(createFolderInput);
+  $('#createfolder input').blur(createFolderInputBlur);
   $('#createfolder input').keypress(createFolderInputKeys);
   $('#createfolder button').click(createFolderBtn);
 
@@ -107,6 +108,15 @@ $(document).keydown(function(e) {
   
       $('html,body').scrollTop(activefile.offset().top - 180);
       activefile.addClass('activefile');
+    }
+  }
+
+  // 'r'
+  if(e.keyCode == 82) {
+    if(isTabActive('files') && !$('#renamein').length && $('#createfolderbtn').css('display') != 'none') {
+      $('.activefile').find('.shortname').trigger('contextmenu');
+
+      return false;
     }
   }
 });

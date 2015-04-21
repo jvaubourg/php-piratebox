@@ -299,12 +299,19 @@ function goToUpload() {
 // Displaying an input field for setting the name of the folder to create
 // $('#createfolderbtn')
 function createFolderInput() {
-  var input = $(this).next().find('input');
+  var input = $('#createfolderinput input');
 
   $(this).hide();
   input.val('');
   $(this).next().show();
   input.focus();
+}
+
+// Cancelling the folder creation when quitting the field
+// $('#createfolderinput input')
+function createFolderInputBlur() {
+  $('#createfolderbtn').next().hide();
+  $('#createfolderbtn').show();
 }
 
 // Cancelling the folder creation by pressing Escape and confirming with Enter
