@@ -409,7 +409,7 @@ function postChatMessage() {
   }
 
   if(pseudo == '') {
-    pseudo = defaultPseudo;
+    pseudo = defaultChatPseudo;
   }
 
   $.ajax({
@@ -436,7 +436,7 @@ function postChatMessage() {
 
 // Posting chat message by pressing Enter
 // $('#commentin')
-function postChatMessageKey() {
+function postChatMessageKey(e) {
 
   // Enter
   if(e.keyCode == 13) {

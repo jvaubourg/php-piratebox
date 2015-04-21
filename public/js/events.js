@@ -17,6 +17,13 @@
  */
 
 
+/***************/
+/*** GLOBALS ***/
+/***************/
+
+var defaultChatPseudo = 'anonymous' + Math.floor(Math.random() * 100);
+
+
 /**************/
 /*** EVENTS ***/
 /**************/
@@ -25,7 +32,6 @@ $(document).ready(function() {
   $('.btn-group').button();
   $('[data-toggle="tooltip"]').tooltip();
 
-  var defaultPseudo = 'anonymous' + Math.floor(Math.random() * 100);
   var uploadOptions = { iframe: { url: '?/upload' }, multiple: true };
   var uploadArea = new FileDrop('dragndrop', uploadOptions);
   
