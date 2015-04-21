@@ -60,6 +60,14 @@ span.shortname {
   cursor: hand;
 }
 
+span.shortname input {
+  border: 0;
+  color: #000;
+  text-align: center;
+  padding: 5px;
+  width: 95%;
+}
+
 a.downloadfile {
   margin: .6em 0;
   background-color: #007f00;

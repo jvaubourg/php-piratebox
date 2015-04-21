@@ -91,6 +91,28 @@ $extensionsImages = [
   'svg' => 'svg.png',
 ];
 
+function sanitizeFilename($name) {
+  $name = str_replace('/', '', $name);
+  $name = preg_replace('/^\.+/', '', $name);
+  $name = substr($name, 0, 100);
+
+  return $name;
+}
+
+function sanitizeDirpath($path) {
+  $path = str_replace('..', '', $path);
+  $path = trim($path);
+
+  return $path;
+}
+
+function sanitizeDirname($name) {
+  $name = sanitizeFilename($name);
+  $name = substr($name, 0, 16);
+
+  return $name;
+}
+
 function getName($filename) {
     $path = explode('/', $filename);
 
@@ -99,9 +121,16 @@ function getName($filename) {
 
 function getShortname($filename) {
   $name = getName($filename);
-  $namecut = explode('.', $name);
-  $shortname = array_shift($namecut);
-  $extension = array_pop($namecut);
+
+  if(strpos($name, '.') === false) {
+    $extension = '';
+    $shortname = $name;
+
+  } else {
+    $namecut = explode('.', $name);
+    $extension = array_pop($namecut);
+    $shortname = implode('.', $namecut);
+  }
 
   $shortname = substr($shortname, 0, 17);
   $extension = substr($extension, -4);
