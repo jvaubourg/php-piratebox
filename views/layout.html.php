@@ -38,7 +38,8 @@
   <script src="<?= PUBLIC_DIR ?>/jquery/jquery-2.1.1.min.js"></script>
   <script src="<?= PUBLIC_DIR ?>/bootstrap/js/bootstrap.min.js"></script>
   <script src="<?= PUBLIC_DIR ?>/js/filedrop.min.js"></script>
-  <script src="<?= PUBLIC_DIR ?>/js/custom.js"></script>
+  <script src="<?= PUBLIC_DIR ?>/js/functions.js"></script>
+  <script src="<?= PUBLIC_DIR ?>/js/events.js"></script>
 </head>
 
 <body>

@@ -25,6 +25,8 @@ dispatch('/', function() {
   set('tab', 'files');
   set('cdir', '/');
 
+  header('Content-Type: text/html; charset=utf-8');
+
   return render('home.html.php');
 });
 
@@ -32,7 +34,11 @@ dispatch('/get', function() {
   $dir = sanitizeDirpath(urldecode($_GET['dir']));
   $ajax = isset($_GET['ajax']) && $_GET['ajax'];
 
-  header('Content-Type: text/plain; charset=utf-8');
+  if($ajax) {
+    header('Content-Type: text/plain; charset=utf-8');
+  } else {
+    header('Content-Type: text/html; charset=utf-8');
+  }
 
   if($ajax && !is_dir(UPLOADS_PATH.$dir)) {
     exit('ERR:'.T_("Invalid destination."));
@@ -193,6 +199,8 @@ dispatch('/chat', function() {
   set('tab', 'chat');
   set('cdir', '/');
 
+  header('Content-Type: text/html; charset=utf-8');
+
   return render('home.html.php');
 });
 
@@ -200,12 +208,12 @@ dispatch_post('/chat', function() {
   $action = $_POST['action'];
   $logpath = CHAT_PATH.'log.html';
 
+  header('Content-Type: text/plain; charset=utf-8');
+
   switch($action) {
     case 'getLog':
       if(file_exists($logpath)) {
         $count = intval($_POST['count']);
-
-        header('Content-Type: text/plain; charset=utf-8');
 
         $log = file($logpath);
         $logSize = count($log);
