@@ -25,6 +25,10 @@ a {
   outline: none;
 }
 
+.panel {
+  background-color: transparent;
+}
+
 div#menu a {
   line-height: 21px;
 }
@@ -36,8 +40,16 @@ div#files, div#upload, div#chat {
   text-align: center;
 }
 
+div#tabfiles {
+  margin-top: 70px;
+}
+
 div#chat {
   text-align: left;
+}
+
+div#tabchat {
+  margin-top: 50px;
 }
 
 div#infiles {
@@ -69,6 +81,10 @@ span.shortname input {
   text-align: center;
   padding: 5px;
   width: 95%;
+}
+
+div.download {
+  z-index: 9999;
 }
 
 a.downloadfile {
@@ -270,7 +286,7 @@ form.navbar-right {
 }
 
 div#chatlog {
-  margin: 3.7em 0 2.4em;
+  margin-bottom: 35px;
 }
 
 div#chatlog p {

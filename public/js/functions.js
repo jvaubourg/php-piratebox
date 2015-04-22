@@ -138,13 +138,13 @@ function switchToChat() {
   history.pushState({}, '', '/?/chat');
   updateChat();
 
-  $('nav').addClass('navbar-fixed-top');
   $('#main').removeClass('container');
   $('#footer').hide();
   $('#gotoupload').hide();
   $('#pseudoin').show();
 
   $('html,body').scrollTop($(document).height());
+  $('#commentin').focus();
 }
 
 // Display the current directory instead of the chat
@@ -152,7 +152,6 @@ function switchToFiles() {
   history.pushState({}, '', '/');
 
   $('html,body').scrollTop(0);
-  $('nav').removeClass('navbar-fixed-top');
   $('#main').addClass('container');
   $('#footer').show();
   $('#pseudoin').hide();
@@ -395,7 +394,7 @@ function showCorrectTab() {
     $(this).parent().addClass('active');
 
     $('.tab').hide();
-    $('#tab' + tab).show();
+    $('#tab' + tab).fadeIn();
 
     if(tab == 'chat') {
       switchToChat();

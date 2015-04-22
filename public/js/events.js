@@ -113,10 +113,28 @@ $(document).keydown(function(e) {
     }
   }
 
-  // 'r'
+  // F2
   if(e.keyCode == 113) {
     if(isTabActive('files')) {
       $('.activefile').find('.shortname').trigger('contextmenu');
+
+      return false;
+    }
+  }
+
+  // F3
+  if(e.keyCode == 114) {
+    if(isTabActive('chat')) {
+      $('#menu a[data-tab=files]').click();
+
+      return false;
+    }
+  }
+
+  // F4
+  if(e.keyCode == 115) {
+    if(isTabActive('files')) {
+      $('#menu a[data-tab=chat]').click();
 
       return false;
     }
