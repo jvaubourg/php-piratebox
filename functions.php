@@ -113,15 +113,7 @@ function sanitizeDirname($name) {
   return $name;
 }
 
-function getName($filename) {
-    $path = explode('/', $filename);
-
-    return array_pop($path);
-}
-
-function getShortname($filename) {
-  $name = getName($filename);
-
+function getShortname($name) {
   if(strpos($name, '.') === false) {
     $extension = '';
     $shortname = $name;
@@ -144,8 +136,8 @@ function getShortname($filename) {
   return $shortname;
 }
 
-function getExtensionImage($filename) {
-  $extension = explode('.', $filename);
+function getExtensionImage($filepath) {
+  $extension = explode('.', $filepath);
   $extension = array_pop($extension);
 
   if(isset($GLOBALS['extensionsImages'][$extension])) {
@@ -204,11 +196,17 @@ function getFiles($dir, $newfiles = false) {
 
   set('cdir', $dir);
 
-  foreach(glob(UPLOADS_PATH."$dir/*") as $filename) {
-    if(is_dir($filename)) {
+  foreach(scandir(UPLOADS_PATH."$dir") as $name) {
+    $filepath = UPLOADS_PATH."$dir/$name";
+
+    if(preg_match('/^\./', $name)) {
+      continue;
+    }
+
+    if(is_dir($filepath)) {
       $folder = array(
-        'name' => getName($filename),
-        'dir' => "$dir/".getName($filename),
+        'name' => $name,
+        'dir' => "$dir/$name",
       );
     
       set('newfolder', $newfiles);
@@ -218,12 +216,12 @@ function getFiles($dir, $newfiles = false) {
 
     } else {
       $file = array(
-        'filename'  => UPLOADS_DIR."$dir/".rawurlencode(getName($filename)),
-        'name'      => getName($filename),
-        'shortname' => getShortname($filename),
-        'img'       => getExtensionImage($filename),
-        'size'      => fileSizeConvert(filesize($filename)),
-        'date'      => dateConvert(filemtime($filename)),
+        'filepath'  => UPLOADS_DIR."$dir/".rawurlencode($name),
+        'name'      => $name,
+        'shortname' => getShortname($name),
+        'img'       => getExtensionImage($filepath),
+        'size'      => fileSizeConvert(filesize($filepath)),
+        'date'      => dateConvert(filemtime($filepath)),
       );
 
       set('newfile', $newfiles);

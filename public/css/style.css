@@ -21,16 +21,13 @@ body {
   color: #ccc;
 }
 
-a {
-  outline: none;
-}
-
 .panel {
   background-color: transparent;
 }
 
 div#menu a {
   line-height: 21px;
+  outline: none;
 }
 
 div#files, div#upload, div#chat {
@@ -315,4 +312,24 @@ div#chatlog span {
 div#nomsg {
   text-align: center;
   padding: 3em;
+}
+
+span.filedate {
+  margin-right: 10px;
+}
+
+span.filerename, span.filedelete, span.folderdelete {
+  cursor: pointer;
+}
+
+span.filedate, span.filesize, span.filerename, span.filedelete {
+  font-size: .7em;
+}
+
+span#nofile {
+  font-style: italic;
+}
+
+span#nofile div {
+  margin-top: 1em;
 }

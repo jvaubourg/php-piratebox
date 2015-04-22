@@ -31,7 +31,9 @@
     <span id="closedownload" class="glyphicon glyphicon-chevron-up"></span>
     <span class="filename"><?= htmlentities($file['name']) ?></span>
     <a href="<?= $file['filename'] ?>" class="downloadfile btn btn-success"><?= T_("Download") ?></a>
-    <span class="filesize"><strong><?= T_("Size:") ?></strong> <?= $file['size'] ?></span> -
-    <span class="filedate"><strong><?= T_("Date:") ?></strong> <?= str_replace(' ', '&nbsp;', $file['date']) ?></span>
+    <span class="filesize label label-default"><?= $file['size'] ?></span>
+    <span class="filedate label label-default"><?= str_replace(' ', '&nbsp;', $file['date']) ?></span>
+    <span class="filerename label label-danger"><span class="glyphicon glyphicon-edit"></span> <?= T_("Rename") ?></span>
+    <span class="filedelete label label-danger"><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete") ?></span>
   </div>
 </div>

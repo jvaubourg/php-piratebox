@@ -28,6 +28,8 @@ function setFileEvents(files) {
   files.dblclick(dblClickFile);
   files.find('[data-toggle="tooltip"]').tooltip();
   files.find('.shortname').bind('contextmenu', rightClickName);
+  files.find('.filerename').click(renameFile);
+  files.find('.filedelete').click(deleteFile);
 }
 
 // Set events for folders
@@ -358,10 +360,12 @@ function createFolderBtn() {
     $('#infiles').append(data);
     $('#createfolderbtn').next().hide();
     $('#createfolderbtn').show();
+    $('#nofile').hide();
 
     var newfolder = $('.newfolder');
 
-    newfolder.click(clickFolder);
+    setFolderEvents(newfolder);
+
     newfolder.slideDown()
     newfolder.removeClass('newfolder');
   });
@@ -495,6 +499,72 @@ function clickFolder() {
   setTimeout(function() {
     changeDirectory(dir);
   }, 100);
+}
+
+// Renaming a file by clicking a button
+// $('.filerename')
+function renameFile() {
+  $(this).closest('.file').find('.shortname').trigger('contextmenu');
+}
+
+// Deleting a file by clicking a button
+// $('.filedelete')
+function deleteFile() {
+  var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+  var isFile = $(this).parent().hasClass('download');
+  var shortname = $(this).text();
+  var filename, file;
+
+  if(isFile) {
+    if(!confirm($('#tabfiles').attr('data-txt-delfile'))) {
+      return;
+    }
+
+    file = $(this).closest('.itemfile');
+
+    filename = $(this).parent().find('.filename').text();
+    filename = $('<textarea />').text(filename).html();
+
+  } else {
+    if(!confirm($('#tabfiles').attr('data-txt-delfolder'))) {
+      return;
+    }
+
+    filename = '.';
+  }
+
+  $.ajax({
+    url: '?/delete',
+    data: {
+      action: 'post',
+      cdir: cdir,
+      name: filename,
+    },
+    method: 'POST',
+
+  }).fail(function(data) {
+    alert('Deleting failed.');
+
+  }).done(function(data) {
+    if(!ajaxDataError(data)) {
+      return;
+    }
+
+    if(isFile) {
+      file.slideUp();
+
+      setTimeout(function() {
+        file.remove();
+
+        if($('.itemfile').length == 0) {
+          $('#nofile').fadeIn();
+        }
+      }, 500);
+
+    } else {
+      $('#nav li').last().prev().find('a').click();
+    }
+  });
 }
 
 // Renaming a file or a directory by right-clicking on its name

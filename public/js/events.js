@@ -61,6 +61,8 @@ $(document).ready(function() {
   if($(location).attr('href').match(/\?\/chat$/)) {
     $('a[data-tab=chat]').click();
   }
+
+  $('.folderdelete').click(deleteFile);
 });
 
 
@@ -88,7 +90,7 @@ $(document).keydown(function(e) {
   if(e.keyCode == 37 || e.keyCode == 39) {
     var activefile;
 
-    if(isTabActive('files') && !$('#renamein').length) {
+    if(isTabActive('files') && !$('#renamein').length && $('#createfolderinput').css('display') == 'none') {
       if($('.activefile').length == 1) {
         if(e.keyCode == 37) {
           activefile = $('.activefile').prev();

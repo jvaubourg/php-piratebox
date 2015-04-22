@@ -1,21 +1,22 @@
-<!--
-  php-piratebox
-  Copyright (C) 2015 Julien Vaubourg <julien@vaubourg.com>
-  Contribute at https://github.com/jvaubourg/php-piratebox
-  
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU Affero General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-  
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU Affero General Public License for more details.
-  
-  You should have received a copy of the GNU Affero General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
+<?php
+/* php-piratebox
+ * Copyright (C) 2015 Julien Vaubourg <julien@vaubourg.com>
+ * Contribute at https://github.com/jvaubourg/php-piratebox
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+?>
 
 <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
@@ -43,7 +44,7 @@
   </div>
 </nav>
 
-<div id="tabfiles" class="tab"> 
+<div id="tabfiles" class="tab" data-txt-delfile="<?= T_("Are you sure you want to delete this file?") ?>" data-txt-delfolder="<?= T_("Are you sure you want to delete this folder?") ?>"> 
   <div class="panel panel-default"> 
     <div class="panel-heading">
       <h3 class="panel-title"><?= T_("Download the others' files") ?></h3>
@@ -58,7 +59,10 @@
         <?= $files ?>
       </div>
 
-      <em id="nofile" <?= empty($files) ? '' : 'style="display: none"' ?>><?= T_("No files yet.") ?></em>
+      <span id="nofile" <?= empty($files) ? '' : 'style="display: none"' ?>>
+        <?= T_("No files yet.") ?>
+        <div><span class="folderdelete label label-danger"><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete this folder") ?></span></div>
+      </span>
     </div>
   </div>
 

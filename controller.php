@@ -99,9 +99,9 @@ dispatch_post('/rename', function() {
   } else {
     $file = array(
       'filename'  => UPLOADS_DIR.str_replace('%2F', '/', rawurlencode($cdir)).'/'.rawurlencode($newName),
-      'name'      => getName($newFilePath),
-      'shortname' => getShortname($newFilePath),
-      'img'       => getExtensionImage($newName),
+      'name'      => $newName,
+      'shortname' => getShortname($newName),
+      'img'       => getExtensionImage($newFilePath),
       'size'      => fileSizeConvert(filesize($newFilePath)),
       'date'      => dateConvert(filemtime($newFilePath)),
     );
@@ -110,6 +110,40 @@ dispatch_post('/rename', function() {
     set('newfile', true);
 
     echo partial('_file.html.php');
+  }
+});
+
+dispatch_post('/delete', function() {
+  $cdir = sanitizeDirpath($_POST['cdir']);
+  $name = sanitizeFilename($_POST['name']);
+
+  $filePath = UPLOADS_PATH."$cdir/$name";
+
+  header('Content-Type: text/plain; charset=utf-8');
+
+  if(!file_exists($filePath)) {
+    exit('ERR:'.T_("File not found."));
+  }
+
+  if(is_dir($filePath)) {
+    $files = scandir($filePath);
+
+    if(!$files) {
+      exit('ERR:'.T_("Cannot read this directory."));
+    }
+
+    if(count($files) > 2) {
+      exit('ERR:'.T_("Not empty directory."));
+    }
+
+    if(!rmdir($filePath)) {
+      exit('ERR:'.T_("Cannot delete this directory."));
+    }
+
+  } else {
+    if(!unlink($filePath)) {
+      exit('ERR:'.T_("Cannot delete this file."));
+    }
   }
 });
 
@@ -145,9 +179,9 @@ dispatch_post('/upload', function() {
 
   $file = array(
     'filename'  => UPLOADS_DIR.str_replace('%2F', '/', rawurlencode($cdir)).'/'.rawurlencode($name),
-    'name'      => getName($filename),
-    'shortname' => getShortname($filename),
-    'img'       => getExtensionImage($name),
+    'name'      => $name,
+    'shortname' => getShortname($name),
+    'img'       => getExtensionImage($filename),
     'size'      => fileSizeConvert(filesize($filename)),
     'date'      => dateConvert(filemtime($filename)),
   );
