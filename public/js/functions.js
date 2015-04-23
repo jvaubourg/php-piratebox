@@ -413,6 +413,18 @@ function showCorrectTab() {
   }
 }
 
+// Focusing the comment input by pressing Enter
+// $('#peudoin')
+function pseudoInputKeys(e) {
+
+  // Enter
+  if(e.keyCode == 13) {
+    $('#commentin').focus();
+
+    return false;
+  }
+}
+
 // Posting a new chat message
 // $('#chatbtn')
 function postChatMessage() {

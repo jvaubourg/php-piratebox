@@ -56,7 +56,8 @@ $(document).ready(function() {
   $('#createfolder button').click(createFolderBtn);
 
   $('#chatbtn').click(postChatMessage);
-  $('#commentin').keydown(postChatMessageKey);
+  $('#commentin').keypress(postChatMessageKey);
+  $('#pseudoin').keypress(pseudoInputKeys);
 
   if($(location).attr('href').match(/\?\/chat$/)) {
     $('a[data-tab=chat]').click();
@@ -70,7 +71,7 @@ $(document).ready(function() {
 /*** GLOBAL SHORTCUTS ***/
 /************************/
 
-$(document).keydown(function(e) {
+$(document).keypress(function(e) {
 
   // Enter
   if(e.keyCode == 13) {
