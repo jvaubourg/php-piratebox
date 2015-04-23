@@ -216,7 +216,7 @@ function getFiles($dir, $newfiles = false) {
 
     } else {
       $file = array(
-        'filepath'  => UPLOADS_DIR."$dir/".rawurlencode($name),
+        'filename'  => ROOT_DIR.UPLOADS_DIR."$dir/".rawurlencode($name),
         'name'      => $name,
         'shortname' => getShortname($name),
         'img'       => getExtensionImage($filepath),

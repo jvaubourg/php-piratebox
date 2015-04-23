@@ -22,11 +22,18 @@ require('config.php');
 
 // Limonade configuration
 function configure() {
+  $GLOBALS['options']['public_dir'] = "public";
+  $GLOBALS['options']['public_uploads_dir'] = "uploads";
+  $GLOBALS['options']['public_chat_dir'] = "chat";
+
+  $GLOBALS['options']['base_path'] = preg_replace('/\/+$/', '', $GLOBALS['options']['base_path']);
+  $GLOBALS['options']['base_uri'] = preg_replace('/\/+$/', '', $GLOBALS['options']['base_uri']);
+
   option('app_name', $GLOBALS['options']['app_name']);
   option('env', ENV_PRODUCTION);
   option('debug', false);
-  option('base_uri', $GLOBALS['options']['base_uri']);
-  option('base_path', $GLOBALS['options']['base_path']);
+  option('base_path', $GLOBALS['options']['base_path'].'/');
+  option('base_uri', $GLOBALS['options']['base_uri'].'/');
 
   option('allow_renaming', $GLOBALS['options']['allow_renaming']);
   option('allow_deleting', $GLOBALS['options']['allow_deleting']);
@@ -39,7 +46,7 @@ function configure() {
   layout("layout.html.php");
 
   define('ROOT_DIR', option('base_uri'));
-  define('PUBLIC_DIR', ROOT_DIR.$GLOBALS['options']['public_dir'].'/');
+  define('PUBLIC_DIR', $GLOBALS['options']['public_dir'].'/');
   define('UPLOADS_DIR', PUBLIC_DIR.$GLOBALS['options']['public_uploads_dir'].'/');
   define('CHAT_DIR', PUBLIC_DIR.$GLOBALS['options']['public_chat_dir'].'/');
   define('UPLOADS_PATH', option('base_path').UPLOADS_DIR);

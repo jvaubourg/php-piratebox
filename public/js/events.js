@@ -60,12 +60,12 @@ $(document).ready(function() {
     updateChat(true);
     updateChatBadge();
 
-    $('#menu a').click(showCorrectTab);
+    $('#menu a').click(goToTabClick);
     $('#chatbtn').click(postChatMessage);
     $('#commentin').keypress(postChatMessageKey);
     $('#pseudoin').keypress(pseudoInputKeys);
 
-    if($(location).attr('href').match(/\?\/chat$/)) {
+    if($(location).attr('href').match(/#chat$/)) {
       $('a[data-tab=chat]').click();
     }
   }

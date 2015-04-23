@@ -19,6 +19,6 @@
 ?>
 
 <div class="itemfile folder <?= $newfolder ? 'newfolder' : '' ?>" <?= $newfolder ? 'style="display: none"' : '' ?> data-dir="<?= rawurlencode($folder['dir'])  ?>">
-  <img src="<?= PUBLIC_DIR ?>/img/extensions/folder-page.png" />
+  <img src="<?= ROOT_DIR.PUBLIC_DIR ?>img/extensions/folder-page.png" />
   <span class="shortname label label-default"><?= htmlentities($folder['name']) ?></span>
 </div>

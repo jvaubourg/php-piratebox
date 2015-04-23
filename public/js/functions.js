@@ -64,14 +64,14 @@ function ajaxDataError(data) {
 // updateHistory: add an entry in the browser history or not
 function changeDirectory(newcdir, updateHistory = true) {
   $.ajax({
-    url: '?/get',
+    url: $('body').attr('data-opt-base-uri') + '?/get',
     data: { dir: encodeURIComponent(newcdir), ajax: true },
     method: 'GET',
 
   }).fail(function(data) {
     alert('Changing directory failed.');
 
-    $(window).prop('location', '/');
+    $(window).prop('location', $('body').attr('data-opt-base-uri'));
 
   }).done(function(data) {
     if(!ajaxDataError(data)) {
@@ -112,20 +112,30 @@ function updateNav(updateHistory) {
   var title = $(document).prop('title').split(' - ')[0];
 
   cdir = cdir.replace(/^\/*/, '');
-  nav.empty();
-
-  var url = '/';
+  cdir = cdir.replace(/\/*$/, '');
 
   if(cdir != '') {
     title += ' - ' + cdir;
-    url =  '/?/get&dir=' + encodeURIComponent(cdir);
-  }
-  
-  if(updateHistory) {
-    history.pushState({}, '', url);
   }
 
   $(document).prop('title', title);
+
+  if(updateHistory) {
+    var url = $('body').attr('data-opt-base-uri');
+
+    if($('nav').attr('data-opt-fancyurls') == 'true') {
+      url = encodeURIComponent(cdir).replace(/%2F/g, '/');
+      url += (url == '') ? '' : '/';
+      url = $('body').attr('data-opt-base-uri') + url;
+
+    } else {
+      url = $('body').attr('data-opt-base-uri') + '?/get&dir=' + encodeURIComponent(cdir);
+    }
+
+    history.pushState({}, '', url);
+  }
+
+  nav.empty();
 
   if(cdir == '') {
     nav.append('<li class="active">' + rootTxt + '</li>');
@@ -147,8 +157,23 @@ function updateNav(updateHistory) {
 }
 
 // Display the chat instead of the current directory
-function switchToChat() {
-  history.pushState({}, '', '/?/chat');
+function switchToChat(updateHistory = true) {
+  var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+  var url;
+
+  if(updateHistory) {
+    if($('nav').attr('data-opt-fancyurls') == 'true') {
+      url = encodeURIComponent(cdir).replace(/%2F/g, '/').replace(/^\/+/, '');
+      url += (url == '') ? '' : '/';
+      url = $('body').attr('data-opt-base-uri') + url + '#chat';
+  
+    } else {
+      url = $('body').attr('data-opt-base-uri') + '?/' + encodeURIComponent(cdir) + '#chat';
+    }
+  
+    history.pushState({}, '', url);
+  }
+
   updateChat();
 
   $('#main').removeClass('container');
@@ -161,8 +186,10 @@ function switchToChat() {
 }
 
 // Display the current directory instead of the chat
-function switchToFiles() {
-  history.pushState({}, '', '/');
+function switchToFiles(updateHistory = true) {
+  if(updateHistory) {
+    history.pushState({}, '', $(location).attr('href').replace(/#chat$/, ''));
+  }
 
   $('html,body').scrollTop(0);
   $('#main').addClass('container');
@@ -179,7 +206,7 @@ function updateChat(loop = false) {
 
   if(isTabActive('chat') || !loop) {
     $.ajax({
-      url: '?/chat',
+      url: $('body').attr('data-opt-base-uri') + '?/chat',
       data: { action: 'getLog', count: count },
       method: 'POST',
   
@@ -217,7 +244,7 @@ function updateChat(loop = false) {
 function updateChatBadge() {
   if(!isTabActive('chat')) {
     $.ajax({
-      url: '?/chat',
+      url: $('body').attr('data-opt-base-uri') + '?/chat',
       data: { action: 'getLineCount' },
       method: 'POST',
   
@@ -241,6 +268,27 @@ function updateChatBadge() {
 // tab: tab name (files or chat)
 function isTabActive(tab) {
   return $('#tab' + tab).css('display') != 'none';
+}
+
+// Change active tab
+// tab: tab to show
+function goToTab(tab, updateHistory = true) {
+  $('#menu li').removeClass('active');
+  $('#menu a[data-tab=' + tab +']').parent().addClass('active');
+
+  $('.tab').hide();
+  $('#tab' + tab).fadeIn();
+
+  if(tab == 'chat') {
+    switchToChat(updateHistory);
+
+  } else if(tab == 'files') {
+    switchToFiles(updateHistory);
+  }
+
+  if($('#menu').css('display') != 'none' && $('.navbar-toggle').css('display') != 'none') {
+    $('.navbar-toggle').click();
+  }
 }
 
 
@@ -293,7 +341,7 @@ function upload(files) {
       }, 2000);
     });
 
-    file.sendTo('?/upload&cdir=' + encodeURIComponent(cdir));
+    file.sendTo($('body').attr('data-opt-base-uri') + '?/upload&cdir=' + encodeURIComponent(cdir));
   });
 
   uploadArea.event('iframeDone', function(xhr) {
@@ -353,7 +401,7 @@ function createFolderBtn() {
   var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
 
   $.ajax({
-    url: '?/createfolder',
+    url: $('body').attr('data-opt-base-uri') + '?/createfolder',
     data: { name: name, cdir: cdir },
     method: 'POST',
 
@@ -385,42 +433,37 @@ function createFolderBtn() {
 // Turning back time thanks to the browser history
 // on('popstate')
 function browserHistory(e) {
-  if(e.originalEvent.state !== null) {
-    var url = $(location).attr('href');
-    url = url.match(/dir=([^&]*)/);
+  var url = $(location).attr('href');
+  var dir = '/';
 
-    if(url != null && url.length > 1) {
-      var dir = url[1];
-      changeDirectory(dir, false);
+  if(url.match(/#chat$/)) {
+    goToTab('chat', false);
+    
+  } else {
+    if($('nav').attr('data-opt-fancyurls') == 'true') {
+      url = url.replace(/https?:\/\/[^\/]+\//, '/');
+      dir = url.replace($('body').attr('data-opt-base-uri'), '/');
 
     } else {
-      changeDirectory('/', false);
+      url = url.match(/dir=([^&]*)/);
+
+      if(url != null && url.length > 1) {
+        dir = decodeURIComponent(url[1]);
+      }
     }
+
+    goToTab('files', false);
+    changeDirectory(dir, false);
   }
 }
 
 // Switching to the chat of files tab depending on the main menu state
 // $('#menu a')
-function showCorrectTab() {
+function goToTabClick() {
   var tab = $(this).attr('data-tab');
 
   if(!$(this).parent().hasClass('active')) {
-    $('#menu li').removeClass('active');
-    $(this).parent().addClass('active');
-
-    $('.tab').hide();
-    $('#tab' + tab).fadeIn();
-
-    if(tab == 'chat') {
-      switchToChat();
-
-    } else if(tab == 'files') {
-      switchToFiles();
-    }
-
-    if($('#menu').css('display') != 'none' && $('.navbar-toggle').css('display') != 'none') {
-      $('.navbar-toggle').click();
-    }
+    goToTab(tab);
   }
 }
 
@@ -451,7 +494,7 @@ function postChatMessage() {
   }
 
   $.ajax({
-    url: '?/chat',
+    url: $('body').attr('data-opt-base-uri') + '?/chat',
     data: {
       action: 'post',
       pseudo: pseudo,
@@ -557,7 +600,7 @@ function deleteFile() {
   }
 
   $.ajax({
-    url: '?/delete',
+    url: $('body').attr('data-opt-base-uri') + '?/delete',
     data: {
       action: 'post',
       cdir: cdir,
@@ -657,7 +700,7 @@ function rightClickName() {
     }
 
     $.ajax({
-      url: '?/rename',
+      url: $('body').attr('data-opt-base-uri') + '?/rename',
       data: {
         action: 'post',
         cdir: cdir,

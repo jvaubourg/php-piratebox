@@ -30,19 +30,19 @@
   <meta name="viewport" content="width=device-width">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <link media="all" type="text/css" href="<?= PUBLIC_DIR ?>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link media="all" type="text/css" href="<?= PUBLIC_DIR ?>/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-  <link media="all" type="text/css" href="<?= PUBLIC_DIR ?>/css/filedrop.css" rel="stylesheet">
-  <link media="all" type="text/css" href="<?= PUBLIC_DIR ?>/css/style.css" rel="stylesheet">
+  <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+  <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>css/filedrop.css" rel="stylesheet">
+  <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>css/style.css" rel="stylesheet">
 
-  <script src="<?= PUBLIC_DIR ?>/jquery/jquery-2.1.1.min.js"></script>
-  <script src="<?= PUBLIC_DIR ?>/bootstrap/js/bootstrap.min.js"></script>
-  <script src="<?= PUBLIC_DIR ?>/js/filedrop.min.js"></script>
-  <script src="<?= PUBLIC_DIR ?>/js/functions.js"></script>
-  <script src="<?= PUBLIC_DIR ?>/js/events.js"></script>
+  <script src="<?= ROOT_DIR.PUBLIC_DIR ?>jquery/jquery-2.1.1.min.js"></script>
+  <script src="<?= ROOT_DIR.PUBLIC_DIR ?>bootstrap/js/bootstrap.min.js"></script>
+  <script src="<?= ROOT_DIR.PUBLIC_DIR ?>js/filedrop.min.js"></script>
+  <script src="<?= ROOT_DIR.PUBLIC_DIR ?>js/functions.js"></script>
+  <script src="<?= ROOT_DIR.PUBLIC_DIR ?>js/events.js"></script>
 </head>
 
-<body>
+<body data-opt-base-uri="<?= option('base_uri') ?>">
   <div id="main" class="container">
     <?= $content?>
 

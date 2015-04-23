@@ -3,11 +3,8 @@
 $options = [
   'app_name'           => "PirateBox",
 
+  'base_path'          => "/var/www/pirateboxperso/",
   'base_uri'           => "/",
-  'base_path'          => "/var/www/pirateboxperso",
-  'public_dir'         => "public",
-  'public_uploads_dir' => "uploads",
-  'public_chat_dir'    => "chat",
 
   'allow_renaming'     => true,
   'allow_deleting'     => true,

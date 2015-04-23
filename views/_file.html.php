@@ -19,7 +19,7 @@
 ?>
 
 <div class="itemfile file <?= $newfile ? 'newfile' : '' ?>" <?= $newfile ? 'style="display: none"' : '' ?>>
-  <img src="public/img/extensions/<?= urlencode($file['img']) ?>" />
+  <img src="<?= ROOT_DIR.PUBLIC_DIR ?>img/extensions/<?= urlencode($file['img']) ?>" />
 
   <?php if($file['shortname'] != $file['name']): ?>
     <span class="shortname label label-default" data-toggle="tooltip" data-title="<?= htmlentities($file['name']) ?>"><?= str_replace('...', '&hellip;', htmlentities($file['shortname'])) ?></span>
