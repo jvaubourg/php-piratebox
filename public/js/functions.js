@@ -27,18 +27,29 @@ function setFileEvents(files) {
   files.click(clickFile);
   files.dblclick(dblClickFile);
   files.find('[data-toggle="tooltip"]').tooltip();
-  files.find('.shortname').bind('contextmenu', rightClickName);
-  files.find('.filerename').click(renameFile);
-  files.find('.filedelete').click(deleteFile);
+
+  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+    files.find('.filedelete').click(deleteFile);
+  }
+
+  if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
+    files.find('.filerename').click(renameFile);
+    files.find('.shortname').bind('contextmenu', rightClickName);
+  }
 }
 
 // Set events for folders
 // folders: $('.folder')
 function setFolderEvents(folders) {
   folders.click(clickFolder);
-  folders.find('.shortname').bind('contextmenu', rightClickName);
+
+  if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
+    folders.find('.shortname').bind('contextmenu', rightClickName);
+  }
 }
 
+// Show ajax error if necessary and return false if there is one
+// data: ajax data
 function ajaxDataError(data) {
   if(data.match(/^ERR:/)) {
     alert(data.replace(/^ERR:/, ''));

@@ -21,7 +21,7 @@
 /*** GLOBALS ***/
 /***************/
 
-var defaultChatPseudo = 'anonymous' + Math.floor(Math.random() * 100);
+var defaultChatPseudo;
 
 
 /**************/
@@ -32,6 +32,8 @@ $(document).ready(function() {
   $('.btn-group').button();
   $('[data-toggle="tooltip"]').tooltip();
 
+  defaultChatPseudo = $('#tabchat').attr('data-opt-default-pseudo') + Math.floor(Math.random() * 100);
+
   var uploadOptions = { iframe: { url: '?/upload' }, multiple: true };
   var uploadArea = new FileDrop('dragndrop', uploadOptions);
   
@@ -41,29 +43,36 @@ $(document).ready(function() {
   setFolderEvents($('.folder'));
 
   updateNav();
-  updateChat();
-  updateChat(true);
-  updateChatBadge();
 
   $(window).on('popstate', browserHistory);
 
-  $('#menu a').click(showCorrectTab);
   $('#gotoupload').click(goToUpload);
 
-  $('#createfolderbtn').click(createFolderInput);
-  $('#createfolder input').blur(createFolderInputBlur);
-  $('#createfolder input').keypress(createFolderInputKeys);
-  $('#createfolder button').click(createFolderBtn);
-
-  $('#chatbtn').click(postChatMessage);
-  $('#commentin').keypress(postChatMessageKey);
-  $('#pseudoin').keypress(pseudoInputKeys);
-
-  if($(location).attr('href').match(/\?\/chat$/)) {
-    $('a[data-tab=chat]').click();
+  if($('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
+    $('#createfolderbtn').click(createFolderInput);
+    $('#createfolder input').blur(createFolderInputBlur);
+    $('#createfolder input').keypress(createFolderInputKeys);
+    $('#createfolder button').click(createFolderBtn);
   }
 
-  $('.folderdelete').click(deleteFile);
+  if($('#tabchat').attr('data-opt-enable-chat') == 'true') {
+    updateChat();
+    updateChat(true);
+    updateChatBadge();
+
+    $('#menu a').click(showCorrectTab);
+    $('#chatbtn').click(postChatMessage);
+    $('#commentin').keypress(postChatMessageKey);
+    $('#pseudoin').keypress(pseudoInputKeys);
+
+    if($(location).attr('href').match(/\?\/chat$/)) {
+      $('a[data-tab=chat]').click();
+    }
+  }
+
+  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+    $('.folderdelete').click(deleteFile);
+  }
 });
 
 
@@ -118,7 +127,7 @@ $(document).keypress(function(e) {
 
   // F2
   if(e.keyCode == 113) {
-    if(isTabActive('files')) {
+    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
       $('.activefile').find('.shortname').trigger('contextmenu');
 
       return false;
@@ -127,7 +136,7 @@ $(document).keypress(function(e) {
 
   // F3
   if(e.keyCode == 114) {
-    if(isTabActive('chat')) {
+    if(isTabActive('chat') && $('#tabchat').attr('data-opt-enable-chat') == 'true') {
       $('#menu a[data-tab=files]').click();
 
       return false;
@@ -136,7 +145,7 @@ $(document).keypress(function(e) {
 
   // F4
   if(e.keyCode == 115) {
-    if(isTabActive('files')) {
+    if(isTabActive('files') && $('#tabchat').attr('data-opt-enable-chat') == 'true') {
       $('#menu a[data-tab=chat]').click();
 
       return false;

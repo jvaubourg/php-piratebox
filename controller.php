@@ -69,6 +69,10 @@ dispatch_post('/rename', function() {
 
   header('Content-Type: text/plain; charset=utf-8');
 
+  if(!option('allow_renaming')) {
+    exit('ERR:'.T_("Unauthorized."));
+  }
+
   if(empty($oldName) || empty($newName)) {
     exit('ERR:'.T_("Invalid filename."));
   }
@@ -120,6 +124,10 @@ dispatch_post('/delete', function() {
   $filePath = UPLOADS_PATH."$cdir/$name";
 
   header('Content-Type: text/plain; charset=utf-8');
+
+  if(!option('allow_deleting')) {
+    exit('ERR:'.T_("Unauthorized."));
+  }
 
   if(!file_exists($filePath)) {
     exit('ERR:'.T_("File not found."));
@@ -201,6 +209,10 @@ dispatch_post('/createfolder', function() {
 
   header('Content-Type: text/plain; charset=utf-8');
 
+  if(!option('allow_newfolders')) {
+    exit('ERR:'.T_("Unauthorized."));
+  }
+
   if(empty($cdir) || !is_dir($dirpath)) {
     exit('ERR:'.T_("Invalid directory."));
   }
@@ -229,11 +241,15 @@ dispatch_post('/createfolder', function() {
 });
 
 dispatch('/chat', function() {
+  header('Content-Type: text/html; charset=utf-8');
+
+  if(!option('enable_chat')) {
+    exit('ERR:'.T_("Unauthorized."));
+  }
+
   set('files', getFiles('/'));
   set('tab', 'chat');
   set('cdir', '/');
-
-  header('Content-Type: text/html; charset=utf-8');
 
   return render('home.html.php');
 });
@@ -243,6 +259,10 @@ dispatch_post('/chat', function() {
   $logpath = CHAT_PATH.'log.html';
 
   header('Content-Type: text/plain; charset=utf-8');
+
+  if(!option('enable_chat')) {
+    exit('ERR:'.T_("Unauthorized."));
+  }
 
   switch($action) {
     case 'getLog':
