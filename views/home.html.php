@@ -83,7 +83,7 @@
 
       <span id="nofile" <?= empty($files) ? '' : 'style="display: none"' ?>>
         <?= T_("No files yet.") ?>
-        <div><span class="folderdelete label label-danger" <?= option('allow_deleting') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete this folder") ?></span></div>
+        <div><span class="folderdelete label label-danger" <?= option('allow_deleting') && $cdir != '/' ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete this folder") ?></span></div>
       </span>
     </div>
   </div>

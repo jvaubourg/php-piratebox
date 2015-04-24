@@ -46,6 +46,35 @@ function setDownloadEvents() {
   }
 }
 
+// Show no file notice with the folder delete button (or not)
+// fade: use animations or not
+function showNoFile(fade = false) {
+  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true' && $('#nav').attr('data-cdir') != '%2F') {
+    $('.folderdelete').show();
+
+  } else {
+    $('.folderdelete').hide();
+  }
+
+  if(fade) {
+    $('#nofile').fadeIn();
+
+  } else {
+    $('#nofile').show();
+  }
+}
+
+// Hide the no file notice with the folder delete button
+// fade: use animations or not
+function hideNoFile(fade = false) {
+  if(fade) {
+    $('#nofile').fadeOut();
+
+  } else {
+    $('#nofile').hide();
+  }
+}
+
 // Close the download panel
 function closeDownload() {
   $('#download').hide();
@@ -87,9 +116,10 @@ function changeDirectory(newcdir, updateHistory = true) {
     $('#infiles').append(data);
 
     if($('#infiles').children().length == 0) {
-      $('#nofile').show();
+      showNoFile();
+
     } else {
-      $('#nofile').hide();
+      hideNoFile();
     }
 
     updateNav(updateHistory);
@@ -464,7 +494,7 @@ function deleteFile(file = false) {
         file.remove();
 
         if($('.itemfile').length == 0) {
-          $('#nofile').fadeIn();
+          showNoFile(true);
         }
       }, 500);
 
@@ -549,8 +579,8 @@ function upload(files) {
         return;
       }
 
+      hideNoFile();
       $('#infiles').append(xhr.responseText);
-      $('#nofile').hide();
 
       var newfiles = $('.newfile');
 
@@ -648,11 +678,11 @@ function createFolderBtn() {
     $('#infiles').append(data);
     $('#createfolderbtn').next().hide();
     $('#createfolderbtn').show();
-    $('#nofile').hide();
 
     var newfolder = $('.newfolder');
 
     setFolderEvents(newfolder);
+    hideNoFile();
 
     newfolder.slideDown()
     newfolder.removeClass('newfolder');
