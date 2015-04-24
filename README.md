@@ -8,6 +8,7 @@
     # Max file size
     client_max_body_size 10G;
     
+    # OPTIONAL
     location /public/uploads/ {
     
       # OPTIONAL: use a public/uploads/ folder located elsewhere
@@ -19,6 +20,7 @@
       add_header Content-Disposition "attachment; filename=$1";
     }
     
+    # OPTIONAL
     location /public/chat/ {
     
       # OPTIONAL: use a public/chat/ folder located elsewhere
