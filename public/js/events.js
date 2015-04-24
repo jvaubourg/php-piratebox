@@ -141,6 +141,15 @@ $(document).keypress(function(e) {
     }
   }
 
+  // Del
+  if(e.keyCode == 46) {
+    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+      deleteFile($('.activefile'));
+
+      return false;
+    }
+  }
+
   // F2
   if(e.keyCode == 113) {
     if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-renaming') == 'true') {

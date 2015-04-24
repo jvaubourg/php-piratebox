@@ -7,7 +7,7 @@ $options = [
   'base_uri'           => "/",
 
   'allow_renaming'     => true,
-  'allow_deleting'     => false,
+  'allow_deleting'     => true,
   'allow_newfolders'   => true,
 
   'enable_chat'        => true,

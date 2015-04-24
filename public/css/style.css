@@ -282,6 +282,15 @@ div#chatlog {
   margin-bottom: 35px;
 }
 
+div#chatlog a {
+  color: #ccc;
+  text-decoration: underline;
+}
+
+div#chatlog a:hover {
+  text-decoration: none;
+}
+
 div#chatlog p {
   background-color: #444;
   font-style: italic;
