@@ -307,6 +307,8 @@ dispatch_post('/chat', function() {
         exit();
       }
 
+      $comment = preg_replace('/([\w\d]+\:\/\/(?:[\w\-\d]+\.)+[\w\-\d]+(?:\/[\w\-\d]+)*(?:\/|\.[\w\-\d]+)?(?:\?[\w\-\d]+\=[\w\-\d]+\&?)?(?:\#[\w\-\d]*)?)/i', '<a href="$1">$1</a>', $comment);
+
       $line = "<p data-title='$date'><span>$pseudo</span> $comment</p>\n";
       $flog = fopen($logpath, 'a') or die("Can't open chat log.");
 

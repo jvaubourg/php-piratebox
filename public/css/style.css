@@ -310,7 +310,7 @@ div#nomsg {
   padding: 3em;
 }
 
-span.filedate {
+span.filedate, span.filerename {
   margin-right: 5px;
 }
 
@@ -323,9 +323,11 @@ span.filedate, span.filesize, span.filerename, span.filedelete {
 }
 
 span#nofile {
+  display: inline-block;
+  margin-top: 1em;
   font-style: italic;
 }
 
 span#nofile div {
-  margin-top: 1em;
+  margin: 1em 0;
 }
