@@ -26,6 +26,10 @@
       # OPTIONAL: use a public/chat/ folder located elsewhere
       # WITH: $options['base_chat'] = '/var/spool/piratebox/public/chat/'
       root /var/spool/piratebox/;
+
+      # OPTIONAL: deny direct access to the chat log
+      deny all;
+      return 403;
     }
     
     # PHP
@@ -63,3 +67,10 @@
     
     ; 5 minutes max for uploading a file
     php_value[max_execution_time] = 600
+
+## Configure permissions
+
+If your PHP pool uses *www-data* as user:
+
+    # chown www-data: public/uploads
+    # chown www-data: public/chat
