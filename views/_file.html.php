@@ -18,7 +18,12 @@
  */
 ?>
 
-<div class="itemfile file <?= $newfile ? 'newfile' : '' ?>" <?= $newfile ? 'style="display: none"' : '' ?>>
+<div class="itemfile file <?= $newfile ? 'newfile' : '' ?>" <?= $newfile ? 'style="display: none"' : '' ?>
+  data-name="<?= htmlentities($file['name']) ?>"
+  data-filename="<?= htmlentities($file['filename']) ?>"
+  data-size="<?= $file['size'] ?>"
+  data-date="<?= str_replace(' ', '&nbsp;', $file['date']) ?>">
+
   <img src="<?= ROOT_DIR.PUBLIC_DIR ?>img/extensions/<?= urlencode($file['img']) ?>" />
 
   <?php if($file['shortname'] != $file['name']): ?>
@@ -26,14 +31,4 @@
   <?php else: ?>
     <span class="shortname label label-default"><?= str_replace('...', '&hellip;', htmlentities($file['shortname'])) ?></span>
   <?php endif; ?>
-
-  <div class="download">
-    <span id="closedownload" class="glyphicon glyphicon-chevron-up"></span>
-    <span class="filename"><?= htmlentities($file['name']) ?></span>
-    <a href="<?= $file['filename'] ?>" class="downloadfile btn btn-success"><?= T_("Download") ?></a>
-    <span class="filesize label label-default"><?= $file['size'] ?></span>
-    <span class="filedate label label-default"><?= str_replace(' ', '&nbsp;', $file['date']) ?></span>
-    <span class="filerename label label-danger" <?= option('allow_renaming') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-edit"></span> <?= T_("Rename") ?></span>
-    <span class="filedelete label label-danger" <?= option('allow_deleting') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete") ?></span>
-  </div>
 </div>

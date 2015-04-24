@@ -28,12 +28,7 @@ function setFileEvents(files) {
   files.dblclick(dblClickFile);
   files.find('[data-toggle="tooltip"]').tooltip();
 
-  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
-    files.find('.filedelete').click(deleteFile);
-  }
-
   if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
-    files.find('.filerename').click(renameFile);
     files.find('.shortname').bind('contextmenu', rightClickName);
   }
 }
@@ -46,6 +41,23 @@ function setFolderEvents(folders) {
   if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
     folders.find('.shortname').bind('contextmenu', rightClickName);
   }
+}
+
+// Set download panel events
+function setDownloadEvents() {
+  if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
+    $('#download').find('.filerename').click(renameFile);
+  }
+
+  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+    $('#download').find('.filedelete').click(deleteFile);
+  }
+}
+
+// Close the download panel
+function closeDownload() {
+  $('#download').hide();
+  $('.itemfile').removeClass('activefile');
 }
 
 // Show ajax error if necessary and return false if there is one
@@ -356,6 +368,12 @@ function goToUpload() {
   $('#dragndrop input[type=file]').click();
 }
 
+// Closing the download panel by clicking a button
+// $('#closedownload')
+function closeDownloadBtn() {
+  closeDownload();
+}
+
 // Displaying an input field for setting the name of the folder to create
 // $('#createfolderbtn')
 function createFolderInput() {
@@ -540,25 +558,32 @@ function clickNav() {
 // Downloading a file by double-clicking on it
 // $('.file')
 function dblClickFile() {
-  $(window).prop('location', $(this).find('a').attr('href'));
+  $(window).prop('location', $('#download').find('a').attr('href'));
 }
 
 // Selecting a file by clicking on it
 // $('.file')
 function clickFile() {
   if($(this).hasClass('activefile')) {
+    $('#download').hide();
     $('.itemfile').removeClass('activefile');
 
   } else {
     $('.itemfile').removeClass('activefile');
     $(this).addClass('activefile');
+
+    $('#download .filename').text($(this).attr('data-name'));
+    $('#download .downloadfile').attr('href', ($(this).attr('data-filename')));
+    $('#download .filesize').text($(this).attr('data-size'));
+    $('#download .filedate').text($(this).attr('data-date'));
+    $('#download').show();
   }
 }
 
 // Going into a directory by clicking on it
 // $('.folder')
 function clickFolder() {
-  $('.itemfile').removeClass('activefile');
+  closeDownload();
   $(this).addClass('activefile');
   var dir = decodeURIComponent($(this).attr('data-dir'));
 
@@ -570,15 +595,15 @@ function clickFolder() {
 // Renaming a file by clicking a button
 // $('.filerename')
 function renameFile() {
-  $(this).closest('.file').find('.shortname').trigger('contextmenu');
+  //$('html,body').scrollTop($('.activefile').offset().top - 70);
+  $('.activefile').find('.shortname').trigger('contextmenu');
 }
 
 // Deleting a file by clicking a button
 // $('.filedelete')
 function deleteFile() {
   var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
-  var isFile = $(this).parent().hasClass('download');
-  var shortname = $(this).text();
+  var isFile = ($('.activefile').length > 0);
   var filename, file;
 
   if(isFile) {
@@ -586,10 +611,12 @@ function deleteFile() {
       return;
     }
 
-    file = $(this).closest('.itemfile');
+    file = $('.activefile');
 
-    filename = $(this).parent().find('.filename').text();
+    filename = file.attr('data-name');
     filename = $('<textarea />').text(filename).html();
+
+    closeDownload();
 
   } else {
     if(!confirm($('#tabfiles').attr('data-txt-delfolder'))) {
@@ -644,7 +671,7 @@ function rightClickName() {
   if(isFolder) {
     filename = shortname;
   } else {
-    filename = $(this).parent().find('.filename').text();
+    filename = file.attr('data-name');
   }
 
   filename = $('<textarea />').text(filename).html();
@@ -653,6 +680,7 @@ function rightClickName() {
   $(this).parent().removeClass('activefile');
   $(this).parent().off('click');
 
+  closeDownload();
   $(this).empty();
 
   if(isFolder) {

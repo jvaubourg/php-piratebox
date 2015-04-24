@@ -51,6 +51,16 @@
   data-opt-allow-deleting="<?= option('allow_deleting') ? 'true' : 'false' ?>"
   data-opt-allow-newfolders="<?= option('allow_newfolders') ? 'true' : 'false' ?>">
 
+  <div id="download">
+    <span id="closedownload" class="glyphicon glyphicon-remove"></span>
+    <span class="filename"></span>
+    <a href="#" class="downloadfile btn btn-success"><?= T_("Download") ?></a>
+    <span class="filesize label label-default"></span>
+    <span class="filedate label label-default"></span>
+    <span class="filerename label label-danger" <?= option('allow_renaming') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-edit"></span> <?= T_("Rename") ?></span>
+    <span class="filedelete label label-danger" <?= option('allow_deleting') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete") ?></span>
+  </div>
+
   <div class="panel panel-default"> 
     <div class="panel-heading">
       <h3 class="panel-title"><?= T_("Download the others' files") ?></h3>

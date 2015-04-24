@@ -39,6 +39,7 @@ $(document).ready(function() {
   
   uploadArea.event('send', upload);
 
+  setDownloadEvents();
   setFileEvents($('.file'));
   setFolderEvents($('.folder'));
 
@@ -47,6 +48,7 @@ $(document).ready(function() {
   $(window).on('popstate', browserHistory);
 
   $('#gotoupload').click(goToUpload);
+  $('#closedownload').click(closeDownloadBtn);
 
   if($('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
     $('#createfolderbtn').click(createFolderInput);
@@ -84,14 +86,20 @@ $(document).keypress(function(e) {
 
   // Enter
   if(e.keyCode == 13) {
-    if(isTabActive('files') && $('.activefile').length == 1) {
-      $(window).prop('location', $('.activefile').find('a').attr('href'));
+    if(isTabActive('files') && $('.activefile').length > 0) {
+      if($('.activefile').hasClass('folder')) {
+        $('.activefile').click()
+
+       } else {
+         $(window).prop('location', $('#download').find('a').attr('href'));
+       }
     }
   }
 
   // Escape
   if(e.keyCode == 27) {
     if(isTabActive('files')) {
+      closeDownload();
       $('.activefile').removeClass('activefile');
     }
   }
@@ -119,7 +127,14 @@ $(document).keypress(function(e) {
       }
   
       $('html,body').scrollTop(activefile.offset().top - 180);
-      activefile.addClass('activefile');
+
+      if(activefile.hasClass('folder')) {
+        closeDownload();
+        activefile.addClass('activefile');
+
+      } else {
+        activefile.click();
+      }
 
       return false;
     }

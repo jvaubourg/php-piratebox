@@ -14,7 +14,7 @@ $options = [
   'default_pseudo'     => "anonymous",
 
   'time_format'        => "d/m/y H:i",
-  'fancyurls'          => true,
+  'fancyurls'          => false,
 ];
 
 ?>

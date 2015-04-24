@@ -80,24 +80,25 @@ span.shortname input {
   width: 95%;
 }
 
-div.download {
-  z-index: 9999;
-}
-
 a.downloadfile {
-  margin: .6em 0;
   background-color: #007f00;
   display: block;
-  margin: .6em 0;
+  margin: .3em 0 .5em;
   font-size: 1.4em;
   font-weight: bold;
 }
 
-div.download {
+a.downloadfile:active {
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, .3) inset, 0px -3px 2px rgba(0, 0, 0, .1);
+}
+
+div#download {
+  text-align: center;
+  z-index: 9999;
   background-color: #444;
   display: none;
   border-radius: 0 0 10px 10px;
-  padding: 1em;
+  padding: .2em .7em 1em;
   margin: 0;
   position: fixed;
   width: 100%;
@@ -114,16 +115,13 @@ span#closedownload {
   color: #ccc;
   cursor: pointer;
   cursor: hand;
+  padding: 0 0 20px 20px;
 }
 
 span.filename {
   font-size: 2em;
   white-space: pre-wrap;
   word-wrap: break-word;
-}
-
-a.downloadfile:active {
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, .3) inset, 0px -3px 2px rgba(0, 0, 0, .1);
 }
 
 div.activefile {
@@ -134,10 +132,6 @@ div.activefile {
 
 div.activefile span.shortname {
   padding-top: 0;
-}
-
-div.activefile div.download {
-  display: block;
 }
 
 div#footer {
