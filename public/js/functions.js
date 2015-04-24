@@ -770,6 +770,7 @@ function postChatMessage() {
     }
 
     updateChat();
+    lastChatMsg = comment;
     $('#commentin').val('');
   });
 }
@@ -784,6 +785,21 @@ function postChatMessageKey(e) {
 
     return false;
   }
+
+  // Up arrow
+  if(e.keyCode == 38) {
+    $('#commentin').val(lastChatMsg);
+
+    return false;
+  }
+
+  // Down arrow
+  if(e.keyCode == 40) {
+    $('#commentin').val('');
+
+    return false;
+  }
+
 }
 
 // Changing the current directory thanks to the breadcrumbs links

@@ -22,6 +22,7 @@
 /***************/
 
 var defaultChatPseudo;
+var lastChatMsg = '';
 
 
 /**************/
