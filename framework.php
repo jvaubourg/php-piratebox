@@ -49,8 +49,15 @@ function configure() {
   define('PUBLIC_DIR', $GLOBALS['options']['public_dir'].'/');
   define('UPLOADS_DIR', PUBLIC_DIR.$GLOBALS['options']['public_uploads_dir'].'/');
   define('CHAT_DIR', PUBLIC_DIR.$GLOBALS['options']['public_chat_dir'].'/');
-  define('UPLOADS_PATH', option('base_path').UPLOADS_DIR);
-  define('CHAT_PATH', option('base_path').CHAT_DIR);
+
+  $uploads_path = isset($GLOBALS['options']['base_uploads']) ? $GLOBALS['options']['base_uploads'] : option('base_path').UPLOADS_DIR;
+  $chat_path = isset($GLOBALS['options']['base_chat']) ? $GLOBALS['options']['base_chat'] : option('base_path').CHAT_DIR;
+
+  $uploads_path = preg_replace('/\/+$/', '', $uploads_path);
+  $chat_path = preg_replace('/\/+$/', '', $chat_path);
+
+  define('UPLOADS_PATH', "$uploads_path/");
+  define('CHAT_PATH', "$chat_path/");
 }
 
 // Not found page

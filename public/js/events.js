@@ -48,6 +48,7 @@ $(document).ready(function() {
 
   $(window).on('popstate', browserHistory);
 
+  $('#dragndrop').click(closeDownload);
   $('#gotoupload').click(goToUpload);
   $('#closedownload').click(closeDownloadBtn);
 
@@ -127,7 +128,7 @@ $(document).keypress(function(e) {
         }
       }
   
-      $('html,body').scrollTop(activefile.offset().top - 180);
+      $('html,body').scrollTop(activefile.offset().top - 155);
 
       if(activefile.hasClass('folder')) {
         closeDownload();

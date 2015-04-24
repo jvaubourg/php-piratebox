@@ -86,6 +86,7 @@ a.downloadfile {
   margin: .3em 0 .7em;
   font-size: 1.4em;
   font-weight: bold;
+  outline: none;
 }
 
 a.downloadfile:active {
@@ -325,6 +326,13 @@ span.filedate, span.filerename {
 
 span.filerename, span.filedelete, span.folderdelete {
   cursor: pointer;
+}
+
+span.folderdelete {
+  display: inline-block;
+  font-size: 1em;
+  padding: .5em .7em .5em .5em;
+  font-style: normal;
 }
 
 span.filedate, span.filesize, span.filerename, span.filedelete {

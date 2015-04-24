@@ -20,7 +20,7 @@
 
 <div class="itemfile file <?= $newfile ? 'newfile' : '' ?>" <?= $newfile ? 'style="display: none"' : '' ?>
   data-name="<?= htmlentities($file['name']) ?>"
-  data-filename="<?= htmlentities($file['filename']) ?>"
+  data-filename="<?= htmlentities(preg_replace('|/+|', '/', $file['filename'])) ?>"
   data-size="<?= $file['size'] ?>"
   data-date="<?= str_replace(' ', '&nbsp;', $file['date']) ?>">
 
