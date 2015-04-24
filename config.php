@@ -6,7 +6,7 @@ $options = [
   'base_path'          => "/var/www/pirateboxperso/",
   'base_uri'           => "/",
 
-  'allow_renaming'     => false,
+  'allow_renaming'     => true,
   'allow_deleting'     => true,
   'allow_newfolders'   => true,
 

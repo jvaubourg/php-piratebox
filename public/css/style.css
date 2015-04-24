@@ -83,7 +83,7 @@ span.shortname input {
 a.downloadfile {
   background-color: #007f00;
   display: block;
-  margin: .3em 0 .5em;
+  margin: .3em 0 .7em;
   font-size: 1.4em;
   font-weight: bold;
 }
@@ -119,9 +119,11 @@ span#closedownload {
 }
 
 span.filename {
+  display: inline-block;
   font-size: 2em;
   white-space: pre-wrap;
   word-wrap: break-word;
+  padding: 0 .5em;
 }
 
 div.activefile {
@@ -309,7 +311,7 @@ div#nomsg {
 }
 
 span.filedate {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 span.filerename, span.filedelete, span.folderdelete {
@@ -317,7 +319,7 @@ span.filerename, span.filedelete, span.folderdelete {
 }
 
 span.filedate, span.filesize, span.filerename, span.filedelete {
-  font-size: .7em;
+  font-size: 1em;
 }
 
 span#nofile {

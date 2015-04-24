@@ -63,8 +63,8 @@
     <a href="#" class="downloadfile btn btn-success"><?= T_("Download") ?></a>
     <span class="filesize label label-default"></span>
     <span class="filedate label label-default"></span>
-    <span class="filerename label label-danger" <?= option('allow_renaming') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-edit"></span> <?= T_("Rename") ?></span>
-    <span class="filedelete label label-danger" <?= option('allow_deleting') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete") ?></span>
+    <span class="filerename label label-danger" data-toggle="tooltip" data-title="<?= T_("Rename") ?>" <?= option('allow_renaming') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-edit"></span></span>
+    <span class="filedelete label label-danger" data-toggle="tooltip" data-title="<?= T_("Delete") ?>" <?= option('allow_deleting') ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-trash"></span></span>
   </div>
 
   <div class="panel panel-default"> 
