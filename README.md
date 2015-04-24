@@ -3,7 +3,9 @@
 
 **Warning: work in progress**
 
-### Configure HTTP server (nginx)
+### Configure HTTP server
+
+Example with nginx:
 
     # Max file size
     client_max_body_size 10G;
@@ -59,7 +61,9 @@
       try_files $uri $uri/ @piratebox;
     }
 
-## Configure PHP (php-fpm)
+## Configure PHP
+
+Example with php-fpm:
 
     ; Max file size
     php_value[upload_max_filesize] = 10G
