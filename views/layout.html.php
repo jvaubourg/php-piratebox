@@ -33,11 +33,13 @@
   <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
   <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>css/filedrop.css" rel="stylesheet">
+  <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>css/contextMenu.css" rel="stylesheet">
   <link media="all" type="text/css" href="<?= ROOT_DIR.PUBLIC_DIR ?>css/style.css" rel="stylesheet">
 
   <script src="<?= ROOT_DIR.PUBLIC_DIR ?>jquery/jquery-2.1.1.min.js"></script>
   <script src="<?= ROOT_DIR.PUBLIC_DIR ?>bootstrap/js/bootstrap.min.js"></script>
   <script src="<?= ROOT_DIR.PUBLIC_DIR ?>js/filedrop.min.js"></script>
+  <script src="<?= ROOT_DIR.PUBLIC_DIR ?>js/contextMenu.js"></script>
   <script src="<?= ROOT_DIR.PUBLIC_DIR ?>js/functions.js"></script>
   <script src="<?= ROOT_DIR.PUBLIC_DIR ?>js/events.js"></script>
 </head>

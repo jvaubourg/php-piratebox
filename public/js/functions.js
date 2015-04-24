@@ -27,30 +27,22 @@ function setFileEvents(files) {
   files.click(clickFile);
   files.dblclick(dblClickFile);
   files.find('[data-toggle="tooltip"]').tooltip();
-
-  if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
-    files.find('.shortname').bind('contextmenu', rightClickName);
-  }
 }
 
 // Set events for folders
 // folders: $('.folder')
 function setFolderEvents(folders) {
   folders.click(clickFolder);
-
-  if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
-    folders.find('.shortname').bind('contextmenu', rightClickName);
-  }
 }
 
 // Set download panel events
 function setDownloadEvents() {
   if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
-    $('#download').find('.filerename').click(renameFile);
+    $('#download').find('.filerename').click(renameFileBtn);
   }
 
   if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
-    $('#download').find('.filedelete').click(deleteFile);
+    $('#download').find('.filedelete').click(deleteFileBtn);
   }
 }
 
@@ -276,6 +268,11 @@ function updateChatBadge() {
   }
 }
 
+// Return a string without html entities
+function nohtmlentities(txt) {
+  return $('<textarea />').text(txt).html();
+}
+
 // Return true if the current displayed tab corresponds to tab
 // tab: tab name (files or chat)
 function isTabActive(tab) {
@@ -301,6 +298,220 @@ function goToTab(tab, updateHistory = true) {
   if($('#menu').css('display') != 'none' && $('.navbar-toggle').css('display') != 'none') {
     $('.navbar-toggle').click();
   }
+}
+
+// Propose to rename a file or a directory
+// file: $('.itemfile')
+function renameFile(file) {
+  var isFolder = file.hasClass('folder');
+  var shortname = file.find('.shortname');
+  var shortnameTxt = shortname.text();
+  var filename;
+
+  if(isFolder) {
+    filename = shortnameTxt;
+  } else {
+    filename = file.attr('data-name');
+  }
+
+  filename = nohtmlentities(filename);
+
+  file.removeClass('activefile');
+  file.off('click');
+
+  closeDownload();
+  shortname.empty();
+
+  if(isFolder) {
+    shortname.append('<input type="text" id="renamein" maxlength="16" />');
+
+  } else {
+    shortname.append('<input type="text" id="renamein" maxlength="100" />');
+  }
+
+  var input = shortname.children().first();
+
+  input.val(filename);
+  input.keypress(function(e) {
+
+    // Enter
+    if(e.keyCode == 13) {
+      $(this).blur();
+    }
+
+    // Escape
+    if(e.keyCode == 27) {
+      $(this).val(filename);
+      $(this).blur();
+    }
+  });
+  input.focus();
+
+  input.blur(function() {
+    var oldName = filename;
+    var newName = $(this).val();
+    var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+
+    if(oldName == newName) {
+      if(isFolder) {
+        $(this).closest('.folder').click(clickFolder);
+
+      } else {
+        $(this).closest('.file').click(clickFile);
+      }
+
+      $(this).parent().append(shortnameTxt);
+      $(this).remove();
+
+      return;
+    }
+
+    $.ajax({
+      url: $('body').attr('data-opt-base-uri') + '?/rename',
+      data: {
+        action: 'post',
+        cdir: cdir,
+        oldName: oldName,
+        newName: newName,
+      },
+      method: 'POST',
+
+    }).fail(function(data) {
+      alert('Renaming failed.');
+
+      input.val(oldName);
+      input.blur();
+
+    }).done(function(data) {
+      if(!ajaxDataError(data)) {
+        input.val(oldName);
+        input.blur();
+
+        return;
+      }
+
+      file.after(data);
+      file.remove();
+
+      if(isFolder) {
+        var newfolder = $('.newfolder');
+
+        setFolderEvents(newfolder);
+
+        newfolder.fadeIn();
+        newfolder.removeClass('newfolder');
+
+      } else {
+        var newfile = $('.newfile');
+
+        setFileEvents(newfile);
+
+        newfile.fadeIn()
+        newfile.removeClass('newfile');
+      }
+    });
+  });
+
+  return false;
+}
+
+// Propose to delete a file
+// file: $('.itemfile') - or current folder is false
+function deleteFile(file = false) {
+  var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+  var isFile = (file != false);
+  var filename, file;
+
+  if(isFile) {
+    if(!confirm($('#tabfiles').attr('data-txt-delfile'))) {
+      return;
+    }
+
+    filename = file.attr('data-name');
+    filename = nohtmlentities(filename);
+
+    closeDownload();
+
+  } else {
+    if(!confirm($('#tabfiles').attr('data-txt-delfolder'))) {
+      return;
+    }
+
+    filename = '.';
+  }
+
+  $.ajax({
+    url: $('body').attr('data-opt-base-uri') + '?/delete',
+    data: {
+      action: 'post',
+      cdir: cdir,
+      name: filename,
+    },
+    method: 'POST',
+
+  }).fail(function(data) {
+    alert('Deleting failed.');
+
+  }).done(function(data) {
+    if(!ajaxDataError(data)) {
+      return;
+    }
+
+    if(isFile) {
+      file.slideUp();
+
+      setTimeout(function() {
+        file.remove();
+
+        if($('.itemfile').length == 0) {
+          $('#nofile').fadeIn();
+        }
+      }, 500);
+
+    } else {
+      $('#nav li').last().prev().find('a').click();
+    }
+  });
+}
+
+// Create context menus for files and folders
+function createContextMenus() {
+  var fileMenuItems = {
+    'open':     { name: $('#tabfiles').attr('data-txt-open') },
+    'download': { name: $('#tabfiles').attr('data-txt-download') },
+  };
+
+  var folderMenuItems = {
+    'open': { name: $('#tabfiles').attr('data-txt-open') },
+  };
+
+  if($('#tabfiles').attr('data-opt-allow-renaming') == 'true' || $('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+    fileMenuItems['separator'] = '-----';
+    folderMenuItems['separator'] = '-----';
+  }
+
+  if($('#tabfiles').attr('data-opt-allow-renaming')== 'true') {
+    fileMenuItems['rename'] = { name: $('#tabfiles').attr('data-txt-rename') };
+    folderMenuItems['rename'] = { name: $('#tabfiles').attr('data-txt-rename') };
+  }
+
+  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+    fileMenuItems['delete'] = { name: $('#tabfiles').attr('data-txt-delete') };
+  }
+
+  $('#files').contextMenu({
+    selector: '.file',
+    animation: { show: 'show', hide: 'hide', duration: 150 },
+    callback: fileContextMenu,
+    items: fileMenuItems,
+  });
+
+  $('#files').contextMenu({
+    selector: '.folder',
+    animation: { show: 'show', hide: 'hide', duration: 150 },
+    callback: folderContextMenu,
+    items: folderMenuItems,
+  });
 }
 
 
@@ -592,186 +803,69 @@ function clickFolder() {
   }, 100);
 }
 
-// Renaming a file by clicking a button
-// $('.filerename')
-function renameFile() {
-  //$('html,body').scrollTop($('.activefile').offset().top - 70);
-  $('.activefile').find('.shortname').trigger('contextmenu');
+// Showing a context menu by right-clicking on file items
+// $('.file')
+function fileContextMenu(key, options) {
+  switch(key) {
+    case 'open':
+      $(this).click();
+    break;
+
+    case 'download':
+      var loc = nohtmlentities($(this).attr('data-filename'));
+      $(window).prop('location', loc);
+    break;
+
+    case 'rename':
+      renameFileCtxMenu($(this));
+    break;
+
+    case 'delete':
+      deleteFile($(this));
+    break;
+  }
+}
+
+// Showing a context menu by right-clicking on folder items
+// $('.folder')
+function folderContextMenu(key, options) {
+  switch(key) {
+    case 'open':
+      $(this).click();
+    break;
+
+    case 'rename':
+      renameFileCtxMenu($(this));
+    break;
+  }
 }
 
 // Deleting a file by clicking a button
 // $('.filedelete')
-function deleteFile() {
-  var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
-  var isFile = ($('.activefile').length > 0);
-  var filename, file;
-
-  if(isFile) {
-    if(!confirm($('#tabfiles').attr('data-txt-delfile'))) {
-      return;
-    }
-
-    file = $('.activefile');
-
-    filename = file.attr('data-name');
-    filename = $('<textarea />').text(filename).html();
-
-    closeDownload();
-
-  } else {
-    if(!confirm($('#tabfiles').attr('data-txt-delfolder'))) {
-      return;
-    }
-
-    filename = '.';
-  }
-
-  $.ajax({
-    url: $('body').attr('data-opt-base-uri') + '?/delete',
-    data: {
-      action: 'post',
-      cdir: cdir,
-      name: filename,
-    },
-    method: 'POST',
-
-  }).fail(function(data) {
-    alert('Deleting failed.');
-
-  }).done(function(data) {
-    if(!ajaxDataError(data)) {
-      return;
-    }
-
-    if(isFile) {
-      file.slideUp();
-
-      setTimeout(function() {
-        file.remove();
-
-        if($('.itemfile').length == 0) {
-          $('#nofile').fadeIn();
-        }
-      }, 500);
-
-    } else {
-      $('#nav li').last().prev().find('a').click();
-    }
-  });
+function deleteFileBtn() {
+  deleteFile($('.activefile'));
 }
 
-// Renaming a file or a directory by right-clicking on its name
-// $('.itemfile .shortname')
-function rightClickName() {
-  var isFolder = $(this).parent().hasClass('folder');
-  var file = $(this).parent();
-  var shortname = $(this).text();
-  var filename;
+// Deleting a folder by clicking a button
+// $('.folderdelete')
+function deleteFolderBtn() {
+  deleteFile(false);
+}
 
-  if(isFolder) {
-    filename = shortname;
-  } else {
-    filename = file.attr('data-name');
-  }
+// Deleting a file by clicking a button
+// $('.filedelete')
+function deleteFileCtxMenu(file) {
+  deleteFile(file);
+}
 
-  filename = $('<textarea />').text(filename).html();
+// Renaming a file by clicking a button
+// $('.filerename')
+function renameFileBtn() {
+  renameFile($('.activefile'));
+}
 
-  $(this).attr('data-value', encodeURIComponent($(this).text()));
-  $(this).parent().removeClass('activefile');
-  $(this).parent().off('click');
-
-  closeDownload();
-  $(this).empty();
-
-  if(isFolder) {
-    $(this).append('<input type="text" id="renamein" maxlength="16" />');
-
-  } else {
-    $(this).append('<input type="text" id="renamein" maxlength="100" />');
-  }
-
-  var input = $(this).children().first();
-
-  input.val(filename);
-  input.keypress(function(e) {
-
-    // Enter
-    if(e.keyCode == 13) {
-      $(this).blur();
-    }
-
-    // Escape
-    if(e.keyCode == 27) {
-      $(this).val(filename);
-      $(this).blur();
-    }
-  });
-  input.focus();
-
-  input.blur(function() {
-    var oldName = filename;
-    var newName = $(this).val();
-    var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
-
-    if(oldName == newName) {
-      if(isFolder) {
-        $(this).closest('.folder').click(clickFolder);
-
-      } else {
-        $(this).closest('.file').click(clickFile);
-      }
-
-      $(this).parent().append(shortname);
-      $(this).remove();
-
-      return;
-    }
-
-    $.ajax({
-      url: $('body').attr('data-opt-base-uri') + '?/rename',
-      data: {
-        action: 'post',
-        cdir: cdir,
-        oldName: oldName,
-        newName: newName,
-      },
-      method: 'POST',
-
-    }).fail(function(data) {
-      alert('Renaming failed.');
-
-      input.val(oldName);
-      input.blur();
-
-    }).done(function(data) {
-      if(!ajaxDataError(data)) {
-        input.val(oldName);
-        input.blur();
-
-        return;
-      }
-
-      file.after(data);
-      file.remove();
-
-      if(isFolder) {
-        var newfolder = $('.newfolder');
-
-        setFolderEvents(newfolder);
-
-        newfolder.fadeIn();
-        newfolder.removeClass('newfolder');
-
-      } else {
-        var newfile = $('.newfile');
-
-        setFileEvents(newfile);
-
-        newfile.fadeIn()
-        newfile.removeClass('newfile');
-      }
-    });
-  });
-
-  return false;
+// Renaming a file by clicking a button
+// $('.filerename')
+function renameFileCtxMenu(file) {
+  renameFile(file);
 }

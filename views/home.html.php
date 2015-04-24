@@ -18,7 +18,7 @@
  */
 ?>
 
-<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" data-opt-fancyurls="<?= option('fancyurls') ? 'true' : 'false' ?>"> 
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" data-opt-fancyurls="<?= option('fancyurls') ? 'true' : 'false' ?>">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu">
@@ -47,9 +47,15 @@
 <div id="tabfiles" class="tab"
   data-txt-delfile="<?= T_("Are you sure you want to delete this file?") ?>" 
   data-txt-delfolder="<?= T_("Are you sure you want to delete this folder?") ?>"
+  data-txt-open="<?= T_("Open") ?>"
+  data-txt-download="<?= T_("Download") ?>"
+  data-txt-rename="<?= T_("Rename") ?>"
+  data-txt-delete="<?= T_("Delete") ?>"
   data-opt-allow-renaming="<?= option('allow_renaming') ? 'true' : 'false' ?>"
   data-opt-allow-deleting="<?= option('allow_deleting') ? 'true' : 'false' ?>"
-  data-opt-allow-newfolders="<?= option('allow_newfolders') ? 'true' : 'false' ?>">
+  data-opt-allow-newfolders="<?= option('allow_newfolders') ? 'true' : 'false' ?>"
+
+>
 
   <div id="download">
     <span id="closedownload" class="glyphicon glyphicon-remove"></span>

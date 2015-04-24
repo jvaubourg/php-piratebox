@@ -97,7 +97,7 @@ div#download {
   z-index: 9999;
   background-color: #444;
   display: none;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 7px 7px;
   padding: .2em .7em 1em;
   margin: 0;
   position: fixed;

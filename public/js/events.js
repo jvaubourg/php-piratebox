@@ -44,6 +44,7 @@ $(document).ready(function() {
   setFolderEvents($('.folder'));
 
   updateNav();
+  createContextMenus();
 
   $(window).on('popstate', browserHistory);
 
@@ -73,7 +74,7 @@ $(document).ready(function() {
   }
 
   if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
-    $('.folderdelete').click(deleteFile);
+    $('.folderdelete').click(deleteFolderBtn);
   }
 });
 
@@ -143,7 +144,7 @@ $(document).keypress(function(e) {
   // F2
   if(e.keyCode == 113) {
     if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
-      $('.activefile').find('.shortname').trigger('contextmenu');
+      renameFile($('.activefile'));
 
       return false;
     }
