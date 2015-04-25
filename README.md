@@ -104,7 +104,7 @@ Example with nginx:
       fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
       fastcgi_pass unix:/var/run/php.sock;
 
-      # 5 minutes max for uploading a file
+      # 10 minutes max for uploading a file
       fastcgi_send_timeout 600;
     }
     
@@ -131,7 +131,7 @@ Example with php-fpm:
     php_value[upload_max_filesize] = 10G
     php_value[post_max_size] = 10G
     
-    ; 5 minutes max for uploading a file
+    ; 10 minutes max for uploading a file
     php_value[max_execution_time] = 600
 
 ## Permissions
