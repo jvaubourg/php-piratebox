@@ -55,7 +55,7 @@ $(document).ready(function() {
   if($('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
     $('#createfolderbtn').click(createFolderInput);
     $('#createfolder input').blur(createFolderInputBlur);
-    $('#createfolder input').keypress(createFolderInputKeys);
+    $('#createfolder input').keydown(createFolderInputKeys);
     $('#createfolder button').click(createFolderBtn);
   }
 
@@ -66,8 +66,8 @@ $(document).ready(function() {
 
     $('#menu a').click(goToTabClick);
     $('#chatbtn').click(postChatMessage);
-    $('#commentin').keypress(postChatMessageKey);
-    $('#pseudoin').keypress(pseudoInputKeys);
+    $('#commentin').keydown(postChatMessageKey);
+    $('#pseudoin').keydown(pseudoInputKeys);
 
     if($(location).attr('href').match(/#chat$/)) {
       $('a[data-tab=chat]').click();
@@ -80,7 +80,7 @@ $(document).ready(function() {
 /*** GLOBAL SHORTCUTS ***/
 /************************/
 
-$(document).keypress(function(e) {
+$(document).keydown(function(e) {
 
   // Enter
   if(e.keyCode == 13) {

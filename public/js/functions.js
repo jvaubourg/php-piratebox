@@ -36,8 +36,10 @@ function setFolderEvents(folders) {
 }
 
 // Show no file notice with the folder delete button (or not)
-// fade: use animations or not
-function showNoFile(fade = false) {
+// fade (opt): use animations or not
+function showNoFile(fade) {
+  fade = (typeof fade === 'undefined') ? false : fade;
+
   if($('#tabfiles').attr('data-opt-allow-deleting') == 'true' && $('#nav').attr('data-cdir') != '%2F') {
     if($('#nav').attr('data-locked') == 'true') {
       $('.folderdelete').addClass('lockedaction');
@@ -63,8 +65,10 @@ function showNoFile(fade = false) {
 }
 
 // Hide the no file notice with the folder delete button
-// fade: use animations or not
-function hideNoFile(fade = false) {
+// fade (opt): use animations or not
+function hideNoFile(fade) {
+  fade = (typeof fade === 'undefined') ? false : fade;
+
   if(fade) {
     $('#nofile').fadeOut();
 
@@ -92,8 +96,10 @@ function ajaxDataError(data) {
 
 // Change the current directory
 // newcdir: directory path
-// updateHistory: add an entry in the browser history or not
-function changeDirectory(newcdir, updateHistory = true) {
+// updateHistory (opt): add an entry in the browser history or not
+function changeDirectory(newcdir, updateHistory) {
+  updateHistory = (typeof updateHistory === 'undefined') ? true : updateHistory;
+
   $.ajax({
     url: $('body').attr('data-opt-base-uri') + '?/get',
     data: { dir: encodeURIComponent(newcdir), ajax: true },
@@ -201,7 +207,9 @@ function updateNav(updateHistory) {
 }
 
 // Display the chat instead of the current directory
-function switchToChat(updateHistory = true) {
+function switchToChat(updateHistory) {
+  updateHistory = (typeof updateHistory === 'undefined') ? true : updateHistory;
+
   var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
   var url;
 
@@ -230,7 +238,9 @@ function switchToChat(updateHistory = true) {
 }
 
 // Display the current directory instead of the chat
-function switchToFiles(updateHistory = true) {
+function switchToFiles(updateHistory) {
+  updateHistory = (typeof updateHistory === 'undefined') ? true : updateHistory;
+
   if(updateHistory) {
     history.pushState({}, '', $(location).attr('href').replace(/#chat$/, ''));
   }
@@ -243,8 +253,10 @@ function switchToFiles(updateHistory = true) {
 }
 
 // Update the chat log
-// loop: permanent updating or not
-function updateChat(loop = false) {
+// loop (opt): permanent updating or not
+function updateChat(loop) {
+  loop = (typeof loop === 'undefined') ? false : loop;
+
   var chat = $('#chatlog');
   var count = chat.attr('data-count');
 
@@ -321,7 +333,9 @@ function isTabActive(tab) {
 
 // Change active tab
 // tab: tab to show
-function goToTab(tab, updateHistory = true) {
+function goToTab(tab, updateHistory) {
+  updateHistory = (typeof updateHistory === 'undefined') ? true : updateHistory;
+
   $('#menu li').removeClass('active');
   $('#menu a[data-tab=' + tab +']').parent().addClass('active');
 
@@ -372,7 +386,7 @@ function renameFile(file) {
   var input = shortname.children().first();
 
   input.val(filename);
-  input.keypress(function(e) {
+  input.keydown(function(e) {
 
     // Enter
     if(e.keyCode == 13) {
@@ -457,7 +471,9 @@ function renameFile(file) {
 
 // Propose to delete a file
 // file: $('.itemfile') - or current folder is false
-function deleteFile(file = false) {
+function deleteFile(file) {
+  file = (typeof file === 'undefined') ? false : file;
+
   var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
   var isFile = (file != false);
   var filename, file;
