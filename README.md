@@ -112,7 +112,7 @@ Example with nginx:
     # WITH: $options['fancyurls'] = true
     location @piratebox {
     
-      # WITH: $options['base_uri'] = 'foobar/'
+      # WITH: $options['base_uri'] = '/foobar/'
       rewrite ^/foobar/(.*)$ /foobar/?/get&dir=$1;
     }
     
