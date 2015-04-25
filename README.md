@@ -29,6 +29,8 @@ This project is not affiliated with the official PirateBox project.
 * Completely translatable with gettext
 * Responsive design (mobile-friendly)
 
+Some [screenshots](#screenshots) are available.
+
 ### Main shortcuts
 
 On the files tab:
