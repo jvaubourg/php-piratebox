@@ -21,7 +21,7 @@ This project is not affiliated with the official PirateBox project.
 * Pinned files or folders (marked with a star and cannot be deleted nor renamed)
 * Free folders creation (can be disabled)
 * Free files and folders renaming (can be disabled)
-* Free files and folders deleting (can be disabled)
+* Free files and (empty) folders deleting (can be disabled)
 * Fancy URLs (can be disabled)
 * Keyboard shortcuts and context menus
 * Full AJAX with direct URLs and browser history
