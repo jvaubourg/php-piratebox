@@ -1,4 +1,4 @@
-# php-pirateBox
+# php-piratebox
 ## Project
 
 A PirateBox is an anonymous offline file-sharing communications system, according to the [PirateBox project](http://www.piratebox.cc).
