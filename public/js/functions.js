@@ -41,9 +41,10 @@ function showNoFile(fade) {
   fade = (typeof fade === 'undefined') ? false : fade;
 
   if($('#tabfiles').attr('data-opt-allow-deleting') == 'true' && $('#nav').attr('data-cdir') != '%2F') {
+    $('.folderdelete').unbind('click');
+
     if($('#nav').attr('data-locked') == 'true') {
       $('.folderdelete').addClass('lockedaction');
-      $('.folderdelete').off('clicked');
 
     } else {
       $('.folderdelete').removeClass('lockedaction');
@@ -371,7 +372,7 @@ function renameFile(file) {
   filename = nohtmlentities(filename);
 
   file.removeClass('activefile');
-  file.off('click');
+  file.unbind('click');
 
   closeDownload();
   shortname.empty();
@@ -861,9 +862,10 @@ function clickFile() {
     $(this).addClass('activefile');
 
     if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
+      $('#download .filerename').unbind('click');
+
       if($(this).attr('data-locked') == 'true') {
         $('#download .filerename').addClass('lockedaction');
-        $('#download .filerename').off('click');
 
       } else {
         $('#download .filerename').removeClass('lockedaction');
@@ -872,9 +874,10 @@ function clickFile() {
     }
   
     if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+      $('#download .filedelete').unbind('click');
+
       if($(this).attr('data-locked') == 'true') {
         $('#download .filedelete').addClass('lockedaction');
-        $('#download .filedelete').off('click');
 
       } else {
         $('#download .filedelete').removeClass('lockedaction');

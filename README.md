@@ -39,6 +39,7 @@ On the files tab:
 * **Enter**: downloads the selected file or gets into the selected folder
 * **Del**: deletes the selected file
 * **F2**: renames the selected file or folder
+* **Insert**: creates a folder
 * **Escape**: unselects the selected file or folder
 * **F4**: shows the chat tab
 

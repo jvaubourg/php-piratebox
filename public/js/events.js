@@ -51,6 +51,7 @@ $(document).ready(function() {
   $('#dragndrop').click(closeDownload);
   $('#gotoupload').click(goToUpload);
   $('#closedownload').click(closeDownloadBtn);
+  $('.folderdelete').click(deleteFolderBtn);
 
   if($('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
     $('#createfolderbtn').click(createFolderInput);
@@ -118,9 +119,9 @@ $(document).keydown(function(e) {
   
       } else {
         if(e.keyCode == 37) {
-          activefile = $('.file').last();
+          activefile = $('.itemfile').last();
         } else {
-          activefile = $('.file').first();
+          activefile = $('.itemfile').first();
         }
       }
   
@@ -133,6 +134,16 @@ $(document).keydown(function(e) {
       } else {
         activefile.click();
       }
+
+      return false;
+    }
+  }
+
+  // Insert
+  if(e.keyCode == 45) {
+    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
+      $('html,body').scrollTop($(document).height());
+      $('#createfolderbtn').click();
 
       return false;
     }
