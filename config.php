@@ -5,7 +5,7 @@ $options = [
 
   'base_path'          => "/var/www/pirateboxperso/",
   'base_uri'           => "/",
-  #'base_uploads'        => "/var/spool/piratebox/public/uploads/",
+  #'base_uploads'       => "/var/spool/piratebox/public/uploads/",
   #'base_chat'          => "/var/spool/piratebox/public/chat/",
 
   'allow_renaming'     => true,
