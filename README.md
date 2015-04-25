@@ -1,6 +1,8 @@
 # php-piratebox
 ## Project
 
+**Warning: work in progress**
+
 A PirateBox is an anonymous offline file-sharing communications system, according to the [PirateBox project](http://www.piratebox.cc).
 
 This project is just a powerful web interface, conceived in this spirit. You can use it on any hardware configured with an HTTP server and a PHP backend.
