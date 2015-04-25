@@ -125,7 +125,7 @@ Example with nginx:
       try_files $uri $uri/ @piratebox;
     }
 
-## PHP backend
+### PHP backend
 
 Example with php-fpm:
 
@@ -136,9 +136,21 @@ Example with php-fpm:
     ; 10 minutes max for uploading a file
     php_value[max_execution_time] = 600
 
-## Permissions
+### Permissions
 
 For example, if your PHP pool uses *www-data* as unix user:
 
     # chown www-data: public/uploads/
     # chown www-data: public/chat/
+
+## Screenshots
+
+![Files tab](/screenshots/piratebox1.png?raw=true "Files tab")
+![Files tab (mobile)](/screenshots/piratebox4.png?raw=true "Files tab (mobile)")
+![Tabs menu (mobile)](/screenshots/piratebox3.png?raw=true "Mobile tabs")
+![Download file](/screenshots/piratebox8.png?raw=true "Download file")
+![Download file (mobile)](/screenshots/piratebox2.png?raw=true "Download file (mobile)")
+![Upload files](/screenshots/piratebox7.png?raw=true "Upload files")
+![Upload files (mobile)](/screenshots/piratebox9.png?raw=true "Upload files (mobile)")
+![Chat tab](/screenshots/piratebox5.png?raw=true "Chat tab")
+![Chat tab (mobile)](/screenshots/piratebox6.png?raw=true "Chat tab (mobile)")
