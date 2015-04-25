@@ -7,6 +7,8 @@ This project is just a powerful web interface, conceived in this spirit. You can
 
 If you want to use it like a real PirateBox, you need to configure a wifi hotspot with a captive portal redirecting all web requests on it. For example, this project is also available as a [YunoHost](http://yunohost.org) application for this purpose. Thus, installing the [corresponding Yunohost application](https://github.com/labriqueinternet/piratebox_ynh) sets up all the necessary stuff for you, including the HTTP/PHP configurations. This last was integrated in the "[La Brique Internet](http://labriqueinter.net)" project.
 
+This project is not affiliated with the officiel PirateBox project.
+
 ## Features
 ### Overview
 
