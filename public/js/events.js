@@ -103,6 +103,16 @@ $(document).keydown(function(e) {
     }
   }
 
+  // Page down
+  if(e.keyCode == 34) {
+    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
+      $('html,body').scrollTop($(document).height());
+      $('#createfolderbtn').click();
+
+      return false;
+    }
+  }
+
   // <- and ->
   if(e.keyCode == 37 || e.keyCode == 39) {
     var activefile;
@@ -149,9 +159,8 @@ $(document).keydown(function(e) {
 
   // Insert
   if(e.keyCode == 45) {
-    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
-      $('html,body').scrollTop($(document).height());
-      $('#createfolderbtn').click();
+    if(isTabActive('files')) {
+      goToUpload();
 
       return false;
     }
