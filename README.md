@@ -151,7 +151,7 @@ For example, if your PHP pool uses *www-data* as unix user:
 ![Download file](/screenshots/piratebox8.png?raw=true "Download file")
 ![Download file (mobile)](/screenshots/piratebox2.png?raw=true "Download file (mobile)")
 ![Upload files (mobile)](/screenshots/piratebox9.png?raw=true "Upload files (mobile)")
-![Upload files](/screenshots/piratebox7.png?raw=true "Upload files")
 ![Chat tab](/screenshots/piratebox5.png?raw=true "Chat tab")
+![Upload files](/screenshots/piratebox7.png?raw=true "Upload files")
 ![Chat tab (mobile)](/screenshots/piratebox6.png?raw=true "Chat tab (mobile)")
 ![Tabs menu 2 (mobile)](/screenshots/piratebox10.png?raw=true "Tabs menu 2 (mobile)")
