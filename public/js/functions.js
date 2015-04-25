@@ -35,21 +35,19 @@ function setFolderEvents(folders) {
   folders.click(clickFolder);
 }
 
-// Set download panel events
-function setDownloadEvents() {
-  if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
-    $('#download').find('.filerename').click(renameFileBtn);
-  }
-
-  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
-    $('#download').find('.filedelete').click(deleteFileBtn);
-  }
-}
-
 // Show no file notice with the folder delete button (or not)
 // fade: use animations or not
 function showNoFile(fade = false) {
   if($('#tabfiles').attr('data-opt-allow-deleting') == 'true' && $('#nav').attr('data-cdir') != '%2F') {
+    if($('#nav').attr('data-locked') == 'true') {
+      $('.folderdelete').addClass('lockedaction');
+      $('.folderdelete').off('clicked');
+
+    } else {
+      $('.folderdelete').removeClass('lockedaction');
+      $('.folderdelete').click(deleteFolderBtn);
+    }
+
     $('.folderdelete').show();
 
   } else {
@@ -111,7 +109,19 @@ function changeDirectory(newcdir, updateHistory = true) {
       return;
     }
 
+    var folderWithLocation = $('.folder[data-dir="' + encodeURIComponent(newcdir) + '"]');
+    var locked = false;
+
+    if(newcdir == '/') {
+      locked = true;
+
+    } else if(folderWithLocation.length > 0) {
+      locked = (folderWithLocation.attr('data-locked') == 'true');
+    }
+
     $('#nav').attr('data-cdir', encodeURIComponent(newcdir));
+    $('#nav').attr('data-locked', locked ? 'true' : 'false');
+
     $('#infiles').empty();
     $('#infiles').append(data);
 
@@ -504,6 +514,10 @@ function deleteFile(file = false) {
   });
 }
 
+function isFileLocked() {
+  return ($(this).attr('data-locked') == 'true');
+}
+
 // Create context menus for files and folders
 function createContextMenus() {
   var fileMenuItems = {
@@ -521,12 +535,12 @@ function createContextMenus() {
   }
 
   if($('#tabfiles').attr('data-opt-allow-renaming')== 'true') {
-    fileMenuItems['rename'] = { name: $('#tabfiles').attr('data-txt-rename') };
-    folderMenuItems['rename'] = { name: $('#tabfiles').attr('data-txt-rename') };
+    fileMenuItems['rename'] = { name: $('#tabfiles').attr('data-txt-rename'), disabled: isFileLocked };
+    folderMenuItems['rename'] = { name: $('#tabfiles').attr('data-txt-rename'), disabled: isFileLocked };
   }
 
   if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
-    fileMenuItems['delete'] = { name: $('#tabfiles').attr('data-txt-delete') };
+    fileMenuItems['delete'] = { name: $('#tabfiles').attr('data-txt-delete'), disabled: isFileLocked };
   }
 
   $('#files').contextMenu({
@@ -828,6 +842,28 @@ function clickFile() {
   } else {
     $('.itemfile').removeClass('activefile');
     $(this).addClass('activefile');
+
+    if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
+      if($(this).attr('data-locked') == 'true') {
+        $('#download .filerename').addClass('lockedaction');
+        $('#download .filerename').off('click');
+
+      } else {
+        $('#download .filerename').removeClass('lockedaction');
+        $('#download .filerename').click(renameFileBtn);
+      }
+    }
+  
+    if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+      if($(this).attr('data-locked') == 'true') {
+        $('#download .filedelete').addClass('lockedaction');
+        $('#download .filedelete').off('click');
+
+      } else {
+        $('#download .filedelete').removeClass('lockedaction');
+        $('#download .filedelete').click(deleteFileBtn);
+      }
+    }
 
     $('#download .filename').text($(this).attr('data-name'));
     $('#download .downloadfile').attr('href', ($(this).attr('data-filename')));

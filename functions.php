@@ -203,6 +203,11 @@ function getFiles($dir, $newfiles = false) {
       continue;
     }
 
+    $perms = fileperms($filepath);
+    $locked = !($perms & 0x0080);
+
+    set('locked', $locked);
+
     if(is_dir($filepath)) {
       $folder = array(
         'name' => $name,

@@ -18,7 +18,15 @@
  */
 ?>
 
-<div class="itemfile folder <?= $newfolder ? 'newfolder' : '' ?>" <?= $newfolder ? 'style="display: none"' : '' ?> data-dir="<?= rawurlencode($folder['dir'])  ?>">
+<div class="itemfile folder <?= $newfolder ? 'newfolder' : '' ?>" <?= $newfolder ? 'style="display: none"' : '' ?>
+  data-locked="<?= $locked ? 'true' : 'false' ?>"
+  data-dir="<?= rawurlencode($folder['dir'])  ?>">
+
   <img src="<?= ROOT_DIR.PUBLIC_DIR ?>img/extensions/folder-page.png" />
+
+  <?php if($locked): ?>
+    <span class="pinnedfile glyphicon glyphicon-star"></span>
+  <?php endif; ?>
+
   <span class="shortname label label-default"><?= htmlentities($folder['name']) ?></span>
 </div>

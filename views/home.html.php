@@ -53,9 +53,7 @@
   data-txt-delete="<?= T_("Delete") ?>"
   data-opt-allow-renaming="<?= option('allow_renaming') ? 'true' : 'false' ?>"
   data-opt-allow-deleting="<?= option('allow_deleting') ? 'true' : 'false' ?>"
-  data-opt-allow-newfolders="<?= option('allow_newfolders') ? 'true' : 'false' ?>"
-
->
+  data-opt-allow-newfolders="<?= option('allow_newfolders') ? 'true' : 'false' ?>">
 
   <div id="download">
     <span id="closedownload" class="glyphicon glyphicon-remove"></span>
@@ -73,7 +71,7 @@
     </div>
   
     <div id="files" class="panel-body">
-      <ol class="breadcrumb" id="nav" data-cdir="<?= rawurlencode($cdir) ?>">
+      <ol class="breadcrumb" id="nav" data-cdir="<?= rawurlencode($cdir) ?>" data-locked="<?= $locked ? 'true' : 'false' ?>">
         <li class="active"><?= T_("Root") ?></li>
       </ol>
 
@@ -83,7 +81,7 @@
 
       <span id="nofile" <?= empty($files) ? '' : 'style="display: none"' ?>>
         <?= T_("No files yet.") ?>
-        <div><span class="folderdelete label label-danger" <?= option('allow_deleting') && $cdir != '/' ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete this folder") ?></span></div>
+        <div><span class="folderdelete label label-danger <?= $locked ? 'lockedaction' : '' ?>" <?= option('allow_deleting') && $cdir != '/' ? '' : 'style="display: none"' ?>><span class="glyphicon glyphicon-trash"></span> <?= T_("Delete this folder") ?></span></div>
       </span>
     </div>
   </div>

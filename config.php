@@ -7,7 +7,6 @@ $options = [
   'base_uri'           => "/",
   #'base_uploads'        => "/var/spool/piratebox/public/uploads/",
   #'base_chat'          => "/var/spool/piratebox/public/chat/",
-  'base_uploads'        => "/home/ju/tmp/toto/public/uploads/",
 
   'allow_renaming'     => true,
   'allow_deleting'     => true,

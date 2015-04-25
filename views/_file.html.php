@@ -19,12 +19,17 @@
 ?>
 
 <div class="itemfile file <?= $newfile ? 'newfile' : '' ?>" <?= $newfile ? 'style="display: none"' : '' ?>
+  data-locked="<?= $locked ? 'true' : 'false' ?>"
   data-name="<?= htmlentities($file['name']) ?>"
   data-filename="<?= htmlentities(preg_replace('|/+|', '/', $file['filename'])) ?>"
   data-size="<?= $file['size'] ?>"
   data-date="<?= str_replace(' ', '&nbsp;', $file['date']) ?>">
 
   <img src="<?= ROOT_DIR.PUBLIC_DIR ?>img/extensions/<?= urlencode($file['img']) ?>" />
+
+  <?php if($locked): ?>
+    <span class="pinnedfile glyphicon glyphicon-star"></span>
+  <?php endif; ?>
 
   <?php if($file['shortname'] != $file['name']): ?>
     <span class="shortname label label-default" data-toggle="tooltip" data-title="<?= htmlentities($file['name']) ?>"><?= str_replace('...', '&hellip;', htmlentities($file['shortname'])) ?></span>

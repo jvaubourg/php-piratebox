@@ -23,6 +23,7 @@ require_once('functions.php');
 dispatch('/', function() {
   set('files', getFiles('/'));
   set('tab', 'files');
+  set('locked', true);
   set('cdir', '/');
 
   header('Content-Type: text/html; charset=utf-8');
@@ -40,20 +41,26 @@ dispatch('/get', function() {
     header('Content-Type: text/html; charset=utf-8');
   }
 
-  if($ajax && !is_dir(UPLOADS_PATH.$dir)) {
-    exit('ERR:'.T_("Invalid destination."));
-  }
-
   if(empty($dir) || !is_dir(UPLOADS_PATH.$dir)) {
-    $dir = '/';
+    if($ajax) {
+      exit('ERR:'.T_("Invalid destination."));
+
+    } else {
+      header('Location: '.ROOT_DIR);
+      exit();
+    }
   }
 
   if($ajax) {
     return getFiles($dir, true);
   }
 
+  $perms = fileperms(UPLOADS_PATH.$dir);
+  $locked = !($perms & 0x0080) || $dir == '/';
+
   set('files', getFiles($dir));
   set('tab', 'files');
+  set('locked', $locked);
   set('cdir', $dir);
 
   return render('home.html.php');
@@ -96,6 +103,7 @@ dispatch_post('/rename', function() {
     );
 
     set('folder', $folder);
+    set('locked', false);
     set('newfolder', true);
 
     echo partial('_folder.html.php');
@@ -111,6 +119,7 @@ dispatch_post('/rename', function() {
     );
 
     set('file', $file);
+    set('locked', false);
     set('newfile', true);
 
     echo partial('_file.html.php');
@@ -195,6 +204,7 @@ dispatch_post('/upload', function() {
   );
 
   set('file', $file);
+  set('locked', false);
   set('newfile', true);
 
   echo partial('_file.html.php');
@@ -235,6 +245,7 @@ dispatch_post('/createfolder', function() {
   );
 
   set('folder', $folder);
+  set('locked', false);
   set('newfolder', true);
 
   echo partial('_folder.html.php');
@@ -249,6 +260,7 @@ dispatch('/chat', function() {
 
   set('files', getFiles('/'));
   set('tab', 'chat');
+  set('locked', true);
   set('cdir', '/');
 
   return render('home.html.php');

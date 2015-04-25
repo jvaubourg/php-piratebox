@@ -40,7 +40,6 @@ $(document).ready(function() {
   
   uploadArea.event('send', upload);
 
-  setDownloadEvents();
   setFileEvents($('.file'));
   setFolderEvents($('.folder'));
 
@@ -73,10 +72,6 @@ $(document).ready(function() {
     if($(location).attr('href').match(/#chat$/)) {
       $('a[data-tab=chat]').click();
     }
-  }
-
-  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
-    $('.folderdelete').click(deleteFolderBtn);
   }
 });
 
@@ -145,7 +140,7 @@ $(document).keypress(function(e) {
 
   // Del
   if(e.keyCode == 46) {
-    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-deleting') == 'true' && $('.activefile').attr('data-locked') == 'false') {
       deleteFile($('.activefile'));
 
       return false;
@@ -154,7 +149,7 @@ $(document).keypress(function(e) {
 
   // F2
   if(e.keyCode == 113) {
-    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
+    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-renaming') == 'true' && $('.activefile').attr('data-locked') == 'false') {
       renameFile($('.activefile'));
 
       return false;

@@ -55,6 +55,7 @@ div#infiles {
 
 div.file, div.folder {
   display: inline-block;
+  position: relative;
   width: 14.7em;
   margin: .4em .3em;
   text-align: center;
@@ -333,6 +334,24 @@ span.folderdelete {
   font-size: 1em;
   padding: .5em .7em .5em .5em;
   font-style: normal;
+}
+
+span.lockedaction {
+  background-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+}
+
+span.pinnedfile {
+  position: absolute;
+  right: 69px;
+  top: 44px;
+  color: #11b211;
+  font-size: 1.2em;
+}
+
+div.activefile span.pinnedfile {
+  display: none;
 }
 
 span.filedate, span.filesize, span.filerename, span.filedelete {
