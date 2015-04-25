@@ -43,6 +43,8 @@ On the files tab:
 * **Escape**: unselects the selected file or folder
 * **F4**: shows the chat tab
 
+You also can directly download a file by double-clicking it.
+
 On the chat tab:
 
 * **Up arrow**: completes the input field with the last posted message

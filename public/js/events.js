@@ -111,8 +111,16 @@ $(document).keydown(function(e) {
       if($('.activefile').length == 1) {
         if(e.keyCode == 37) {
           activefile = $('.activefile').prev();
+
+          if(!activefile.hasClass('itemfile')) {
+            activefile = $('.itemfile').last();
+          }
         } else {
           activefile = $('.activefile').next();
+
+          if(!activefile.hasClass('itemfile')) {
+            activefile = $('.itemfile').first();
+          }
         }
   
         $('.itemfile').removeClass('activefile');
@@ -162,6 +170,7 @@ $(document).keydown(function(e) {
   if(e.keyCode == 113) {
     if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-renaming') == 'true' && $('.activefile').attr('data-locked') == 'false') {
       renameFile($('.activefile'));
+      $('#renamein').select();
 
       return false;
     }

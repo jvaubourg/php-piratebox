@@ -113,6 +113,8 @@ function changeDirectory(newcdir, updateHistory) {
 
   }).done(function(data) {
     if(!ajaxDataError(data)) {
+      $(window).prop('location', $('body').attr('data-opt-base-uri'));
+
       return;
     }
 
@@ -703,6 +705,9 @@ function createFolderBtn() {
 
   }).done(function(data) {
     if(!ajaxDataError(data)) {
+      $('#createfolderbtn').next().hide();
+      $('#createfolderbtn').show();
+
       return;
     }
 
