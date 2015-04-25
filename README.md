@@ -123,7 +123,7 @@ Example with nginx:
       try_files $uri $uri/ @piratebox;
     }
 
-## PHP
+## PHP backend
 
 Example with php-fpm:
 
