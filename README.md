@@ -53,7 +53,7 @@ All options are available in */config.php*:
 * **allow_renaming**: boolean for allowing free renaming of the existing files or not
 * **allow_deleting**: boolean for allowing free deleting of the existing files or not
 * **default_pseudo**: default pseudo in the chat when the user has not defined one ("anonymous" by default, completed with a random number)
-* **time_format**: format to use for displaying dates, using the [https://php.net/manual/en/function.date.php PHP date] syntax
+* **time_format**: format to use for displaying dates, using the [PHP date](https://php.net/manual/en/function.date.php) syntax
 * **fancyurls**: boolean for enabling fancy URLs or not (see below the required specific configuration at the HTTP server side)
 * **base_path**: unix path of the root of the interface in the server
 * **base_uri**: root of the interface regarding the URLs (folders to add after the domain name)
