@@ -136,7 +136,7 @@ Example with php-fpm:
 
 ## Permissions
 
-If your PHP pool uses *www-data* as user:
+For example, if your PHP pool uses *www-data* as unix user:
 
     # chown www-data: public/uploads/
     # chown www-data: public/chat/
