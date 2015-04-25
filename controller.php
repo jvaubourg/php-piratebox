@@ -43,7 +43,7 @@ dispatch('/get', function() {
 
   if(empty($dir) || !is_dir(UPLOADS_PATH.$dir)) {
     if($ajax) {
-      exit('ERR:'.T_("Invalid destination."));
+      exit('ERR:'.T_("Invalid destination.".UPLOADS_PATH.$dir));
 
     } else {
       header('Location: '.ROOT_DIR);

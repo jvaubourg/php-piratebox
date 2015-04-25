@@ -732,6 +732,7 @@ function browserHistory(e) {
     if($('nav').attr('data-opt-fancyurls') == 'true') {
       url = url.replace(/https?:\/\/[^\/]+\//, '/');
       dir = url.replace($('body').attr('data-opt-base-uri'), '/');
+      dir = decodeURIComponent(dir);
 
     } else {
       url = url.match(/dir=([^&]*)/);
