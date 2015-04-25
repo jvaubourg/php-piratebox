@@ -22,7 +22,7 @@ This project is not affiliated with the official PirateBox project.
 * Free files and folders deleting (can be disabled)
 * Fancy URLs (can be disabled)
 * Keyboard shortcuts and context menus
-* Full AJAX with direct URLs
+* Full AJAX with direct URLs and browser history
 * Do not require a database
 * Completely translatable with gettext
 * Responsive design (mobile-friendly)
