@@ -40,10 +40,10 @@ function setFolderEvents(folders) {
 function showNoFile(fade) {
   fade = (typeof fade === 'undefined') ? false : fade;
 
-  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true' && $('#nav').attr('data-cdir') != '%2F') {
+  if($('#tabfiles').data('optAllowDeleting') && $('#nav').data('cdir') != '%2F') {
     $('.folderdelete').unbind('click');
 
-    if($('#nav').attr('data-locked') == 'true') {
+    if($('#nav').data('locked')) {
       $('.folderdelete').addClass('lockedaction');
 
     } else {
@@ -102,18 +102,18 @@ function changeDirectory(newcdir, updateHistory) {
   updateHistory = (typeof updateHistory === 'undefined') ? true : updateHistory;
 
   $.ajax({
-    url: $('body').attr('data-opt-base-uri') + '?/get',
+    url: $('body').data('optBaseUri') + '?/get',
     data: { dir: encodeURIComponent(newcdir), ajax: true },
     method: 'GET',
 
   }).fail(function(data) {
     alert('Changing directory failed.');
 
-    $(window).prop('location', $('body').attr('data-opt-base-uri'));
+    $(window).prop('location', $('body').data('optBaseUri'));
 
   }).done(function(data) {
     if(!ajaxDataError(data)) {
-      $(window).prop('location', $('body').attr('data-opt-base-uri'));
+      $(window).prop('location', $('body').data('optBaseUri'));
 
       return;
     }
@@ -125,11 +125,11 @@ function changeDirectory(newcdir, updateHistory) {
       locked = true;
 
     } else if(folderWithLocation.length > 0) {
-      locked = (folderWithLocation.attr('data-locked') == 'true');
+      locked = folderWithLocation.data('locked');
     }
 
-    $('#nav').attr('data-cdir', encodeURIComponent(newcdir));
-    $('#nav').attr('data-locked', locked ? 'true' : 'false');
+    $('#nav').data('cdir', encodeURIComponent(newcdir));
+    $('#nav').data('locked', locked);
 
     $('#infiles').empty();
     $('#infiles').append(data);
@@ -161,7 +161,7 @@ function changeDirectory(newcdir, updateHistory) {
 function updateNav(updateHistory) {
   var nav = $('#nav');
   var rootTxt = nav.children().first().text();
-  var cdir = decodeURIComponent(nav.attr('data-cdir'));
+  var cdir = decodeURIComponent(nav.data('cdir'));
   var title = $(document).prop('title').split(' - ')[0];
 
   cdir = cdir.replace(/^\/*/, '');
@@ -174,15 +174,15 @@ function updateNav(updateHistory) {
   $(document).prop('title', title);
 
   if(updateHistory) {
-    var url = $('body').attr('data-opt-base-uri');
+    var url = $('body').attr('optBaseUri');
 
-    if($('nav').attr('data-opt-fancyurls') == 'true') {
+    if($('nav').data('optFancyurls')) {
       url = encodeURIComponent(cdir).replace(/%2F/g, '/');
       url += (url == '') ? '' : '/';
-      url = $('body').attr('data-opt-base-uri') + url;
+      url = $('body').data('optBaseUri') + url;
 
     } else {
-      url = $('body').attr('data-opt-base-uri') + '?/get&dir=' + encodeURIComponent(cdir);
+      url = $('body').data('optBaseUri') + '?/get&dir=' + encodeURIComponent(cdir);
     }
 
     history.pushState({}, '', url);
@@ -213,17 +213,17 @@ function updateNav(updateHistory) {
 function switchToChat(updateHistory) {
   updateHistory = (typeof updateHistory === 'undefined') ? true : updateHistory;
 
-  var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+  var cdir = decodeURIComponent($('#nav').data('cdir'));
   var url;
 
   if(updateHistory) {
-    if($('nav').attr('data-opt-fancyurls') == 'true') {
+    if($('nav').data('optFancyurls')) {
       url = encodeURIComponent(cdir).replace(/%2F/g, '/').replace(/^\/+/, '');
       url += (url == '') ? '' : '/';
-      url = $('body').attr('data-opt-base-uri') + url + '#chat';
+      url = $('body').data('optBaseUri') + url + '#chat';
   
     } else {
-      url = $('body').attr('data-opt-base-uri') + '?/' + encodeURIComponent(cdir) + '#chat';
+      url = $('body').data('optBaseUri') + '?/' + encodeURIComponent(cdir) + '#chat';
     }
   
     history.pushState({}, '', url);
@@ -261,20 +261,20 @@ function updateChat(loop) {
   loop = (typeof loop === 'undefined') ? false : loop;
 
   var chat = $('#chatlog');
-  var count = chat.attr('data-count');
+  var count = chat.data('count');
 
   if(isTabActive('chat') || !loop) {
     $.ajax({
-      url: $('body').attr('data-opt-base-uri') + '?/chat',
+      url: $('body').data('optBaseUri') + '?/chat',
       data: { action: 'getLog', count: count },
       method: 'POST',
   
     }).done(function(data) {
-      if(data != '' && count == chat.attr('data-count')) {
+      if(data != '' && count == chat.data('count')) {
         $('#nomsg').hide();
 
         chat.append(data);
-        chat.attr('data-count', chat.find('p').length);
+        chat.data('count', chat.find('p').length);
     
         $('#chatlog p:even:not(.row)').addClass('row');
         $('#chatlog p').tooltip();
@@ -303,12 +303,12 @@ function updateChat(loop) {
 function updateChatBadge() {
   if(!isTabActive('chat')) {
     $.ajax({
-      url: $('body').attr('data-opt-base-uri') + '?/chat',
+      url: $('body').data('opt-base-uri') + '?/chat',
       data: { action: 'getLineCount' },
       method: 'POST',
   
     }).done(function(data) {
-      var count = data - $('#chatlog').attr('data-count');
+      var count = data - $('#chatlog').data('count');
       $('#menu .badge').text(count);
   
       setTimeout(function() {
@@ -368,7 +368,7 @@ function renameFile(file) {
   if(isFolder) {
     filename = shortnameTxt;
   } else {
-    filename = file.attr('data-name');
+    filename = file.data('name');
   }
 
   filename = nohtmlentities(filename);
@@ -407,7 +407,7 @@ function renameFile(file) {
   input.blur(function() {
     var oldName = filename;
     var newName = $(this).val();
-    var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+    var cdir = decodeURIComponent($('#nav').data('cdir'));
 
     if(oldName == newName) {
       if(isFolder) {
@@ -424,7 +424,7 @@ function renameFile(file) {
     }
 
     $.ajax({
-      url: $('body').attr('data-opt-base-uri') + '?/rename',
+      url: $('body').data('optBaseUri') + '?/rename',
       data: {
         action: 'post',
         cdir: cdir,
@@ -477,22 +477,22 @@ function renameFile(file) {
 function deleteFile(file) {
   file = (typeof file === 'undefined') ? false : file;
 
-  var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+  var cdir = decodeURIComponent($('#nav').data('cdir'));
   var isFile = (file != false);
   var filename, file;
 
   if(isFile) {
-    if(!confirm($('#tabfiles').attr('data-txt-delfile'))) {
+    if(!confirm($('#tabfiles').data('txtDelfile'))) {
       return;
     }
 
-    filename = file.attr('data-name');
+    filename = file.data('name');
     filename = nohtmlentities(filename);
 
     closeDownload();
 
   } else {
-    if(!confirm($('#tabfiles').attr('data-txt-delfolder'))) {
+    if(!confirm($('#tabfiles').data('txtDelfolder'))) {
       return;
     }
 
@@ -500,7 +500,7 @@ function deleteFile(file) {
   }
 
   $.ajax({
-    url: $('body').attr('data-opt-base-uri') + '?/delete',
+    url: $('body').data('optBaseUri') + '?/delete',
     data: {
       action: 'post',
       cdir: cdir,
@@ -534,32 +534,32 @@ function deleteFile(file) {
 }
 
 function isFileLocked() {
-  return ($(this).attr('data-locked') == 'true');
+  return $(this).data('locked');
 }
 
 // Create context menus for files and folders
 function createContextMenus() {
   var fileMenuItems = {
-    'open':     { name: $('#tabfiles').attr('data-txt-open') },
-    'download': { name: $('#tabfiles').attr('data-txt-download') },
+    'open':     { name: $('#tabfiles').data('txtOpen') },
+    'download': { name: $('#tabfiles').data('txtDownload') },
   };
 
   var folderMenuItems = {
-    'open': { name: $('#tabfiles').attr('data-txt-open') },
+    'open': { name: $('#tabfiles').data('txtOpen') },
   };
 
-  if($('#tabfiles').attr('data-opt-allow-renaming') == 'true' || $('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+  if($('#tabfiles').data('optAllowRenaming') || $('#tabfiles').data('optAllowDeleting')) {
     fileMenuItems['separator'] = '-----';
     folderMenuItems['separator'] = '-----';
   }
 
-  if($('#tabfiles').attr('data-opt-allow-renaming')== 'true') {
-    fileMenuItems['rename'] = { name: $('#tabfiles').attr('data-txt-rename'), disabled: isFileLocked };
-    folderMenuItems['rename'] = { name: $('#tabfiles').attr('data-txt-rename'), disabled: isFileLocked };
+  if($('#tabfiles').data('optAllowRenaming')) {
+    fileMenuItems['rename'] = { name: $('#tabfiles').data('txtRename'), disabled: isFileLocked };
+    folderMenuItems['rename'] = { name: $('#tabfiles').data('txtRename'), disabled: isFileLocked };
   }
 
-  if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
-    fileMenuItems['delete'] = { name: $('#tabfiles').attr('data-txt-delete'), disabled: isFileLocked };
+  if($('#tabfiles').data('optAllowDeleting')) {
+    fileMenuItems['delete'] = { name: $('#tabfiles').data('txtDelete'), disabled: isFileLocked };
   }
 
   $('#files').contextMenu({
@@ -586,7 +586,7 @@ function createContextMenus() {
 // filedrop.js handler
 function upload(files) {
   files.each(function(file) {
-    var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+    var cdir = decodeURIComponent($('#nav').data('cdir'));
 
     file.event('sendXHR', function() {
       $('#bars').append('<div class="barwrap"><span>' + file.name + '</span><div class="progress"><div class="progress-bar progress-bar-success progress-bar-striped active"></div></div></div>');
@@ -627,7 +627,7 @@ function upload(files) {
       }, 2000);
     });
 
-    file.sendTo($('body').attr('data-opt-base-uri') + '?/upload&cdir=' + encodeURIComponent(cdir));
+    file.sendTo($('body').data('optBaseUri') + '?/upload&cdir=' + encodeURIComponent(cdir));
   });
 
   uploadArea.event('iframeDone', function(xhr) {
@@ -690,10 +690,10 @@ function createFolderInputKeys(e) {
 // $('#createfolder button')
 function createFolderBtn() {
   var name = $('#createfolderinput').find('input').val();
-  var cdir = decodeURIComponent($('#nav').attr('data-cdir'));
+  var cdir = decodeURIComponent($('#nav').data('cdir'));
 
   $.ajax({
-    url: $('body').attr('data-opt-base-uri') + '?/createfolder',
+    url: $('body').data('optBaseUri') + '?/createfolder',
     data: { name: name, cdir: cdir },
     method: 'POST',
 
@@ -735,9 +735,9 @@ function browserHistory(e) {
     goToTab('chat', false);
     
   } else {
-    if($('nav').attr('data-opt-fancyurls') == 'true') {
+    if($('nav').data('optFancyurls')) {
       url = url.replace(/https?:\/\/[^\/]+\//, '/');
-      dir = url.replace($('body').attr('data-opt-base-uri'), '/');
+      dir = url.replace($('body').data('optBaseUri'), '/');
       dir = decodeURIComponent(dir);
 
     } else {
@@ -756,7 +756,7 @@ function browserHistory(e) {
 // Switching to the chat of files tab depending on the main menu state
 // $('#menu a')
 function goToTabClick() {
-  var tab = $(this).attr('data-tab');
+  var tab = $(this).data('tab');
 
   if(!$(this).parent().hasClass('active')) {
     goToTab(tab);
@@ -790,7 +790,7 @@ function postChatMessage() {
   }
 
   $.ajax({
-    url: $('body').attr('data-opt-base-uri') + '?/chat',
+    url: $('body').data('optBaseUri') + '?/chat',
     data: {
       action: 'post',
       pseudo: pseudo,
@@ -842,7 +842,7 @@ function postChatMessageKey(e) {
 // Changing the current directory thanks to the breadcrumbs links
 // $('#nav a')
 function clickNav() {
-  var dir = decodeURIComponent($(this).attr('data-dir'));
+  var dir = decodeURIComponent($(this).data('dir'));
 
   changeDirectory(dir);
 
@@ -866,10 +866,10 @@ function clickFile() {
     $('.itemfile').removeClass('activefile');
     $(this).addClass('activefile');
 
-    if($('#tabfiles').attr('data-opt-allow-renaming') == 'true') {
+    if($('#tabfiles').data('optAllowRenaming')) {
       $('#download .filerename').unbind('click');
 
-      if($(this).attr('data-locked') == 'true') {
+      if($(this).data('locked')) {
         $('#download .filerename').addClass('lockedaction');
 
       } else {
@@ -878,10 +878,10 @@ function clickFile() {
       }
     }
   
-    if($('#tabfiles').attr('data-opt-allow-deleting') == 'true') {
+    if($('#tabfiles').data('optAllowDeleting')) {
       $('#download .filedelete').unbind('click');
 
-      if($(this).attr('data-locked') == 'true') {
+      if($(this).data('locked')) {
         $('#download .filedelete').addClass('lockedaction');
 
       } else {
@@ -890,10 +890,10 @@ function clickFile() {
       }
     }
 
-    $('#download .filename').text($(this).attr('data-name'));
-    $('#download .downloadfile').attr('href', ($(this).attr('data-filename')));
-    $('#download .filesize').text($(this).attr('data-size'));
-    $('#download .filedate').text($(this).attr('data-date'));
+    $('#download .filename').text($(this).data('name'));
+    $('#download .downloadfile').attr('href', ($(this).data('filename')));
+    $('#download .filesize').text($(this).data('size'));
+    $('#download .filedate').text($(this).data('date'));
     $('#download').show();
   }
 }
@@ -903,7 +903,7 @@ function clickFile() {
 function clickFolder() {
   closeDownload();
   $(this).addClass('activefile');
-  var dir = decodeURIComponent($(this).attr('data-dir'));
+  var dir = decodeURIComponent($(this).data('dir'));
 
   setTimeout(function() {
     changeDirectory(dir);
@@ -919,7 +919,7 @@ function fileContextMenu(key, options) {
     break;
 
     case 'download':
-      var loc = nohtmlentities($(this).attr('data-filename'));
+      var loc = nohtmlentities($(this).data('filename'));
       $(window).prop('location', loc);
     break;
 

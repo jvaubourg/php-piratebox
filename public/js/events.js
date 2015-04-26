@@ -33,7 +33,7 @@ $(document).ready(function() {
   $('.btn-group').button();
   $('[data-toggle="tooltip"]').tooltip();
 
-  defaultChatPseudo = $('#tabchat').attr('data-opt-default-pseudo') + Math.floor(Math.random() * 100);
+  defaultChatPseudo = $('#tabchat').data('optDefaultPseudo') + Math.floor(Math.random() * 100);
 
   var uploadOptions = { iframe: { url: '?/upload' }, multiple: true };
   var uploadArea = new FileDrop('dragndrop', uploadOptions);
@@ -53,14 +53,14 @@ $(document).ready(function() {
   $('#closedownload').click(closeDownloadBtn);
   $('.folderdelete').click(deleteFolderBtn);
 
-  if($('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
+  if($('#tabfiles').data('optAllowNewfolders')) {
     $('#createfolderbtn').click(createFolderInput);
     $('#createfolder input').blur(createFolderInputBlur);
     $('#createfolder input').keydown(createFolderInputKeys);
     $('#createfolder button').click(createFolderBtn);
   }
 
-  if($('#tabchat').attr('data-opt-enable-chat') == 'true') {
+  if($('#tabchat').data('optEnableChat')) {
     updateChat();
     updateChat(true);
     updateChatBadge();
@@ -105,7 +105,7 @@ $(document).keydown(function(e) {
 
   // Page down
   if(e.keyCode == 34) {
-    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-newfolders') == 'true') {
+    if(isTabActive('files') && $('#tabfiles').data('optAllowNewfolders')) {
       $('html,body').scrollTop($(document).height());
       $('#createfolderbtn').click();
 
@@ -168,7 +168,7 @@ $(document).keydown(function(e) {
 
   // Del
   if(e.keyCode == 46) {
-    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-deleting') == 'true' && $('.activefile').attr('data-locked') == 'false') {
+    if(isTabActive('files') && $('#tabfiles').data('optAllowDeleting') && !$('.activefile').data('locked')) {
       deleteFile($('.activefile'));
 
       return false;
@@ -177,7 +177,7 @@ $(document).keydown(function(e) {
 
   // F2
   if(e.keyCode == 113) {
-    if(isTabActive('files') && $('#tabfiles').attr('data-opt-allow-renaming') == 'true' && $('.activefile').attr('data-locked') == 'false') {
+    if(isTabActive('files') && $('#tabfiles').data('optAllowRenaming') && !$('.activefile').data('locked')) {
       renameFile($('.activefile'));
       $('#renamein').select();
 
@@ -187,7 +187,7 @@ $(document).keydown(function(e) {
 
   // F3
   if(e.keyCode == 114) {
-    if(isTabActive('chat') && $('#tabchat').attr('data-opt-enable-chat') == 'true') {
+    if(isTabActive('chat') && $('#tabchat').data('optEnableChat')) {
       $('#menu a[data-tab=files]').click();
 
       return false;
@@ -196,7 +196,7 @@ $(document).keydown(function(e) {
 
   // F4
   if(e.keyCode == 115) {
-    if(isTabActive('files') && $('#tabchat').attr('data-opt-enable-chat') == 'true') {
+    if(isTabActive('files') && $('#tabchat').data('optEnableChat')) {
       $('#menu a[data-tab=chat]').click();
 
       return false;
