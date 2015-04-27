@@ -3,7 +3,7 @@
 $options = [
   'app_name'           => "PirateBox",
 
-  'base_path'          => "/var/www/pirateboxperso/",
+  'base_path'          => "/var/www/piratebox/",
   'base_uri'           => "/",
   #'base_uploads'       => "/var/spool/piratebox/public/uploads/",
   #'base_chat'          => "/var/spool/piratebox/public/chat/",

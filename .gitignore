@@ -1,3 +1,4 @@
+config.php
 public/uploads/*
 public/chat/*
 *.swp
