@@ -177,6 +177,10 @@ dispatch_post('/upload', function() {
     exit('ERR:'.T_("Invalid directory."));
   }
 
+  if(!hasAvailableSpace()) {
+    exit('ERR:'.T_("The file system has reached the maximum limit of space."));
+  }
+
   if(empty($name)) {
     exit('ERR:'.T_("Invalid filename."));
   }
@@ -221,6 +225,10 @@ dispatch_post('/createfolder', function() {
 
   if(!option('allow_newfolders')) {
     exit('ERR:'.T_("Unauthorized."));
+  }
+
+  if(!hasAvailableSpace()) {
+    exit('ERR:'.T_("The file system has reached the maximum limit of space."));
   }
 
   if(empty($cdir) || !is_dir($dirpath)) {

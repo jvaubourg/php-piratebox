@@ -238,3 +238,14 @@ function getFiles($dir, $newfiles = false) {
 
   return $files;
 }
+
+function hasAvailableSpace() {
+  $command = sprintf('df %s | tail -n 1 | awk \'{print $5}\' | sed \'s/%%//\'', escapeshellarg(option('base_path')));
+  $df = shell_exec($command);
+
+  if($df !== null) {
+    return (int) $df < option('max_space');
+  }
+
+  return false;
+}
