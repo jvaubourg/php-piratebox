@@ -69,7 +69,7 @@ msgstr "Nom de répertoire invalide."
 
 #: controller.php:239
 msgid "Creating folder failed."
-msgstr "La création du dossier à échouée."
+msgstr "La création du dossier a échoué."
 
 #: controller.php:288
 msgid "Failed to open chat log."
@@ -125,7 +125,7 @@ msgstr "Supprimer"
 
 #: views/home.html.php:70
 msgid "Download the others' files"
-msgstr "Télécharger les autres fichiers"
+msgstr "Télécharger les fichiers des autres"
 
 #: views/home.html.php:75
 msgid "Root"
@@ -153,7 +153,7 @@ msgstr "ou"
 
 #: views/home.html.php:98
 msgid "Click to open the file browser"
-msgstr "Cliquer pour ouvrir dans votre navigateur"
+msgstr "Cliquer pour sélectionner un fichier"
 
 #: views/home.html.php:104
 msgid "Create a folder"
@@ -173,7 +173,7 @@ msgstr "Aucun message. Vous êtes le premier !"
 
 #: views/home.html.php:126
 msgid "Comment"
-msgstr "Commentaire"
+msgstr "Commenter"
 
 #: views/home.html.php:128
 msgid "Send"
