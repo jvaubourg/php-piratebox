@@ -43,7 +43,7 @@ dispatch('/get', function() {
 
   if(empty($dir) || !is_dir(UPLOADS_PATH.$dir)) {
     if($ajax) {
-      exit('ERR:'.T_("Invalid destination.".UPLOADS_PATH.$dir));
+      exit('ERR:'._("Invalid destination.".UPLOADS_PATH.$dir));
 
     } else {
       header('Location: '.ROOT_DIR);
@@ -77,23 +77,23 @@ dispatch_post('/rename', function() {
   header('Content-Type: text/plain; charset=utf-8');
 
   if(!option('allow_renaming')) {
-    exit('ERR:'.T_("Unauthorized."));
+    exit('ERR:'._("Unauthorized."));
   }
 
   if(empty($oldName) || empty($newName)) {
-    exit('ERR:'.T_("Invalid filename."));
+    exit('ERR:'._("Invalid filename."));
   }
 
   if(!file_exists($oldFilePath)) {
-    exit('ERR:'.T_("File not found."));
+    exit('ERR:'._("File not found."));
   }
 
   if(file_exists($newFilePath)) {
-    exit('ERR:'.T_("File already exists."));
+    exit('ERR:'._("File already exists."));
   }
 
   if(!rename($oldFilePath, $newFilePath)) {
-    exit('ERR:'.T_("Renaming failed."));
+    exit('ERR:'._("Renaming failed."));
   }
 
   if(is_dir($newFilePath)) {
@@ -135,31 +135,31 @@ dispatch_post('/delete', function() {
   header('Content-Type: text/plain; charset=utf-8');
 
   if(!option('allow_deleting')) {
-    exit('ERR:'.T_("Unauthorized."));
+    exit('ERR:'._("Unauthorized."));
   }
 
   if(!file_exists($filePath)) {
-    exit('ERR:'.T_("File not found."));
+    exit('ERR:'._("File not found."));
   }
 
   if(is_dir($filePath)) {
     $files = scandir($filePath);
 
     if(!$files) {
-      exit('ERR:'.T_("Cannot read this directory."));
+      exit('ERR:'._("Cannot read this directory."));
     }
 
     if(count($files) > 2) {
-      exit('ERR:'.T_("Not empty directory."));
+      exit('ERR:'._("Not empty directory."));
     }
 
     if(!rmdir($filePath)) {
-      exit('ERR:'.T_("Cannot delete this directory."));
+      exit('ERR:'._("Cannot delete this directory."));
     }
 
   } else {
     if(!unlink($filePath)) {
-      exit('ERR:'.T_("Cannot delete this file."));
+      exit('ERR:'._("Cannot delete this file."));
     }
   }
 });
@@ -174,22 +174,22 @@ dispatch_post('/upload', function() {
   header('Content-Type: text/plain; charset=utf-8');
 
   if(empty($cdir) || !is_dir($dirpath)) {
-    exit('ERR:'.T_("Invalid directory."));
+    exit('ERR:'._("Invalid directory."));
   }
 
   if(empty($name)) {
-    exit('ERR:'.T_("Invalid filename."));
+    exit('ERR:'._("Invalid filename."));
   }
 
   if(file_exists($filename)) {
-    exit('ERR:'.T_("File already exists."));
+    exit('ERR:'._("File already exists."));
   }
 
   $src = fopen('php://input', 'r');
   $dst = fopen($filename, 'w');
 
   if(!$src || !$dst) {
-    exit('ERR:'.T_("Uploading failed."));
+    exit('ERR:'._("Uploading failed."));
   }
 
   stream_copy_to_stream($src, $dst);
@@ -220,23 +220,23 @@ dispatch_post('/createfolder', function() {
   header('Content-Type: text/plain; charset=utf-8');
 
   if(!option('allow_newfolders')) {
-    exit('ERR:'.T_("Unauthorized."));
+    exit('ERR:'._("Unauthorized."));
   }
 
   if(empty($cdir) || !is_dir($dirpath)) {
-    exit('ERR:'.T_("Invalid directory."));
+    exit('ERR:'._("Invalid directory."));
   }
 
   if(empty($name)) {
-    exit('ERR:'.T_("Invalid directory name."));
+    exit('ERR:'._("Invalid directory name."));
   }
 
   if(file_exists($filename)) {
-    exit('ERR:'.T_("File already exists."));
+    exit('ERR:'._("File already exists."));
   }
 
   if(!mkdir(UPLOADS_PATH."$cdir/$name")) {
-    exit('ERR:'.T_("Creating folder failed."));
+    exit('ERR:'._("Creating folder failed."));
   }
 
   $folder = array(
@@ -255,7 +255,7 @@ dispatch('/chat', function() {
   header('Content-Type: text/html; charset=utf-8');
 
   if(!option('enable_chat')) {
-    exit('ERR:'.T_("Unauthorized."));
+    exit('ERR:'._("Unauthorized."));
   }
 
   set('files', getFiles('/'));
@@ -273,7 +273,7 @@ dispatch_post('/chat', function() {
   header('Content-Type: text/plain; charset=utf-8');
 
   if(!option('enable_chat')) {
-    exit('ERR:'.T_("Unauthorized."));
+    exit('ERR:'._("Unauthorized."));
   }
 
   switch($action) {
@@ -285,11 +285,11 @@ dispatch_post('/chat', function() {
         $logSize = count($log);
 
         if(!$log) {
-          exit('ERR:'.T_("Failed to open chat log."));
+          exit('ERR:'._("Failed to open chat log."));
         }
 
         if($count > $logSize) {
-          exit('ERR:'.T_("Invalid count number."));
+          exit('ERR:'._("Invalid count number."));
         }
 
         if(!empty($log) && $count != $logSize) {
@@ -334,4 +334,17 @@ dispatch_post('/chat', function() {
       echo ($count >= 0) ? $count : 0;
     break;
   }
+});
+
+dispatch('/lang/:locale', function($locale = 'en') {
+  switch($locale) {
+    case 'fr':
+      $_SESSION['locale'] = 'fr';
+    break;
+
+    default:
+      $_SESSION['locale'] = 'en';
+  }
+
+  redirect_to('/');
 });

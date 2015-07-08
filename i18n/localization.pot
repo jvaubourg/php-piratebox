@@ -1,0 +1,118 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-08 20:06+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: views/home.html.php:34
+msgid "Files"
+msgstr ""
+
+#: views/home.html.php:35
+msgid "Chat"
+msgstr ""
+
+#: views/home.html.php:39
+msgid "Upload a new file"
+msgstr ""
+
+#: views/home.html.php:40
+msgid "Pseudo"
+msgstr ""
+
+#: views/home.html.php:48
+msgid "Are you sure you want to delete this file?"
+msgstr ""
+
+#: views/home.html.php:49
+msgid "Are you sure you want to delete this folder?"
+msgstr ""
+
+#: views/home.html.php:50
+msgid "Open"
+msgstr ""
+
+#: views/home.html.php:51 views/home.html.php:61
+msgid "Download"
+msgstr ""
+
+#: views/home.html.php:52 views/home.html.php:64
+msgid "Rename"
+msgstr ""
+
+#: views/home.html.php:53 views/home.html.php:65
+msgid "Delete"
+msgstr ""
+
+#: views/home.html.php:70
+msgid "Download the others' files"
+msgstr ""
+
+#: views/home.html.php:75
+msgid "Root"
+msgstr ""
+
+#: views/home.html.php:83
+msgid "No files yet."
+msgstr ""
+
+#: views/home.html.php:84
+msgid "Delete this folder"
+msgstr ""
+
+#: views/home.html.php:91
+msgid "Share your own files"
+msgstr ""
+
+#: views/home.html.php:96
+msgid "Drag &amp; drop here"
+msgstr ""
+
+#: views/home.html.php:97
+msgid "or"
+msgstr ""
+
+#: views/home.html.php:98
+msgid "Click to open the file browser"
+msgstr ""
+
+#: views/home.html.php:104
+msgid "Create a folder"
+msgstr ""
+
+#: views/home.html.php:108
+msgid "Folder name"
+msgstr ""
+
+#: views/home.html.php:110
+msgid "OK"
+msgstr ""
+
+#: views/home.html.php:123
+msgid "No messages. You are the first!"
+msgstr ""
+
+#: views/home.html.php:126
+msgid "Comment"
+msgstr ""
+
+#: views/home.html.php:128
+msgid "Send"
+msgstr ""
+
+#: views/layout.html.php:53
+msgid "Any problem? Contribute!"
+msgstr ""

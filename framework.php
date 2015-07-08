@@ -60,57 +60,45 @@ function configure() {
   define('CHAT_PATH', "$chat_path/");
 }
 
-// Not found page
-function not_found($errno, $errstr, $errfile=null, $errline=null) {
-  $msg = h(rawurldecode($errstr));
-
-  return render($msg, 'error_layout.html.php');
-}
-
-function T_($string) {
-  return gettext($string);
-}
-
 // Before routing
 function before($route) {
-  if (!isset($_SESSION['locale'])) {
-      /**
-       * @TODO: improved the method…
-       */
-      $locale = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-      $locale = strtolower(substr(chop($locale[0]),0,2));
-      $locale = $locale.'_'.strtoupper($locale).'.UTF-8';
-      $_SESSION['locale'] = $locale;
+  $lang_mapping = array(
+    'fr' => 'fr_FR'
+  );
+
+  if(!isset($_SESSION['locale'])) {
+    $locale = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    $_SESSION['locale'] = strtolower(substr(chop($locale[0]), 0, 2));
   }
 
-  $textdomain  = "localization";
-  $locales_dir = __DIR__.'/i18n';
+  $lang = $_SESSION['locale'];
 
-  putenv('LANGUAGE='.$_SESSION['locale']);
-  putenv('LANG='.$_SESSION['locale']);
-  putenv('LC_ALL='.$_SESSION['locale']);
-  putenv('LC_MESSAGES='.$_SESSION['locale']);
+  // Convert simple language code into full language code
+  if(array_key_exists($lang, $lang_mapping)) {
+    $lang = $lang_mapping[$lang];
+  }
 
-  setlocale(LC_ALL, $_SESSION['locale']);
-  setlocale(LC_CTYPE, $_SESSION['locale']);
+  $lang = "$lang.utf8";
+  $textdomain = "localization";
+
+  putenv("LANGUAGE=$lang");
+  putenv("LANG=$lang");
+  putenv("LC_ALL=$lang");
+  putenv("LC_MESSAGES=$lang");
+
+  setlocale(LC_ALL, $lang);
+  setlocale(LC_CTYPE, $lang);
+
+  $locales_dir = dirname(__FILE__).'/i18n';
 
   bindtextdomain($textdomain, $locales_dir);
   bind_textdomain_codeset($textdomain, 'UTF-8');
-
   textdomain($textdomain);
 
-  // Set the $locale variable in template
-  set('locale', $_SESSION['locale']);
+  set('locale', $lang);
 }
 
 // After routing
 function after($output, $route) {
-  /*
-  $time = number_format( (float)substr(microtime(), 0, 10) - LIM_START_MICROTIME, 6);
-  $output .= "\n<!-- page rendered in $time sec., on ".date(DATE_RFC822)." -->\n";
-  $output .= "<!-- for route\n";
-  $output .= print_r($route, true);
-  $output .= "-->";
-  */
   return $output;
 }

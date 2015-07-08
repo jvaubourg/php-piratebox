@@ -1,3 +1,0 @@
-Add a "localization.pot" to this directory, and one folder per translated language, containing the po a LC_MESSAGE directory (with the .mo)
-
-See: https://github.com/YunoHost/admin_v1/tree/master/i18n
