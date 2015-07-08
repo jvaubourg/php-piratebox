@@ -73,24 +73,32 @@ function T_($string) {
 
 // Before routing
 function before($route) {
-   /**
-   * * Locale
-   * */
   if (!isset($_SESSION['locale'])) {
+      /**
+       * @TODO: improved the method…
+       */
       $locale = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-      $_SESSION['locale'] = strtolower(substr(chop($locale[0]),0,2));
+      $locale = strtolower(substr(chop($locale[0]),0,2));
+      $locale = $locale.'_'.strtoupper($locale).'.UTF-8';
+      $_SESSION['locale'] = $locale;
   }
-  $textdomain="localization";
+
+  $textdomain  = "localization";
+  $locales_dir = __DIR__.'/i18n';
+
   putenv('LANGUAGE='.$_SESSION['locale']);
   putenv('LANG='.$_SESSION['locale']);
   putenv('LC_ALL='.$_SESSION['locale']);
   putenv('LC_MESSAGES='.$_SESSION['locale']);
-  setlocale(LC_ALL,$_SESSION['locale']);
-  setlocale(LC_CTYPE,$_SESSION['locale']);
-  $locales_dir = dirname(__FILE__).'/../i18n';
-  bindtextdomain($textdomain,$locales_dir);
+
+  setlocale(LC_ALL, $_SESSION['locale']);
+  setlocale(LC_CTYPE, $_SESSION['locale']);
+
+  bindtextdomain($textdomain, $locales_dir);
   bind_textdomain_codeset($textdomain, 'UTF-8');
+
   textdomain($textdomain);
+
   // Set the $locale variable in template
   set('locale', $_SESSION['locale']);
 }
