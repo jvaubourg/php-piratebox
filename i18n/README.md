@@ -14,6 +14,7 @@ English is the default language when the browser language is not available.
 Updating the pot file from template files:
 ```
 xgettext views/* -o i18n/localization.pot
+xgettext *.php views/*.php -o i18n/localization.pot
 ```
 
 ## Add a new language
