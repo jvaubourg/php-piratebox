@@ -240,11 +240,15 @@ function getFiles($dir, $newfiles = false) {
 }
 
 function hasAvailableSpace() {
-  $command = sprintf('df %s | tail -n 1 | awk \'{print $5}\' | sed \'s/%%//\'', escapeshellarg(option('base_path')));
-  $df = shell_exec($command);
+  exec('df '.escapeshellarg(option('base_path')), $output, $retcode);
 
-  if($df !== null) {
-    return (int) $df < option('max_space');
+  if($retcode == 0) {
+    $usage = $output[count($output) - 1];
+    $percent = preg_replace('/^.*([0-9]+)%.*$/', '$1', $usage);
+
+    if(is_numeric($percent)) {
+      return $percent < option('max_space');
+    }
   }
 
   return false;

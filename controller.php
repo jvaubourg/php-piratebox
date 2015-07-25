@@ -178,7 +178,7 @@ dispatch_post('/upload', function() {
   }
 
   if(!hasAvailableSpace()) {
-    exit('ERR:'.T_("The file system has reached the maximum limit of space."));
+    exit('ERR:'._("The file system has reached the maximum limit of space."));
   }
 
   if(empty($name)) {
@@ -228,7 +228,7 @@ dispatch_post('/createfolder', function() {
   }
 
   if(!hasAvailableSpace()) {
-    exit('ERR:'.T_("The file system has reached the maximum limit of space."));
+    exit('ERR:'._("The file system has reached the maximum limit of space."));
   }
 
   if(empty($cdir) || !is_dir($dirpath)) {

@@ -5,7 +5,8 @@ $options = [
 
   'base_path'          => "/var/www/piratebox/",
   'base_uri'           => "/",
-  'max_space'          => 80, // in percent
+  'max_space'          => 90, // in percent of the partition usage
+
   #'base_uploads'       => "/var/spool/piratebox/public/uploads/",
   #'base_chat'          => "/var/spool/piratebox/public/chat/",
 
