@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-08 20:06+0200\n"
+"POT-Creation-Date: 2015-07-25 10:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,4 +115,69 @@ msgstr ""
 
 #: views/layout.html.php:53
 msgid "Any problem? Contribute!"
+msgstr ""
+
+#: controller.php:46
+msgid "Invalid destination."
+msgstr ""
+
+#: controller.php:80 controller.php:138 controller.php:223 controller.php:258
+#: controller.php:276
+msgid "Unauthorized."
+msgstr ""
+
+#: controller.php:84 controller.php:181
+msgid "Invalid filename."
+msgstr ""
+
+#: controller.php:88 controller.php:142
+msgid "File not found."
+msgstr ""
+
+#: controller.php:92 controller.php:185 controller.php:235
+msgid "File already exists."
+msgstr ""
+
+#: controller.php:96
+msgid "Renaming failed."
+msgstr ""
+
+#: controller.php:149
+msgid "Cannot read this directory."
+msgstr ""
+
+#: controller.php:153
+msgid "Not empty directory."
+msgstr ""
+
+#: controller.php:157
+msgid "Cannot delete this directory."
+msgstr ""
+
+#: controller.php:162
+msgid "Cannot delete this file."
+msgstr ""
+
+#: controller.php:177 controller.php:227
+msgid "Invalid directory."
+msgstr ""
+
+#: controller.php:192
+msgid "Uploading failed."
+msgstr ""
+
+#: controller.php:231
+msgid "Invalid directory name."
+msgstr ""
+
+#: controller.php:239
+msgid "Creating folder failed."
+msgstr ""
+
+#: controller.php:288
+msgid "Failed to open chat log."
+msgstr ""
+
+#: controller.php:292
+msgid "Invalid count number."
 msgstr ""
