@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-25 10:57+0200\n"
-"PO-Revision-Date: 2015-07-25 11:02+0100\n"
+"POT-Creation-Date: 2015-07-25 13:39+0200\n"
+"PO-Revision-Date: 2015-07-25 13:41+0100\n"
 "Last-Translator: Simon Vieille <simon@deblan.fr>\n"
 "Language-Team: français <>\n"
 "Language: fr_FR\n"
@@ -18,6 +18,75 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.6.10\n"
+
+#: controller.php:46
+msgid "Invalid destination."
+msgstr "Destination incorrecte."
+
+#: controller.php:80 controller.php:138 controller.php:227 controller.php:266
+#: controller.php:284
+msgid "Unauthorized."
+msgstr "Non autorisé."
+
+#: controller.php:84 controller.php:185
+msgid "Invalid filename."
+msgstr "Nom de fichier invalide."
+
+#: controller.php:88 controller.php:142
+msgid "File not found."
+msgstr "Fichier non trouvé."
+
+#: controller.php:92 controller.php:189 controller.php:243
+msgid "File already exists."
+msgstr "Le fichier existe déjà."
+
+#: controller.php:96
+msgid "Renaming failed."
+msgstr "Le renommage a échoué."
+
+#: controller.php:149
+msgid "Cannot read this directory."
+msgstr "Impossible de lire le répertoire."
+
+#: controller.php:153
+msgid "Not empty directory."
+msgstr "Le répertoire n'est pas vide."
+
+#: controller.php:157
+msgid "Cannot delete this directory."
+msgstr "Impossible de supprimer ce répertoire."
+
+#: controller.php:162
+msgid "Cannot delete this file."
+msgstr "Impossible de supprimer ce fichier."
+
+#: controller.php:177 controller.php:235
+msgid "Invalid directory."
+msgstr "Répertoire invalide."
+
+#: controller.php:181 controller.php:231
+msgid "The file system has reached the maximum limit of space."
+msgstr "Le système de fichiers a atteint la limite de la place disponible."
+
+#: controller.php:196
+msgid "Uploading failed."
+msgstr "Le téléversement a échoué."
+
+#: controller.php:239
+msgid "Invalid directory name."
+msgstr "Nom de répertoire invalide."
+
+#: controller.php:247
+msgid "Creating folder failed."
+msgstr "La création du répertoire a échoué."
+
+#: controller.php:296
+msgid "Failed to open chat log."
+msgstr "Impossible d'ouvrir l'historique du chat."
+
+#: controller.php:300
+msgid "Invalid count number."
+msgstr "Nombre invalide."
 
 #: views/home.html.php:34
 msgid "Files"
@@ -118,68 +187,3 @@ msgstr "Envoyer"
 #: views/layout.html.php:53
 msgid "Any problem? Contribute!"
 msgstr "Un problème ? Contribuez !"
-
-#: controller.php:46
-msgid "Invalid destination."
-msgstr "Destination incorrecte."
-
-#: controller.php:80 controller.php:138 controller.php:223 controller.php:258
-#: controller.php:276
-msgid "Unauthorized."
-msgstr "Non autorisé."
-
-#: controller.php:84 controller.php:181
-msgid "Invalid filename."
-msgstr "Nom de fichier invalide."
-
-#: controller.php:88 controller.php:142
-msgid "File not found."
-msgstr "Fichier non trouvé."
-
-#: controller.php:92 controller.php:185 controller.php:235
-msgid "File already exists."
-msgstr "Le fichier existe déjà."
-
-#: controller.php:96
-msgid "Renaming failed."
-msgstr "Le renommage a échoué."
-
-#: controller.php:149
-msgid "Cannot read this directory."
-msgstr "Impossible de lire le répertoire."
-
-#: controller.php:153
-msgid "Not empty directory."
-msgstr "Le répertoire n'est pas vide."
-
-#: controller.php:157
-msgid "Cannot delete this directory."
-msgstr "Impossible de supprimer ce répertoire."
-
-#: controller.php:162
-msgid "Cannot delete this file."
-msgstr "Impossible de supprimer ce fichier."
-
-#: controller.php:177 controller.php:227
-msgid "Invalid directory."
-msgstr "Répertoire invalide."
-
-#: controller.php:192
-msgid "Uploading failed."
-msgstr "Le téléversement a échoué."
-
-#: controller.php:231
-msgid "Invalid directory name."
-msgstr "Nom de répertoire invalide."
-
-#: controller.php:239
-msgid "Creating folder failed."
-msgstr "La création du répertoire a échoué."
-
-#: controller.php:288
-msgid "Failed to open chat log."
-msgstr "Impossible d'ouvrir l'historique du chat."
-
-#: controller.php:292
-msgid "Invalid count number."
-msgstr "Nombre invalide."

@@ -65,6 +65,7 @@ All options are available in */config.php*:
 * **base_uri**: root of the interface regarding the URLs (folders to add after the domain name)
 * **base_uploads**: optional unix path in case of the *uploads/* folder is located elsewhere in the server (see HTTP configuration below)
 * **base_chat**: optional unix path in case of the *chat/* folder (containing the chat log file) is located elsewhere in the server (see HTTP configuration below)
+* **max_space**: maximum available space in percent for the data, on the partition where *base_uploads* is located
 
 For pinning a file or a folder, just remove the write permission for the owner on the server:
 
