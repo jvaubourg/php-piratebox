@@ -240,7 +240,7 @@ function getFiles($dir, $newfiles = false) {
 }
 
 function hasAvailableSpace() {
-  exec('df '.escapeshellarg(option('base_path')), $output, $retcode);
+  exec('df '.escapeshellarg(UPLOADS_PATH), $output, $retcode);
 
   if($retcode == 0) {
     $usage = $output[count($output) - 1];
