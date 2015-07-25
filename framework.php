@@ -34,6 +34,7 @@ function configure() {
   option('debug', false);
   option('base_path', $GLOBALS['options']['base_path'].'/');
   option('base_uri', $GLOBALS['options']['base_uri'].'/');
+  option('max_space', $GLOBALS['options']['max_space']);
 
   option('allow_renaming', $GLOBALS['options']['allow_renaming']);
   option('allow_deleting', $GLOBALS['options']['allow_deleting']);
